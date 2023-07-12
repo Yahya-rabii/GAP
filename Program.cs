@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using GAP.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<GAPContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GAPContext") ?? throw new InvalidOperationException("Connection string 'GAPContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
