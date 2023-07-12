@@ -1,4 +1,6 @@
-﻿namespace GAP.Models
+﻿using GAP.Helper;
+
+namespace GAP.Models
 {
     public class OffreVente
     {
