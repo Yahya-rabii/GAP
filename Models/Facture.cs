@@ -1,42 +1,18 @@
-﻿namespace GAP.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GAP.Models
 {
     public class Facture
     {
-        private int id;
-        private Produit produit;
-        private Double prix;
-        private Fournisseur beneficiaire;
-        private bool validite;
+        public int Id { get; set; }
+        public Produit Produit { get; set; }
+        public double Prix { get; set; }
+        public Fournisseur Beneficiaire { get; set; }
+        public bool Validite { get; set; }
 
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        [ForeignKey("RespServiceFinance")]
+        public int RespServiceFinanceId { get; set; } // Foreign key property
 
-        public Produit Produit
-        {
-            get { return produit; }
-            set { produit = value; }
-        }
-
-        public Double Prix
-        {
-            get { return prix; }
-            set { prix = value; }
-        }
-
-        public Fournisseur Beneficiaire
-        {
-            get { return beneficiaire; }
-            set { beneficiaire = value; }
-        }
-
-        public bool Validite
-        {
-            get { return validite; }
-            set { validite = value; }
-        }
+        public RespServiceFinance RespServiceFinance { get; set; } // Navigation property
     }
-
 }

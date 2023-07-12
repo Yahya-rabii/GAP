@@ -1,17 +1,20 @@
-﻿namespace GAP.Helper
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GAP.Helper
 {
+    [NotMapped]
     public class Desc
     {
         private string nom;
         private int nombrePiece;
         private string desc;
 
-
         public string Nom
         {
             get { return nom; }
             set { nom = value; }
         }
+
         public int NombrePiece
         {
             get { return nombrePiece; }
@@ -24,5 +27,4 @@
             set { desc = value; }
         }
     }
-
 }

@@ -1,11 +1,15 @@
-﻿namespace GAP.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GAP.Models
 {
    public class RapportReception
 {
     private int id;
     private DateTime date;
 
-    public int Id
+        [ForeignKey("ReceptServiceAchat")]
+        public int ReceptServiceAchatId { get; set; } // Foreign key property
+        public int Id
     {
         get { return id; }
         set { id = value; }

@@ -1,36 +1,17 @@
-﻿namespace GAP.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GAP.Models
 {
     public class RapportTestQualite
     {
-        private int id;
-        private bool validiteEtat;
-        private bool validiteNbrPiece;
-        private bool vaiditeFonctionnement;
+        public int Id { get; set; }
+        public bool ValiditeEtat { get; set; }
+        public bool ValiditeNbrPiece { get; set; }
+        public bool ValiditeFonctionnement { get; set; }
 
+        [ForeignKey("RespServiceQualite")]
+        public int RespServiceQualiteId { get; set; } // Foreign key property
 
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public bool ValiditeEtat
-        {
-            get { return validiteEtat; }
-            set { validiteEtat = value; }
-        }
-
-        public bool ValiditeNbrPiece
-        {
-            get { return validiteNbrPiece; }
-            set { validiteNbrPiece = value; }
-        }
-
-        public bool ValiditeFonctionnement
-        {
-            get { return vaiditeFonctionnement; }
-            set { vaiditeFonctionnement = value; }
-        }
+        public RespServiceQualite RespServiceQualite { get; set; } // Navigation property
     }
-
 }

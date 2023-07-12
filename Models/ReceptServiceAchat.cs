@@ -9,6 +9,7 @@ namespace GAP.Models
         {
             private List<RapportReception> historiqueRapportsReceptions;
 
+
             public List<RapportReception> HistoriqueRapportsReceptions
             {
                 get { return historiqueRapportsReceptions; }

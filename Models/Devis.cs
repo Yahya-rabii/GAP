@@ -1,4 +1,6 @@
-﻿namespace GAP.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace GAP.Models
 {
     public class Devis
     {
@@ -9,7 +11,8 @@
         private DateTime dateReception;
         private Fournisseur fournisseur;
         private int nombrePiece;
-
+        [ForeignKey("RespServiceAchat")]
+        public int RespServiceAchatId { get; set; } // Foreign key property
         public int Id
         {
             get { return id; }

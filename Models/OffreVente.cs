@@ -1,4 +1,5 @@
 ﻿using GAP.Helper;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAP.Models
 {
@@ -10,7 +11,8 @@ namespace GAP.Models
         private List<Produit> produit;
         private Desc description;
         private bool validite;
-
+        [ForeignKey("Fournisseur")]
+        public int FournisseurId { get; set; } // Foreign key property
         public int Id
         {
             get { return id; }

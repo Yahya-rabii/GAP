@@ -5,7 +5,6 @@ namespace GAP.Models
     public class RespServiceFinance : User
     {
         private List<Facture> historiqueFactures;
-        private ICollection<Facture> facture;
 
 
         public List<Facture> HistoriqueFactures
@@ -14,11 +13,7 @@ namespace GAP.Models
             set { historiqueFactures = value; }
         }
 
-        public ICollection<Facture> Facture
-        {
-            get { return facture; }
-            set { facture = value; }
-        }
+   
     }
 
 }
