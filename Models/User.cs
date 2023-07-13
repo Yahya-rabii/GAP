@@ -24,20 +24,10 @@ namespace GAP.Models
         [StringLength(255)]
         public string? LastName { get; set; }
 
-        [Required]
-        [StringLength(255)]
-        public string? Tutulaire { get; set; }
+      
 
-        public User(int userID, string? email, string? password, string? firstName, string? lastName, string? tutulaire)
-        {
-            UserID = userID;
-            Email = email;
-            Password = password;
-            FirstName = firstName;
-            LastName = lastName;
-            Tutulaire = tutulaire;
+        public bool IsAdmin { get; set; }
 
-        }
 
     }
 }

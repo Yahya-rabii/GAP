@@ -36,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceFinance = await _context.RespServiceFinance
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceFinanceID == id);
             if (respServiceFinance == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceFinance respServiceFinance)
+        public async Task<IActionResult> Create([Bind("RespServiceFinanceID,Email,Password,FirstName,LastName")] RespServiceFinance respServiceFinance)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceFinance respServiceFinance)
+        public async Task<IActionResult> Edit(int id, [Bind("RespServiceFinanceID,Email,Password,FirstName,LastName")] RespServiceFinance respServiceFinance)
         {
-            if (id != respServiceFinance.UserID)
+            if (id != respServiceFinance.RespServiceFinanceID)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceFinanceExists(respServiceFinance.UserID))
+                    if (!RespServiceFinanceExists(respServiceFinance.RespServiceFinanceID))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceFinance = await _context.RespServiceFinance
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceFinanceID == id);
             if (respServiceFinance == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceFinanceExists(int id)
         {
-          return (_context.RespServiceFinance?.Any(e => e.UserID == id)).GetValueOrDefault();
+          return (_context.RespServiceFinance?.Any(e => e.RespServiceFinanceID == id)).GetValueOrDefault();
         }
     }
 }

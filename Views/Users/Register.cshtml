@@ -4,61 +4,91 @@
     ViewData["Title"] = "Register";
 }
 
+
 <section class="section hero" id="home" aria-label="home">
+
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="login-form-container">
                     <div class="form-container">
                         <form asp-action="Register" method="POST" novalidate="">
-                            <div class="form-group text-center">
+
+                            <div class="form-group  text-center">
                                 <label asp-for="Email">E-Mail Address</label>
-                                <input asp-for="Email" class="form-control rounded-0" style="background-color: transparent; color:white;">
+                                <input id="email" type="email"  name="email" value=""  class="form-control rounded-0"style="background-color: transparent;  color:white;">
                                 <div class="invalid-feedback">
                                     Email is invalid
                                 </div>
                             </div>
+
                             <div class="form-group text-center">
-                                <label asp-for="Password">Password</label>
-                                <input asp-for="Password" type="password" class="form-control rounded-0" style="background-color: transparent;color:white;" data-eye>
-                                <div class="invalid-feedback">Password is required</div>
+                                <label label asp-for="Password">Password </label>
+                                <input id="password" type="password" class="form-control rounded-0"  style="background-color: transparent;color:white;"  name="password"  data-eye>
+                                <div class="invalid-feedback"> Password is required </div>
                             </div>
+
+
+
+
                             <div class="form-group text-center">
-                                <label asp-for="FirstName">First Name</label>
-                                <input asp-for="FirstName" class="form-control rounded-0" style="background-color: transparent; color:white;">
-                                <div class="invalid-feedback">First Name is required</div>
+                                <label label asp-for="FirstName">FirstName </label>
+                                <input asp-for="FirstName" id="FirstName" type="text" class="form-control rounded-0"   style="background-color: transparent; color:white;" name="FirstName" value=" " data-eye>
+                                <div class="invalid-feedback"> FirstName is required </div>
                             </div>
+
+
                             <div class="form-group">
-                                <label asp-for="LastName">Last Name</label>
-                                <input asp-for="LastName" class="form-control rounded-0" style="background-color: transparent; color:white;">
-                                <div class="invalid-feedback">Last Name is required</div>
+                                <label label asp-for="LastName"> LastName </label>
+                                <input asp-for="LastName" id="LastName" type="text" class="form-control rounded-0"  style="background-color: transparent; color:white;" name="LastName" value=" " data-eye>
+                                <div class="invalid-feedback"> LastName is required </div>
                             </div>
+
+
+
+
                             <div class="form-group text-center">
-                                <label asp-for="Tutulaire">Tutulaire</label>
-                                <select asp-for="Tutulaire" class="form-control rounded-0" style="background-color: transparent; color:white;">
-                                    <option value="RespServiceAchat">RespServiceAchat</option>
-                                    <option value="RespServiceFinance">RespServiceFinance</option>
-                                    <option value="RespServiceQualite">RespServiceQualite</option>
-                                    <option value="ReceptServiceAchat">ReceptServiceAchat</option>
-                                </select>
-                                <div class="invalid-feedback">Tutulaire is required</div>
-                            </div>
-                            <div class="form-group text-center">
-                                <button type="submit" class="btn btn-dark rounded-0 glow-on-hover" style="color:white; border: 1px solid white ;background-color: transparent">
+                                <button type="submit" class="btn btn-dark rounded-0 glow-on-hover "
+                                        style="color:white; border: 1px solid white ;background-color: transparent">
                                     Register
                                 </button>
                             </div>
+
+
+
                             <div style="display: flex;">
+
                                 <span style="margin-right: 10px">Already have an account? </span>
-                                <a asp-action="Login" style="color:yellow;">Login</a>
+                                <button asp-action="Login" style="color:yellow;"> Login </button>
                             </div>
+                      
+
+
                         </form>
+
+
                     </div>
                 </div>
             </div>
+
+        </div>
+        <div class="col-md-6">
+            <figure class="hero-banner img-holder">
+            </figure>
         </div>
     </div>
+
+
+
+
+
+
+
 </section>
+
+
+
+
 
 @section Scripts {
     @{

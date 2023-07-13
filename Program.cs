@@ -25,10 +25,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("isrespachat", policy => policy.RequireClaim(ClaimTypes.Role, "respachat"));
-    options.AddPolicy("isrecepachat", policy => policy.RequireClaim(ClaimTypes.Role, "recepachat"));
-    options.AddPolicy("isrespfin", policy => policy.RequireClaim(ClaimTypes.Role, "respfin"));
-    options.AddPolicy("isrespqual", policy => policy.RequireClaim(ClaimTypes.Role, "respqual"));
+    options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+
 });
 
 

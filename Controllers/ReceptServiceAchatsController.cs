@@ -36,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var receptServiceAchat = await _context.ReceptServiceAchat
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.ReceptServiceAchatID == id);
             if (receptServiceAchat == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] ReceptServiceAchat receptServiceAchat)
+        public async Task<IActionResult> Create([Bind("ReceptServiceAchatID,Email,Password,FirstName,LastName")] ReceptServiceAchat receptServiceAchat)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] ReceptServiceAchat receptServiceAchat)
+        public async Task<IActionResult> Edit(int id, [Bind("ReceptServiceAchatID,Email,Password,FirstName,LastName")] ReceptServiceAchat receptServiceAchat)
         {
-            if (id != receptServiceAchat.UserID)
+            if (id != receptServiceAchat.ReceptServiceAchatID)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReceptServiceAchatExists(receptServiceAchat.UserID))
+                    if (!ReceptServiceAchatExists(receptServiceAchat.ReceptServiceAchatID))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var receptServiceAchat = await _context.ReceptServiceAchat
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.ReceptServiceAchatID == id);
             if (receptServiceAchat == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace GAP.Controllers
 
         private bool ReceptServiceAchatExists(int id)
         {
-          return (_context.ReceptServiceAchat?.Any(e => e.UserID == id)).GetValueOrDefault();
+          return (_context.ReceptServiceAchat?.Any(e => e.ReceptServiceAchatID == id)).GetValueOrDefault();
         }
     }
 }

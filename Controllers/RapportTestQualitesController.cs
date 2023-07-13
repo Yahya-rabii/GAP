@@ -48,7 +48,7 @@ namespace GAP.Controllers
         // GET: RapportTestQualites/Create
         public IActionResult Create()
         {
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator");
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace GAP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -82,7 +82,7 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -118,7 +118,7 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 

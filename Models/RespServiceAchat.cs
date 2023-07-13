@@ -4,21 +4,33 @@ using System.ComponentModel;
 
 namespace GAP.Models
 {
-    public class RespServiceAchat : User
+    public class RespServiceAchat 
     {
+
+
+        public int RespServiceAchatID { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Email { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Password { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? FirstName { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? LastName { get; set; }
+
+
         private List<DemandeAchat> demandesAchats;
         private List<Devis> devis;
-        public string Discriminator { get; set; } = nameof(ReceptServiceAchat);
 
-        public RespServiceAchat(int userID, string ?email, string ?password, string? firstName, string? lastName, string? tutulaire)
-                : base(userID, email, password, firstName, lastName, tutulaire)
-
-        {
-
-            DemandesAchats = new List<DemandeAchat>();
-            Devis = new List<Devis>();
-        }
-
+       
         public List<DemandeAchat> DemandesAchats
         {
             get { return demandesAchats; }

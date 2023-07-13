@@ -36,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceQualite = await _context.RespServiceQualite
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceQualiteID == id);
             if (respServiceQualite == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceQualite respServiceQualite)
+        public async Task<IActionResult> Create([Bind("RespServiceQualiteID,Email,Password,FirstName,LastName")] RespServiceQualite respServiceQualite)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceQualite respServiceQualite)
+        public async Task<IActionResult> Edit(int id, [Bind("RespServiceQualiteID,Email,Password,FirstName,LastName")] RespServiceQualite respServiceQualite)
         {
-            if (id != respServiceQualite.UserID)
+            if (id != respServiceQualite.RespServiceQualiteID)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceQualiteExists(respServiceQualite.UserID))
+                    if (!RespServiceQualiteExists(respServiceQualite.RespServiceQualiteID))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceQualite = await _context.RespServiceQualite
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceQualiteID == id);
             if (respServiceQualite == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceQualiteExists(int id)
         {
-          return (_context.RespServiceQualite?.Any(e => e.UserID == id)).GetValueOrDefault();
+          return (_context.RespServiceQualite?.Any(e => e.RespServiceQualiteID == id)).GetValueOrDefault();
         }
     }
 }

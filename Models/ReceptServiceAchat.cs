@@ -5,18 +5,30 @@ namespace GAP.Models
 {
    
 
-        public class ReceptServiceAchat : User
+        public class ReceptServiceAchat 
         {
-            private List<RapportReception> historiqueRapportsReceptions;
-        public string Discriminator { get; set; } = nameof(ReceptServiceAchat);
+
+        public int ReceptServiceAchatID { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Email { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Password { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? FirstName { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? LastName { get; set; }
+
+        private List<RapportReception> historiqueRapportsReceptions;
 
 
-       
-        public ReceptServiceAchat(int userID, string? email, string? password, string? firstName, string? lastName, string? tutulaire)
-        : base(userID, email, password, firstName, lastName, tutulaire)
-        {
-            historiqueRapportsReceptions = new List<RapportReception>();
-        }
         
         public List<RapportReception> HistoriqueRapportsReceptions
             {

@@ -1,21 +1,32 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace GAP.Models
 {
-    public class RespServiceFinance : User
+    public class RespServiceFinance 
     {
+        public int RespServiceFinanceID { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Email { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Password { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? FirstName { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? LastName { get; set; }
+
         private List<Facture> historiqueFactures;
 
-        public string Discriminator { get; set; } = nameof(RespServiceFinance);
 
-
-        public RespServiceFinance(int userID, string? email, string? password, string? firstName, string? lastName, string? tutulaire)
-               : base(userID, email, password, firstName, lastName, tutulaire)
-
-        {
-
-            historiqueFactures = new List<Facture>() ;
-        }
+       
 
         public List<Facture> HistoriqueFactures
         {

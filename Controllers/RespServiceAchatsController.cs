@@ -36,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceAchat = await _context.RespServiceAchat
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceAchatID == id);
             if (respServiceAchat == null)
             {
                 return NotFound();
@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceAchat respServiceAchat)
+        public async Task<IActionResult> Create([Bind("RespServiceAchatID,Email,Password,FirstName,LastName")] RespServiceAchat respServiceAchat)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,Tutulaire")] RespServiceAchat respServiceAchat)
+        public async Task<IActionResult> Edit(int id, [Bind("RespServiceAchatID,Email,Password,FirstName,LastName")] RespServiceAchat respServiceAchat)
         {
-            if (id != respServiceAchat.UserID)
+            if (id != respServiceAchat.RespServiceAchatID)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceAchatExists(respServiceAchat.UserID))
+                    if (!RespServiceAchatExists(respServiceAchat.RespServiceAchatID))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceAchat = await _context.RespServiceAchat
-                .FirstOrDefaultAsync(m => m.UserID == id);
+                .FirstOrDefaultAsync(m => m.RespServiceAchatID == id);
             if (respServiceAchat == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceAchatExists(int id)
         {
-          return (_context.RespServiceAchat?.Any(e => e.UserID == id)).GetValueOrDefault();
+          return (_context.RespServiceAchat?.Any(e => e.RespServiceAchatID == id)).GetValueOrDefault();
         }
     }
 }
