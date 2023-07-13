@@ -8,13 +8,10 @@
 
 
         public RespServiceQualite(int userID, string? email, string? password, string? firstName, string? lastName, string? tutulaire)
+                : base(userID, email, password, firstName, lastName, tutulaire)
+
         {
-            UserID = userID;
-            Email = email;
-            Password = password;
-            FirstName = firstName;
-            LastName = lastName;
-            Tutulaire = tutulaire;
+
             historiqueRapportQualite = new List<RapportTestQualite>();
 
         }

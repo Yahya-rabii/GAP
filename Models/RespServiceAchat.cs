@@ -11,13 +11,10 @@ namespace GAP.Models
         public string Discriminator { get; set; } = nameof(ReceptServiceAchat);
 
         public RespServiceAchat(int userID, string ?email, string ?password, string? firstName, string? lastName, string? tutulaire)
+                : base(userID, email, password, firstName, lastName, tutulaire)
+
         {
-            UserID = userID;
-            Email = email;
-            Password = password;
-            FirstName = firstName;
-            LastName = lastName;
-            Tutulaire = tutulaire;
+
             DemandesAchats = new List<DemandeAchat>();
             Devis = new List<Devis>();
         }
