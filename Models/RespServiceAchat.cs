@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
 namespace GAP.Models
@@ -7,8 +8,19 @@ namespace GAP.Models
     {
         private List<DemandeAchat> demandesAchats;
         private List<Devis> devis;
+        public string Discriminator { get; set; } = nameof(ReceptServiceAchat);
 
-       
+        public RespServiceAchat(int userID, string ?email, string ?password, string? firstName, string? lastName, string? tutulaire)
+        {
+            UserID = userID;
+            Email = email;
+            Password = password;
+            FirstName = firstName;
+            LastName = lastName;
+            Tutulaire = tutulaire;
+            DemandesAchats = new List<DemandeAchat>();
+            Devis = new List<Devis>();
+        }
 
         public List<DemandeAchat> DemandesAchats
         {
@@ -22,5 +34,4 @@ namespace GAP.Models
             set { devis = value; }
         }
     }
-
 }

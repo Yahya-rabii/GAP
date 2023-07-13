@@ -22,9 +22,8 @@ namespace GAP.Controllers
         // GET: OffreVentes
         public async Task<IActionResult> Index()
         {
-              return _context.OffreVente != null ? 
-                          View(await _context.OffreVente.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.OffreVente'  is null.");
+            var gAPContext = _context.OffreVente.Include(o => o.Provider);
+            return View(await gAPContext.ToListAsync());
         }
 
         // GET: OffreVentes/Details/5
@@ -36,6 +35,7 @@ namespace GAP.Controllers
             }
 
             var offreVente = await _context.OffreVente
+                .Include(o => o.Provider)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (offreVente == null)
             {
@@ -48,6 +48,7 @@ namespace GAP.Controllers
         // GET: OffreVentes/Create
         public IActionResult Create()
         {
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email");
             return View();
         }
 
@@ -56,7 +57,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PrixTTL,Validite")] OffreVente offreVente)
+        public async Task<IActionResult> Create([Bind("FournisseurId,Id,PrixTTL,Validite")] OffreVente offreVente)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +65,7 @@ namespace GAP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -80,6 +82,7 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -88,7 +91,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PrixTTL,Validite")] OffreVente offreVente)
+        public async Task<IActionResult> Edit(int id, [Bind("FournisseurId,Id,PrixTTL,Validite")] OffreVente offreVente)
         {
             if (id != offreVente.Id)
             {
@@ -115,6 +118,7 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -127,6 +131,7 @@ namespace GAP.Controllers
             }
 
             var offreVente = await _context.OffreVente
+                .Include(o => o.Provider)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (offreVente == null)
             {

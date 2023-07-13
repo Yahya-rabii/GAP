@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date")] RapportReception rapportReception)
+        public async Task<IActionResult> Create([Bind("ReceptServiceAchatId,Id,Date")] RapportReception rapportReception)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date")] RapportReception rapportReception)
+        public async Task<IActionResult> Edit(int id, [Bind("ReceptServiceAchatId,Id,Date")] RapportReception rapportReception)
         {
             if (id != rapportReception.Id)
             {

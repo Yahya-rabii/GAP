@@ -12,6 +12,11 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FournisseurId" class="control-label"></label>
+                <select asp-for="FournisseurId" class="form-control" asp-items="ViewBag.FournisseurId"></select>
+                <span asp-validation-for="FournisseurId" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="PrixTTL" class="control-label"></label>

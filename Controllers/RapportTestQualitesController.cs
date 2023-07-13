@@ -22,9 +22,8 @@ namespace GAP.Controllers
         // GET: RapportTestQualites
         public async Task<IActionResult> Index()
         {
-              return _context.RapportTestQualite != null ? 
-                          View(await _context.RapportTestQualite.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.RapportTestQualite'  is null.");
+            var gAPContext = _context.RapportTestQualite.Include(r => r.RespServiceQualite);
+            return View(await gAPContext.ToListAsync());
         }
 
         // GET: RapportTestQualites/Details/5
@@ -36,6 +35,7 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
+                .Include(r => r.RespServiceQualite)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rapportTestQualite == null)
             {
@@ -48,6 +48,7 @@ namespace GAP.Controllers
         // GET: RapportTestQualites/Create
         public IActionResult Create()
         {
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator");
             return View();
         }
 
@@ -56,7 +57,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement")] RapportTestQualite rapportTestQualite)
+        public async Task<IActionResult> Create([Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId")] RapportTestQualite rapportTestQualite)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +65,7 @@ namespace GAP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -80,6 +82,7 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -88,7 +91,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement")] RapportTestQualite rapportTestQualite)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId")] RapportTestQualite rapportTestQualite)
         {
             if (id != rapportTestQualite.Id)
             {
@@ -115,6 +118,7 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "UserID", "Discriminator", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -127,6 +131,7 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
+                .Include(r => r.RespServiceQualite)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rapportTestQualite == null)
             {

@@ -17,6 +17,8 @@ namespace GAP.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Nom = table.Column<int>(type: "int", nullable: false),
                     NombreTransaction = table.Column<int>(type: "int", nullable: false)
                 },
@@ -191,19 +193,13 @@ namespace GAP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProduitId = table.Column<int>(type: "int", nullable: false),
                     Prix = table.Column<double>(type: "float", nullable: false),
-                    BeneficiaireId = table.Column<int>(type: "int", nullable: false),
+                    FournisseurEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Validite = table.Column<bool>(type: "bit", nullable: false),
                     RespServiceFinanceId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Facture", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Facture_Fournisseur_BeneficiaireId",
-                        column: x => x.BeneficiaireId,
-                        principalTable: "Fournisseur",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Facture_Produit_ProduitId",
                         column: x => x.ProduitId,
@@ -237,11 +233,6 @@ namespace GAP.Migrations
                 name: "IX_Devis_RespServiceAchatId",
                 table: "Devis",
                 column: "RespServiceAchatId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Facture_BeneficiaireId",
-                table: "Facture",
-                column: "BeneficiaireId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Facture_ProduitId",

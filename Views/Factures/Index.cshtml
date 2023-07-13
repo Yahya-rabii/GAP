@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Prix)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.FournisseurEmail)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Validite)
             </th>
             <th></th>
@@ -26,6 +29,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Prix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FournisseurEmail)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Validite)

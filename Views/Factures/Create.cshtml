@@ -17,10 +17,19 @@
                 <input asp-for="Prix" class="form-control" />
                 <span asp-validation-for="Prix" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="FournisseurEmail" class="control-label"></label>
+                <input asp-for="FournisseurEmail" class="form-control" />
+                <span asp-validation-for="FournisseurEmail" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Validite" /> @Html.DisplayNameFor(model => model.Validite)
                 </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="RespServiceFinanceId" class="control-label"></label>
+                <select asp-for="RespServiceFinanceId" class ="form-control" asp-items="ViewBag.RespServiceFinanceId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

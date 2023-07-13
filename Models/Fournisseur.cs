@@ -1,11 +1,20 @@
-﻿namespace GAP.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GAP.Models
 {
     public class Fournisseur
     {
         private int id;
         private int nom;
+        [Required]
+        [StringLength(255)]
+        public string? Email { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Password { get; set; }
         private int nombreTransaction;
-        private ICollection<OffreVente> offreVente;
+        private List<OffreVente> offreVente;
 
         public int Id
         {
@@ -25,33 +34,13 @@
             set { nombreTransaction = value; }
         }
 
-        public ICollection<OffreVente> OffreVente
+        public List<OffreVente> OffreVente
         {
             get { return offreVente; }
             set { offreVente = value; }
         }
 
-        public Fournisseur()
-        {
-            offreVente = new HashSet<OffreVente>();
-        }
-
-        public void AddOffreVente(OffreVente newOffreVente)
-        {
-            if (newOffreVente != null && !offreVente.Contains(newOffreVente))
-                offreVente.Add(newOffreVente);
-        }
-
-        public void RemoveOffreVente(OffreVente oldOffreVente)
-        {
-            if (oldOffreVente != null && offreVente.Contains(oldOffreVente))
-                offreVente.Remove(oldOffreVente);
-        }
-
-        public void RemoveAllOffreVente()
-        {
-            offreVente.Clear();
-        }
+      
     }
 
 }

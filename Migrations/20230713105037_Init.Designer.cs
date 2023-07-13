@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230712224034_Init")]
+    [Migration("20230713105037_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -97,8 +97,8 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BeneficiaireId")
-                        .HasColumnType("int");
+                    b.Property<string>("FournisseurEmail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Prix")
                         .HasColumnType("float");
@@ -113,8 +113,6 @@ namespace GAP.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BeneficiaireId");
 
                     b.HasIndex("ProduitId");
 
@@ -131,11 +129,21 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
                     b.Property<int>("Nom")
                         .HasColumnType("int");
 
                     b.Property<int>("NombreTransaction")
                         .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -347,29 +355,19 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.Facture", b =>
                 {
-                    b.HasOne("GAP.Models.Fournisseur", "Beneficiaire")
-                        .WithMany()
-                        .HasForeignKey("BeneficiaireId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GAP.Models.Produit", "Produit")
                         .WithMany()
                         .HasForeignKey("ProduitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GAP.Models.RespServiceFinance", "RespServiceFinance")
+                    b.HasOne("GAP.Models.RespServiceFinance", null)
                         .WithMany("HistoriqueFactures")
                         .HasForeignKey("RespServiceFinanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Beneficiaire");
-
                     b.Navigation("Produit");
-
-                    b.Navigation("RespServiceFinance");
                 });
 
             modelBuilder.Entity("GAP.Models.OffreVente", b =>

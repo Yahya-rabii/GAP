@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.ValiditeFonctionnement)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RespServiceQualite)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ValiditeFonctionnement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RespServiceQualite.Discriminator)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
