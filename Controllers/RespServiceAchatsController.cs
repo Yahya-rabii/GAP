@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using GAP.Helper;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
 
 namespace GAP.Controllers
 {
-    [Authorize]
-    [Authorize(Roles = "Admin")]
     public class RespServiceAchatsController : Controller
     {
         private readonly GAPContext _context;
@@ -41,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceAchat = await _context.RespServiceAchat
-                .FirstOrDefaultAsync(m => m.RespServiceAchatID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceAchat == null)
             {
                 return NotFound();
@@ -61,37 +56,11 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RespServiceAchatID,Email,Password,FirstName,LastName")] RespServiceAchat respServiceAchat)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceAchat respServiceAchat)
         {
             if (ModelState.IsValid)
             {
-
-                bool userExists = await _context.HistoryU.AnyAsync(r => r.Email == respServiceAchat.Email);
-                if (userExists)
-                {
-                    ModelState.AddModelError("Email", "respServiceAchat with this email already exists.");
-                    return View(respServiceAchat);
-                }
-
-                RespServiceAchat respServiceAchat1 = new(
-
-               respServiceAchat.RespServiceAchatID,
-               respServiceAchat.Email,
-               respServiceAchat.Password,
-               respServiceAchat.FirstName,
-               respServiceAchat.LastName
-
-               );
-
-                HistoryU historyU = new(
-                   respServiceAchat.RespServiceAchatID,
-                   respServiceAchat.Email,
-                   "respServiceAchat"
-
-                   );
-
-                _context.HistoryU.Add(historyU);
-                _context.Add(respServiceAchat1);
+                _context.Add(respServiceAchat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -119,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RespServiceAchatID,Email,Password,FirstName,LastName")] RespServiceAchat respServiceAchat)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceAchat respServiceAchat)
         {
-            if (id != respServiceAchat.RespServiceAchatID)
+            if (id != respServiceAchat.UserID)
             {
                 return NotFound();
             }
@@ -135,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceAchatExists(respServiceAchat.RespServiceAchatID))
+                    if (!RespServiceAchatExists(respServiceAchat.UserID))
                     {
                         return NotFound();
                     }
@@ -158,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceAchat = await _context.RespServiceAchat
-                .FirstOrDefaultAsync(m => m.RespServiceAchatID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceAchat == null)
             {
                 return NotFound();
@@ -188,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceAchatExists(int id)
         {
-          return (_context.RespServiceAchat?.Any(e => e.RespServiceAchatID == id)).GetValueOrDefault();
+          return (_context.RespServiceAchat?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
     }
 }

@@ -4,27 +4,11 @@ using System.ComponentModel;
 
 namespace GAP.Models
 {
-    public class RespServiceAchat 
+    public class RespServiceAchat : User
     {
 
 
-        public int RespServiceAchatID { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? Email { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? Password { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? FirstName { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? LastName { get; set; }
+      
 
 
         private List<DemandeAchat> demandesAchats;
@@ -32,24 +16,16 @@ namespace GAP.Models
 
 
 
-        public RespServiceAchat()
+        public RespServiceAchat() : base()
         {
-            RespServiceAchatID = 0;
-            Email = string.Empty;
-            Password = string.Empty;
-            FirstName = string.Empty;
-            LastName = string.Empty;
+           
             demandesAchats = new List<DemandeAchat>();
             devis = new List<Devis>(); 
         }
 
-        public RespServiceAchat(int receptServiceAchatID, string? email, string? password, string? fn, string? ln)
+        public RespServiceAchat(string? email, string? password, string? fn, string? ln) : base(email, password, fn, ln)
         {
-            RespServiceAchatID = receptServiceAchatID;
-            Email = email;
-            Password = password;
-            FirstName = fn;
-            LastName = ln;
+          
             demandesAchats = new List<DemandeAchat>();
             devis = new List<Devis>();
         }

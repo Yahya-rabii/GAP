@@ -5,46 +5,22 @@ namespace GAP.Models
 {
    
 
-        public class ReceptServiceAchat 
-        {
+        public class ReceptServiceAchat : User
+    {
 
-        public int ReceptServiceAchatID { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? Email { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? Password { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? FirstName { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        public string? LastName { get; set; }
+       
 
         private List<RapportReception> historiqueRapportsReceptions;
 
-        public ReceptServiceAchat()
+        public ReceptServiceAchat() :base() 
         {
-            ReceptServiceAchatID = 0;
-            Email = string.Empty;
-            Password = string.Empty;
-            FirstName = string.Empty;
-            LastName = string.Empty;
+            
             historiqueRapportsReceptions = new List<RapportReception>();
         } 
         
-        public ReceptServiceAchat(int receptServiceAchatID,string? email , string? password , string? fn , string? ln)
+        public ReceptServiceAchat(string? email , string? password , string? fn , string? ln) : base(email, password, fn, ln)
         {
-            ReceptServiceAchatID = receptServiceAchatID;
-            Email = email;
-            Password = password;
-            FirstName = fn;
-            LastName = ln;
+           
             historiqueRapportsReceptions = new List<RapportReception>();
         }
         

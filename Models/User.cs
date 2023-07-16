@@ -23,26 +23,31 @@ namespace GAP.Models
         [StringLength(255)]
         public string? LastName { get; set; }
 
-        [Required]
-        [DisplayName("User Type")]
-        public UserType UserType { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsAdmin { get; set; } = false;
+
+
+        public User()
+        {
+
+            Email = string.Empty;
+            Password = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+
+        }   
+        
+        public User(string? email, string? password, string? fn, string? ln)
+        {
+
+            Email = email;
+            Password = password;
+            FirstName = fn;
+            LastName = ln;
+
+        }
+
     }
 
-    public enum UserType
-    {
-        [Display(Name = "Admin")]
-        Admin,
-
-        [Display(Name = "ReceptServiceAchat")]
-        RespServiceAchat,
-
-        [Display(Name = "ReceptServiceAchat")]
-        ReceptServiceAchat,
-
-        [Display(Name = "RespServiceFinance")]
-        RespServiceFinance,
-
-        [Display(Name = "RespServiceQualite")]
-        RespServiceQualite
-    }
 }

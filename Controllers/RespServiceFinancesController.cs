@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using GAP.Helper;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
+
 namespace GAP.Controllers
 {
-
-    [Authorize]
-    [Authorize(Roles = "Admin")]
     public class RespServiceFinancesController : Controller
     {
         private readonly GAPContext _context;
@@ -41,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceFinance = await _context.RespServiceFinance
-                .FirstOrDefaultAsync(m => m.RespServiceFinanceID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceFinance == null)
             {
                 return NotFound();
@@ -61,39 +56,11 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RespServiceFinanceID,Email,Password,FirstName,LastName")] RespServiceFinance respServiceFinance)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceFinance respServiceFinance)
         {
             if (ModelState.IsValid)
             {
-
-                bool userExists = await _context.HistoryU.AnyAsync(r => r.Email == respServiceFinance.Email);
-                if (userExists)
-                {
-                    ModelState.AddModelError("Email", "respServiceFinance with this email already exists.");
-                    return View(respServiceFinance);
-                }
-
-
-
-                RespServiceFinance respServiceFinance1 = new(
-
-             respServiceFinance.RespServiceFinanceID,
-             respServiceFinance.Email,
-             respServiceFinance.Password,
-             respServiceFinance.FirstName,
-             respServiceFinance.LastName
-
-             );
-                HistoryU historyU = new(
-                 respServiceFinance.RespServiceFinanceID,
-                 respServiceFinance.Email,
-                 "respServiceFinance"
-
-                 );
-
-                _context.HistoryU.Add(historyU);
-
-                _context.Add(respServiceFinance1);
+                _context.Add(respServiceFinance);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -121,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RespServiceFinanceID,Email,Password,FirstName,LastName")] RespServiceFinance respServiceFinance)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceFinance respServiceFinance)
         {
-            if (id != respServiceFinance.RespServiceFinanceID)
+            if (id != respServiceFinance.UserID)
             {
                 return NotFound();
             }
@@ -137,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceFinanceExists(respServiceFinance.RespServiceFinanceID))
+                    if (!RespServiceFinanceExists(respServiceFinance.UserID))
                     {
                         return NotFound();
                     }
@@ -160,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceFinance = await _context.RespServiceFinance
-                .FirstOrDefaultAsync(m => m.RespServiceFinanceID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceFinance == null)
             {
                 return NotFound();
@@ -190,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceFinanceExists(int id)
         {
-          return (_context.RespServiceFinance?.Any(e => e.RespServiceFinanceID == id)).GetValueOrDefault();
+          return (_context.RespServiceFinance?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
     }
 }

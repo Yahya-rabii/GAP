@@ -7,14 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using GAP.Helper;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
 
 namespace GAP.Controllers
 {
-    [Authorize]
-    [Authorize(Roles = "Admin")]
     public class RespServiceQualitesController : Controller
     {
         private readonly GAPContext _context;
@@ -41,7 +36,7 @@ namespace GAP.Controllers
             }
 
             var respServiceQualite = await _context.RespServiceQualite
-                .FirstOrDefaultAsync(m => m.RespServiceQualiteID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceQualite == null)
             {
                 return NotFound();
@@ -61,40 +56,11 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RespServiceQualiteID,Email,Password,FirstName,LastName")] RespServiceQualite respServiceQualite)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceQualite respServiceQualite)
         {
             if (ModelState.IsValid)
             {
-
-
-                bool userExists = await _context.HistoryU.AnyAsync(r => r.Email == respServiceQualite.Email);
-                if (userExists)
-                {
-                    ModelState.AddModelError("Email", "respServiceQualite with this email already exists.");
-                    return View(respServiceQualite);
-                }
-
-
-                RespServiceQualite respServiceQualite1 = new(
-
-        respServiceQualite.RespServiceQualiteID,
-        respServiceQualite.Email,
-        respServiceQualite.Password,
-        respServiceQualite.FirstName,
-        respServiceQualite.LastName
-
-        );
-
-                HistoryU historyU = new(
-                respServiceQualite.RespServiceQualiteID,
-                respServiceQualite.Email,
-                "respServiceQualite"
-
-                );
-
-                _context.HistoryU.Add(historyU);
-
-                _context.Add(respServiceQualite1);
+                _context.Add(respServiceQualite);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -122,9 +88,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RespServiceQualiteID,Email,Password,FirstName,LastName")] RespServiceQualite respServiceQualite)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceQualite respServiceQualite)
         {
-            if (id != respServiceQualite.RespServiceQualiteID)
+            if (id != respServiceQualite.UserID)
             {
                 return NotFound();
             }
@@ -138,7 +104,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RespServiceQualiteExists(respServiceQualite.RespServiceQualiteID))
+                    if (!RespServiceQualiteExists(respServiceQualite.UserID))
                     {
                         return NotFound();
                     }
@@ -161,7 +127,7 @@ namespace GAP.Controllers
             }
 
             var respServiceQualite = await _context.RespServiceQualite
-                .FirstOrDefaultAsync(m => m.RespServiceQualiteID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (respServiceQualite == null)
             {
                 return NotFound();
@@ -191,7 +157,7 @@ namespace GAP.Controllers
 
         private bool RespServiceQualiteExists(int id)
         {
-          return (_context.RespServiceQualite?.Any(e => e.RespServiceQualiteID == id)).GetValueOrDefault();
+          return (_context.RespServiceQualite?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
     }
 }

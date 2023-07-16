@@ -10,7 +10,6 @@ using GAP.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
-using GAP.Helper;
 
 namespace GAP.Controllers
 {
@@ -60,7 +59,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,UserType")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +91,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,UserType")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
         {
             if (id != user.UserID)
             {
@@ -164,9 +163,12 @@ namespace GAP.Controllers
           return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
 
-        /////////////////////////////////////////////////////////////////////
 
-    
+
+
+
+        /*---------------------------------------------------------------*/
+
 
         // GET: User/Login
         public ActionResult Login()
@@ -174,174 +176,45 @@ namespace GAP.Controllers
             return View();
         }
 
+        // POST: User/Login
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Login(string email, string password)
         {
-            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
-                var userType = GetUserTitulairFromTable(email);
+                return RedirectToAction("Login", "Users");
+            }
 
-                if (!string.IsNullOrEmpty(userType))
+            var registeredUser = await _context.User.FirstOrDefaultAsync(u => u.Email == email);
+
+            if (registeredUser != null && BCrypt.Net.BCrypt.Verify(password, registeredUser.Password))
+            {
+                var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
+            };
+
+                if (registeredUser.IsAdmin)
                 {
-                    var user = GetUserFromTable(userType, email, password);
-
-                    if (user != null)
-                    {
-                        var claims = new Claim[]
-                        {
-                    new Claim(ClaimTypes.NameIdentifier, GetUserId(user).ToString()),
-                    new Claim(ClaimTypes.Role, userType)
-                        };
-
-                        var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-                        return GetRedirectActionForUserType(userType);
-                    }
+                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                    return await SignInAndRedirectToAction(claims, "Index", "Home");
                 }
-
+               return RedirectToAction(nameof(Login));
+            }
+            else
+            {
                 ModelState.AddModelError("", "Invalid email or password.");
-            }
-
-            return RedirectToAction("Login", "Users");
-        }
-
-        private string GetUserTitulairFromTable(string email)
-        {
-            if (_context.Admin.Any(u => u.Email == email))
-                return "Admin";
-            if (_context.RespServiceAchat.Any(u => u.Email == email))
-                return "RespServiceAchat";
-            if (_context.ReceptServiceAchat.Any(u => u.Email == email))
-                return "ReceptServiceAchat";
-            if (_context.RespServiceFinance.Any(u => u.Email == email))
-                return "RespServiceFinance";
-            if (_context.RespServiceQualite.Any(u => u.Email == email))
-                return "RespServiceQualite";
-
-            return null;
-        }
-
-        private object GetUserFromTable(string userType, string email, string password)
-        {
-            object user = null;
-
-            switch (userType)
-            {
-                case "Admin":
-                    user = GetAdminFromTable(email);
-                    break;
-                case "RespServiceAchat":
-                    user = GetRespServiceAchatFromTable(email);
-                    break;
-                case "ReceptServiceAchat":
-                    user = GetReceptServiceAchatFromTable(email);
-                    break;
-                case "RespServiceFinance":
-                    user = GetRespServiceFinanceFromTable(email);
-                    break;
-                case "RespServiceQualite":
-                    user = GetRespServiceQualiteFromTable(email);
-                    break;
-            }
-
-            if (user != null && VerifyUserPassword(user, userType, password))
-                return user;
-
-            return null;
-        }
-
-        private bool VerifyUserPassword(object user, string userType, string password)
-        {
-            switch (userType)
-            {
-                case "Admin":
-                    var admin = (Admin)user;
-                    return BCrypt.Net.BCrypt.Verify(password, admin.Password);
-
-                case "RespServiceAchat":
-                    var respServiceAchat = (RespServiceAchat)user;
-                    return BCrypt.Net.BCrypt.Verify(password, respServiceAchat.Password);
-
-                case "ReceptServiceAchat":
-                    var receptServiceAchat = (ReceptServiceAchat)user;
-                    return BCrypt.Net.BCrypt.Verify(password, receptServiceAchat.Password);
-
-                case "RespServiceFinance":
-                    var respServiceFinance = (RespServiceFinance)user;
-                    return BCrypt.Net.BCrypt.Verify(password, respServiceFinance.Password);
-
-                case "RespServiceQualite":
-                    var respServiceQualite = (RespServiceQualite)user;
-                    return BCrypt.Net.BCrypt.Verify(password, respServiceQualite.Password);
-
-                default:
-                    return false;
+                return RedirectToAction("Login", "Users");
             }
         }
 
-
-        private int GetUserId(object user)
+        private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)
         {
-            switch (user)
-            {
-                case Admin admin:
-                    return admin.AdminID;
-                case RespServiceAchat respServiceAchat:
-                    return respServiceAchat.RespServiceAchatID;
-                case ReceptServiceAchat receptServiceAchat:
-                    return receptServiceAchat.ReceptServiceAchatID;
-                case RespServiceFinance respServiceFinance:
-                    return respServiceFinance.RespServiceFinanceID;
-                case RespServiceQualite respServiceQualite:
-                    return respServiceQualite.RespServiceQualiteID;
-                default:
-                    return 0;
-            }
-        }
-
-        private Admin GetAdminFromTable(string email)
-        {
-            return _context.Admin.FirstOrDefault(u => u.Email == email);
-        }
-
-        private RespServiceAchat GetRespServiceAchatFromTable(string email)
-        {
-            return _context.RespServiceAchat.FirstOrDefault(u => u.Email == email);
-        }
-
-        private ReceptServiceAchat GetReceptServiceAchatFromTable(string email)
-        {
-            return _context.ReceptServiceAchat.FirstOrDefault(u => u.Email == email);
-        }
-
-        private RespServiceFinance GetRespServiceFinanceFromTable(string email)
-        {
-            return _context.RespServiceFinance.FirstOrDefault(u => u.Email == email);
-        }
-
-        private RespServiceQualite GetRespServiceQualiteFromTable(string email)
-        {
-            return _context.RespServiceQualite.FirstOrDefault(u => u.Email == email);
-        }
-
-        private IActionResult GetRedirectActionForUserType(string userType)
-        {
-            switch (userType)
-            {
-                case "Admin":
-                    return RedirectToAction("Index", "Home");
-                case "RespServiceAchat":
-                    return RedirectToAction("Index", "DemandeAchats");
-                case "ReceptServiceAchat":
-                    return RedirectToAction("Index", "RapportReceptions");
-                case "RespServiceFinance":
-                    return RedirectToAction("Index", "Factures");
-                case "RespServiceQualite":
-                    return RedirectToAction("Index", "RapportTestQualites");
-                default:
-                    return RedirectToAction("Login", "Users");
-            }
+            var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            return RedirectToAction(actionName, controllerName);
         }
 
 
@@ -370,6 +243,14 @@ namespace GAP.Controllers
             return RedirectToAction("Login", "Users");
 
         }
+
+
+
+        /////////////////////////////////////////////////////////////////////
+
+
+
+
 
     }
 }

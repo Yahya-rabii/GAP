@@ -12,23 +12,6 @@ namespace GAP.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Admin",
-                columns: table => new
-                {
-                    AdminID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Admin", x => x.AdminID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Fournisseur",
                 columns: table => new
                 {
@@ -60,70 +43,6 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReceptServiceAchat",
-                columns: table => new
-                {
-                    ReceptServiceAchatID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReceptServiceAchat", x => x.ReceptServiceAchatID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RespServiceAchat",
-                columns: table => new
-                {
-                    RespServiceAchatID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RespServiceAchat", x => x.RespServiceAchatID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RespServiceFinance",
-                columns: table => new
-                {
-                    RespServiceFinanceID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RespServiceFinance", x => x.RespServiceFinanceID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RespServiceQualite",
-                columns: table => new
-                {
-                    RespServiceQualiteID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RespServiceQualite", x => x.RespServiceQualiteID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -133,7 +52,8 @@ namespace GAP.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    UserType = table.Column<int>(type: "int", nullable: false)
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -162,6 +82,26 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DemandeAchat",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<int>(type: "int", nullable: false),
+                    Budget = table.Column<double>(type: "float", nullable: false),
+                    RespServiceAchatUserID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DemandeAchat", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DemandeAchat_User_RespServiceAchatUserID",
+                        column: x => x.RespServiceAchatUserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RapportReception",
                 columns: table => new
                 {
@@ -174,31 +114,11 @@ namespace GAP.Migrations
                 {
                     table.PrimaryKey("PK_RapportReception", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RapportReception_ReceptServiceAchat_ReceptServiceAchatId",
+                        name: "FK_RapportReception_User_ReceptServiceAchatId",
                         column: x => x.ReceptServiceAchatId,
-                        principalTable: "ReceptServiceAchat",
-                        principalColumn: "ReceptServiceAchatID",
+                        principalTable: "User",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DemandeAchat",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<int>(type: "int", nullable: false),
-                    Budget = table.Column<double>(type: "float", nullable: false),
-                    RespServiceAchatID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DemandeAchat", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DemandeAchat_RespServiceAchat_RespServiceAchatID",
-                        column: x => x.RespServiceAchatID,
-                        principalTable: "RespServiceAchat",
-                        principalColumn: "RespServiceAchatID");
                 });
 
             migrationBuilder.CreateTable(
@@ -216,10 +136,10 @@ namespace GAP.Migrations
                 {
                     table.PrimaryKey("PK_RapportTestQualite", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RapportTestQualite_RespServiceQualite_RespServiceQualiteId",
+                        name: "FK_RapportTestQualite_User_RespServiceQualiteId",
                         column: x => x.RespServiceQualiteId,
-                        principalTable: "RespServiceQualite",
-                        principalColumn: "RespServiceQualiteID",
+                        principalTable: "User",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -273,10 +193,10 @@ namespace GAP.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Devis_RespServiceAchat_RespServiceAchatId",
+                        name: "FK_Devis_User_RespServiceAchatId",
                         column: x => x.RespServiceAchatId,
-                        principalTable: "RespServiceAchat",
-                        principalColumn: "RespServiceAchatID",
+                        principalTable: "User",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -302,17 +222,17 @@ namespace GAP.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Facture_RespServiceFinance_RespServiceFinanceId",
+                        name: "FK_Facture_User_RespServiceFinanceId",
                         column: x => x.RespServiceFinanceId,
-                        principalTable: "RespServiceFinance",
-                        principalColumn: "RespServiceFinanceID",
+                        principalTable: "User",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DemandeAchat_RespServiceAchatID",
+                name: "IX_DemandeAchat_RespServiceAchatUserID",
                 table: "DemandeAchat",
-                column: "RespServiceAchatID");
+                column: "RespServiceAchatUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devis_FournisseurID",
@@ -364,9 +284,6 @@ namespace GAP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Admin");
-
-            migrationBuilder.DropTable(
                 name: "DemandeAchat");
 
             migrationBuilder.DropTable(
@@ -385,22 +302,10 @@ namespace GAP.Migrations
                 name: "RapportTestQualite");
 
             migrationBuilder.DropTable(
-                name: "User");
-
-            migrationBuilder.DropTable(
-                name: "RespServiceAchat");
-
-            migrationBuilder.DropTable(
                 name: "Produit");
 
             migrationBuilder.DropTable(
-                name: "RespServiceFinance");
-
-            migrationBuilder.DropTable(
-                name: "ReceptServiceAchat");
-
-            migrationBuilder.DropTable(
-                name: "RespServiceQualite");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "OffreVente");
