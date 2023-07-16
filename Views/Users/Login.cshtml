@@ -33,10 +33,25 @@
                                 </button>
                             </div>
 
-                            <div style="display: flex;">
 
-                                <span style="margin-right: 10px">Don't have an account? </span>
-                                <button style="color:yellow;" asp-action="Register"> Register </button>
+                            <div class="form-group">
+                                <label asp-for="UserType">User Type</label>
+                                <select asp-for="UserType" class="form-control">
+                                    <option value="">Select User Type</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="RespServiceAchat">RespServiceAchat</option>
+                                    <option value="ReceptServiceAchat">ReceptServiceAchat</option>
+                                    <option value="RespServiceFinance">RespServiceFinance</option>
+                                    <option value="RespServiceQualite">RespServiceQualite</option>
+                                </select>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+
+                            <div style="display: flex;">
+                                <span style="margin-right: 10px">Register as Provider</span>
+                                <a asp-controller="Fournisseurs" asp-action="Register" style="color: yellow;">Register</a>
                             </div>
 
                         </form>

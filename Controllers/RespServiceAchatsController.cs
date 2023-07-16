@@ -7,9 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
+using GAP.Helper;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GAP.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class RespServiceAchatsController : Controller
     {
         private readonly GAPContext _context;
@@ -60,7 +65,33 @@ namespace GAP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(respServiceAchat);
+
+                bool userExists = await _context.HistoryU.AnyAsync(r => r.Email == respServiceAchat.Email);
+                if (userExists)
+                {
+                    ModelState.AddModelError("Email", "respServiceAchat with this email already exists.");
+                    return View(respServiceAchat);
+                }
+
+                RespServiceAchat respServiceAchat1 = new(
+
+               respServiceAchat.RespServiceAchatID,
+               respServiceAchat.Email,
+               respServiceAchat.Password,
+               respServiceAchat.FirstName,
+               respServiceAchat.LastName
+
+               );
+
+                HistoryU historyU = new(
+                   respServiceAchat.RespServiceAchatID,
+                   respServiceAchat.Email,
+                   "respServiceAchat"
+
+                   );
+
+                _context.HistoryU.Add(historyU);
+                _context.Add(respServiceAchat1);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

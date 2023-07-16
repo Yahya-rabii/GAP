@@ -5,7 +5,6 @@ namespace GAP.Models
 {
     public class User
     {
-
         public int UserID { get; set; }
 
         [Required]
@@ -24,10 +23,26 @@ namespace GAP.Models
         [StringLength(255)]
         public string? LastName { get; set; }
 
-      
+        [Required]
+        [DisplayName("User Type")]
+        public UserType UserType { get; set; }
+    }
 
-        public bool IsAdmin { get; set; }
+    public enum UserType
+    {
+        [Display(Name = "Admin")]
+        Admin,
 
+        [Display(Name = "ReceptServiceAchat")]
+        RespServiceAchat,
 
+        [Display(Name = "ReceptServiceAchat")]
+        ReceptServiceAchat,
+
+        [Display(Name = "RespServiceFinance")]
+        RespServiceFinance,
+
+        [Display(Name = "RespServiceQualite")]
+        RespServiceQualite
     }
 }

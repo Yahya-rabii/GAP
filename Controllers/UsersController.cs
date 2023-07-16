@@ -10,6 +10,7 @@ using GAP.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using GAP.Helper;
 
 namespace GAP.Controllers
 {
@@ -59,7 +60,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
+        public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,UserType")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +92,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,UserType")] User user)
         {
             if (id != user.UserID)
             {
@@ -163,75 +164,9 @@ namespace GAP.Controllers
           return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
 
-
-
         /////////////////////////////////////////////////////////////////////
 
-
-
-
-        // GET: User/Register
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-
-
-
-        // POST: User/Register
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-
-                // Hash the password before saving to the database
-                // you can use a library like BCrypt or Argon2 to hash the password
-                if (user != null)
-                {
-
-
-                    var preregisteredUser = _context.User.FirstOrDefault(u => u.Email == user.Email);
-
-
-                    if (preregisteredUser != null)
-                    {
-
-                        ModelState.AddModelError("", "user already exist");
-                        return RedirectToAction("Register", "Users");
-
-                    }
-                    else
-                    {
-
-                        user.Password = HashPassword(user?.Password);
-
-                        _context.Add(user);
-                        await _context.SaveChangesAsync();
-
-                        // Redirect to the login page after registration
-                        return RedirectToAction("Login");
-                    }
-                }
-                else
-                {
-                    return RedirectToAction("Register");
-                }
-
-            }
-            else
-            {
-                // Return the form with validation errors
-                return View(user);
-            }
-        }
-
-
-
-        /*---------------------------------------------------------------*/
-
+    
 
         // GET: User/Login
         public ActionResult Login()
@@ -239,74 +174,176 @@ namespace GAP.Controllers
             return View();
         }
 
-        // POST: User/Login
         [HttpPost]
         public async Task<IActionResult> Login(string email, string password)
         {
-
-
-            // Hash the password before comparing it to the database
-
-
-
-            if (email != null && password != null)
+            if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
             {
-                var registeredUser = _context.User.FirstOrDefault(u => u.Email == email);
-                var x = false;
+                var userType = GetUserTitulairFromTable(email);
 
-                if (registeredUser != null) x = BCrypt.Net.BCrypt.Verify(password, registeredUser?.Password);
-
-                var claims = new List<Claim>();
-                var claimsIdentity = new ClaimsIdentity();
-
-                if (registeredUser != null && x)
+                if (!string.IsNullOrEmpty(userType))
                 {
+                    var user = GetUserFromTable(userType, email, password);
 
-                    if (registeredUser.IsAdmin)
+                    if (user != null)
                     {
+                        var claims = new Claim[]
+                        {
+                    new Claim(ClaimTypes.NameIdentifier, GetUserId(user).ToString()),
+                    new Claim(ClaimTypes.Role, userType)
+                        };
 
-                        claims = new List<Claim> { new Claim(ClaimTypes.Role, "admin"), new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString()) };
-
-                        claimsIdentity = new ClaimsIdentity(claims, "Cookie");
-
+                        var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                        return RedirectToAction("Index", "Home");
-
-
+                        return GetRedirectActionForUserType(userType);
                     }
-                    else
-                    {
-
-                        // Log the user in
-                        // you can create a session or a cookie here to keep the user logged in
-
-                        claims = new List<Claim> { new Claim(ClaimTypes.Role, "user"), new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString()) };
-
-                        claimsIdentity = new ClaimsIdentity(claims, "Cookie");
-
-                        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-                        // Redirect to the home page
-                        return RedirectToAction("List", "Produits");
-
-                    }
-
-
                 }
 
-                else
-                {
-                    // Invalid credentials
-                    ModelState.AddModelError("", "Invalid email or password.");
-                    return RedirectToAction("Login", "Users");
-
-                }
-
+                ModelState.AddModelError("", "Invalid email or password.");
             }
 
-            else return RedirectToAction("Login", "Users");
-
+            return RedirectToAction("Login", "Users");
         }
+
+        private string GetUserTitulairFromTable(string email)
+        {
+            if (_context.Admin.Any(u => u.Email == email))
+                return "Admin";
+            if (_context.RespServiceAchat.Any(u => u.Email == email))
+                return "RespServiceAchat";
+            if (_context.ReceptServiceAchat.Any(u => u.Email == email))
+                return "ReceptServiceAchat";
+            if (_context.RespServiceFinance.Any(u => u.Email == email))
+                return "RespServiceFinance";
+            if (_context.RespServiceQualite.Any(u => u.Email == email))
+                return "RespServiceQualite";
+
+            return null;
+        }
+
+        private object GetUserFromTable(string userType, string email, string password)
+        {
+            object user = null;
+
+            switch (userType)
+            {
+                case "Admin":
+                    user = GetAdminFromTable(email);
+                    break;
+                case "RespServiceAchat":
+                    user = GetRespServiceAchatFromTable(email);
+                    break;
+                case "ReceptServiceAchat":
+                    user = GetReceptServiceAchatFromTable(email);
+                    break;
+                case "RespServiceFinance":
+                    user = GetRespServiceFinanceFromTable(email);
+                    break;
+                case "RespServiceQualite":
+                    user = GetRespServiceQualiteFromTable(email);
+                    break;
+            }
+
+            if (user != null && VerifyUserPassword(user, userType, password))
+                return user;
+
+            return null;
+        }
+
+        private bool VerifyUserPassword(object user, string userType, string password)
+        {
+            switch (userType)
+            {
+                case "Admin":
+                    var admin = (Admin)user;
+                    return BCrypt.Net.BCrypt.Verify(password, admin.Password);
+
+                case "RespServiceAchat":
+                    var respServiceAchat = (RespServiceAchat)user;
+                    return BCrypt.Net.BCrypt.Verify(password, respServiceAchat.Password);
+
+                case "ReceptServiceAchat":
+                    var receptServiceAchat = (ReceptServiceAchat)user;
+                    return BCrypt.Net.BCrypt.Verify(password, receptServiceAchat.Password);
+
+                case "RespServiceFinance":
+                    var respServiceFinance = (RespServiceFinance)user;
+                    return BCrypt.Net.BCrypt.Verify(password, respServiceFinance.Password);
+
+                case "RespServiceQualite":
+                    var respServiceQualite = (RespServiceQualite)user;
+                    return BCrypt.Net.BCrypt.Verify(password, respServiceQualite.Password);
+
+                default:
+                    return false;
+            }
+        }
+
+
+        private int GetUserId(object user)
+        {
+            switch (user)
+            {
+                case Admin admin:
+                    return admin.AdminID;
+                case RespServiceAchat respServiceAchat:
+                    return respServiceAchat.RespServiceAchatID;
+                case ReceptServiceAchat receptServiceAchat:
+                    return receptServiceAchat.ReceptServiceAchatID;
+                case RespServiceFinance respServiceFinance:
+                    return respServiceFinance.RespServiceFinanceID;
+                case RespServiceQualite respServiceQualite:
+                    return respServiceQualite.RespServiceQualiteID;
+                default:
+                    return 0;
+            }
+        }
+
+        private Admin GetAdminFromTable(string email)
+        {
+            return _context.Admin.FirstOrDefault(u => u.Email == email);
+        }
+
+        private RespServiceAchat GetRespServiceAchatFromTable(string email)
+        {
+            return _context.RespServiceAchat.FirstOrDefault(u => u.Email == email);
+        }
+
+        private ReceptServiceAchat GetReceptServiceAchatFromTable(string email)
+        {
+            return _context.ReceptServiceAchat.FirstOrDefault(u => u.Email == email);
+        }
+
+        private RespServiceFinance GetRespServiceFinanceFromTable(string email)
+        {
+            return _context.RespServiceFinance.FirstOrDefault(u => u.Email == email);
+        }
+
+        private RespServiceQualite GetRespServiceQualiteFromTable(string email)
+        {
+            return _context.RespServiceQualite.FirstOrDefault(u => u.Email == email);
+        }
+
+        private IActionResult GetRedirectActionForUserType(string userType)
+        {
+            switch (userType)
+            {
+                case "Admin":
+                    return RedirectToAction("Index", "Home");
+                case "RespServiceAchat":
+                    return RedirectToAction("Index", "DemandeAchats");
+                case "ReceptServiceAchat":
+                    return RedirectToAction("Index", "RapportReceptions");
+                case "RespServiceFinance":
+                    return RedirectToAction("Index", "Factures");
+                case "RespServiceQualite":
+                    return RedirectToAction("Index", "RapportTestQualites");
+                default:
+                    return RedirectToAction("Login", "Users");
+            }
+        }
+
 
         private string HashPassword(string password)
         {
@@ -333,34 +370,6 @@ namespace GAP.Controllers
             return RedirectToAction("Login", "Users");
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
 
     }
 }

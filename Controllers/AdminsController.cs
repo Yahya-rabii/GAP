@@ -12,88 +12,89 @@ using System.Data;
 
 namespace GAP.Controllers
 {
-   
-    public class ProduitsController : Controller
+    [Authorize]
+    [Authorize(Roles = "Admin")]
+    public class AdminsController : Controller
     {
         private readonly GAPContext _context;
 
-        public ProduitsController(GAPContext context)
+        public AdminsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: Produits
+        // GET: Admins
         public async Task<IActionResult> Index()
         {
-              return _context.Produit != null ? 
-                          View(await _context.Produit.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Produit'  is null.");
+              return _context.Admin != null ? 
+                          View(await _context.Admin.ToListAsync()) :
+                          Problem("Entity set 'GAPContext.Admin'  is null.");
         }
 
-        // GET: Produits/Details/5
+        // GET: Admins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Admin == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produit == null)
+            var admin = await _context.Admin
+                .FirstOrDefaultAsync(m => m.AdminID == id);
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(admin);
         }
 
-        // GET: Produits/Create
+        // GET: Admins/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Produits/Create
+        // POST: Admins/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Create([Bind("AdminID,Email,Password,FirstName,LastName,IsAdmin")] Admin admin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(produit);
+                _context.Add(admin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(admin);
         }
 
-        // GET: Produits/Edit/5
+        // GET: Admins/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Admin == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit == null)
+            var admin = await _context.Admin.FindAsync(id);
+            if (admin == null)
             {
                 return NotFound();
             }
-            return View(produit);
+            return View(admin);
         }
 
-        // POST: Produits/Edit/5
+        // POST: Admins/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("AdminID,Email,Password,FirstName,LastName,IsAdmin")] Admin admin)
         {
-            if (id != produit.Id)
+            if (id != admin.AdminID)
             {
                 return NotFound();
             }
@@ -102,12 +103,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(produit);
+                    _context.Update(admin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProduitExists(produit.Id))
+                    if (!AdminExists(admin.AdminID))
                     {
                         return NotFound();
                     }
@@ -118,49 +119,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(admin);
         }
 
-        // GET: Produits/Delete/5
+        // GET: Admins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Admin == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produit == null)
+            var admin = await _context.Admin
+                .FirstOrDefaultAsync(m => m.AdminID == id);
+            if (admin == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(admin);
         }
 
-        // POST: Produits/Delete/5
+        // POST: Admins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Produit == null)
+            if (_context.Admin == null)
             {
-                return Problem("Entity set 'GAPContext.Produit'  is null.");
+                return Problem("Entity set 'GAPContext.Admin'  is null.");
             }
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit != null)
+            var admin = await _context.Admin.FindAsync(id);
+            if (admin != null)
             {
-                _context.Produit.Remove(produit);
+                _context.Admin.Remove(admin);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProduitExists(int id)
+        private bool AdminExists(int id)
         {
-          return (_context.Produit?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Admin?.Any(e => e.AdminID == id)).GetValueOrDefault();
         }
     }
 }

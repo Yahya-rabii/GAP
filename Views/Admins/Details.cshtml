@@ -1,4 +1,4 @@
-﻿@model GAP.Models.User
+﻿@model GAP.Models.Admin
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>User</h4>
+    <h4>Admin</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -35,14 +35,14 @@
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserType)
+            @Html.DisplayNameFor(model => model.IsAdmin)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserType)
+            @Html.DisplayFor(model => model.IsAdmin)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.UserID">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.AdminID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

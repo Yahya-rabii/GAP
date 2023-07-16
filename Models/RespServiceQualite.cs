@@ -25,7 +25,28 @@ namespace GAP.Models
 
         private List<RapportTestQualite> historiqueRapportQualite;
 
-      
+        public RespServiceQualite()
+        {
+            RespServiceQualiteID = 0;
+            Email = string.Empty;
+            Password = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            historiqueRapportQualite= new List<RapportTestQualite>();
+        }
+
+        public RespServiceQualite(int receptServiceAchatID, string? email, string? password, string? fn, string? ln)
+        {
+            RespServiceQualiteID = receptServiceAchatID;
+            Email = email;
+            Password = password;
+            FirstName = fn;
+            LastName = ln;
+            historiqueRapportQualite = new List<RapportTestQualite>();
+        }
+
+
+
         public List<RapportTestQualite> HistoriqueRapportQualite
         {
             get { return historiqueRapportQualite; }

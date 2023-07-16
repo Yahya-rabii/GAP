@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<GAPContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("GAPContext") ?? throw new InvalidOperationException("Connection string 'GAPContext' not found.")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -25,7 +25,12 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "admin"));
+    options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+    options.AddPolicy("Fournisseur", policy => policy.RequireClaim(ClaimTypes.Role, "Fournisseur"));
+    options.AddPolicy("RespServiceAchatPolicy", policy =>policy.RequireRole("RespServiceAchat"));
+    options.AddPolicy("ReceptServiceAchatPolicy", policy =>policy.RequireRole("ReceptServiceAchat"));
+    options.AddPolicy("RespServiceFinancePolicy", policy =>policy.RequireRole("RespServiceFinance"));
+    options.AddPolicy("RespServiceQualitePolicy", policy =>policy.RequireRole("RespServiceQualite"));
 
 });
 
@@ -51,8 +56,31 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
+
+app.Use(async (context, next) =>
+{
+    if (!context.User.Identity.IsAuthenticated && context.Request.Path.Value != "/Users/Login" && context.Request.Path.Value != "/Fournisseurs/Register")
+    {
+        context.Response.Redirect("/Users/Login");
+    }
+
+    else if (context.User.Identity.IsAuthenticated && context.User.IsInRole("Admin") && context.Request.Path.Value == "/Users/Login")
+    {
+        context.Response.Redirect("/");
+    }
+    else
+    {
+        await next();
+    }
+});
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+
 
 app.Run();

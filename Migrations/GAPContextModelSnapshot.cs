@@ -22,6 +22,65 @@ namespace GAP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("GAP.Helper.HistoryU", b =>
+                {
+                    b.Property<int>("HistoryUID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoryUID"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Titulair")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("HistoryUID");
+
+                    b.ToTable("HistoryU");
+                });
+
+            modelBuilder.Entity("GAP.Models.Admin", b =>
+                {
+                    b.Property<int>("AdminID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminID"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("AdminID");
+
+                    b.ToTable("Admin");
+                });
+
             modelBuilder.Entity("GAP.Models.DemandeAchat", b =>
                 {
                     b.Property<int>("Id")
@@ -60,7 +119,7 @@ namespace GAP.Migrations
                     b.Property<DateTime>("DateReception")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FournisseurId")
+                    b.Property<int>("FournisseurID")
                         .HasColumnType("int");
 
                     b.Property<int>("NombrePiece")
@@ -77,7 +136,7 @@ namespace GAP.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FournisseurId");
+                    b.HasIndex("FournisseurID");
 
                     b.HasIndex("ProduitId");
 
@@ -120,19 +179,24 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.Fournisseur", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FournisseurID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FournisseurID"));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("Nom")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("NombreTransaction")
                         .HasColumnType("int");
@@ -142,7 +206,7 @@ namespace GAP.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("FournisseurID");
 
                     b.ToTable("Fournisseur");
                 });
@@ -393,9 +457,6 @@ namespace GAP.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -405,6 +466,9 @@ namespace GAP.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("UserID");
 
@@ -422,7 +486,7 @@ namespace GAP.Migrations
                 {
                     b.HasOne("GAP.Models.Fournisseur", "Fournisseur")
                         .WithMany()
-                        .HasForeignKey("FournisseurId")
+                        .HasForeignKey("FournisseurID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -463,7 +527,7 @@ namespace GAP.Migrations
             modelBuilder.Entity("GAP.Models.OffreVente", b =>
                 {
                     b.HasOne("GAP.Models.Fournisseur", "Provider")
-                        .WithMany("OffreVente")
+                        .WithMany()
                         .HasForeignKey("FournisseurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -496,11 +560,6 @@ namespace GAP.Migrations
                         .IsRequired();
 
                     b.Navigation("RespServiceQualite");
-                });
-
-            modelBuilder.Entity("GAP.Models.Fournisseur", b =>
-                {
-                    b.Navigation("OffreVente");
                 });
 
             modelBuilder.Entity("GAP.Models.OffreVente", b =>

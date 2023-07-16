@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 namespace GAP.Controllers
 {
+
+    [Authorize]
+    [Authorize(Roles = "RespServiceFinance")]
     public class FacturesController : Controller
     {
         private readonly GAPContext _context;

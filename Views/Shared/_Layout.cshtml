@@ -5,37 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GAP</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GAP.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cards.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GAP</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <header class="header">
+        <div class="header-bottom skewBg" data-header>
+            <div class="container">
+                <a href="#" class="logo">
+                    Gap
+                </a>
+                <nav class="navbar" data-navbar>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <ul class="navbar-list">
+                                <li class="navbar-item">
+                                    <a class="navbar-link skewBg" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-link skewBg" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add RespServiceAchat</button>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-link skewBg" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add RespServicequalite</button>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-link skewBg" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add RespServiceFinances</button>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-link skewBg" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add RecepServicAchats</button>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-link skewBg" onclick="location.href='@Url.Action("Logout", "Users")'">Logout</button>
+                                </li>
+                            </ul>
+                        }
+                        else
+                        {
+                            <ul class="navbar-list">
+                                <li class="navbar-item">
+                                    <a class="navbar-link skewBg" asp-area="" asp-controller="Produits" asp-action="List">Games</a>
+                                </li>
+                                <li class="navbar-item">
+                                    <button class="navbar-button skewBg" onclick="location.href='@Url.Action("Logout", "Users")'">Logout</button>
+                                </li>
+                            </ul>
+                        }
+                    }
+                </nav>
             </div>
-        </nav>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2023 - GAP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
@@ -44,6 +75,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

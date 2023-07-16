@@ -28,7 +28,25 @@ namespace GAP.Models
 
         private List<RapportReception> historiqueRapportsReceptions;
 
-
+        public ReceptServiceAchat()
+        {
+            ReceptServiceAchatID = 0;
+            Email = string.Empty;
+            Password = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            historiqueRapportsReceptions = new List<RapportReception>();
+        } 
+        
+        public ReceptServiceAchat(int receptServiceAchatID,string? email , string? password , string? fn , string? ln)
+        {
+            ReceptServiceAchatID = receptServiceAchatID;
+            Email = email;
+            Password = password;
+            FirstName = fn;
+            LastName = ln;
+            historiqueRapportsReceptions = new List<RapportReception>();
+        }
         
         public List<RapportReception> HistoriqueRapportsReceptions
             {

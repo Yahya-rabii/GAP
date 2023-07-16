@@ -1,11 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace GAP.Models
 {
     public class Fournisseur
     {
-        private int id;
-        private int nom;
+        public int FournisseurID { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        public string? Nom { get; set; }
+
         [Required]
         [StringLength(255)]
         public string? Email { get; set; }
@@ -13,34 +18,17 @@ namespace GAP.Models
         [Required]
         [StringLength(255)]
         public string? Password { get; set; }
-        private int nombreTransaction;
+
+
+        [DefaultValue(0)]
+        public int NombreTransaction { get; set; } = 0;
+
         private List<OffreVente> offreVente;
 
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        [DefaultValue(true)]
+        public bool IsValid { get; set; } = true;
 
-        public int Nom
-        {
-            get { return nom; }
-            set { nom = value; }
-        }
 
-        public int NombreTransaction
-        {
-            get { return nombreTransaction; }
-            set { nombreTransaction = value; }
-        }
-
-        public List<OffreVente> OffreVente
-        {
-            get { return offreVente; }
-            set { offreVente = value; }
-        }
-
-      
     }
 
 }

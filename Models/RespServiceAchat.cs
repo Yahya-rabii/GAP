@@ -30,7 +30,31 @@ namespace GAP.Models
         private List<DemandeAchat> demandesAchats;
         private List<Devis> devis;
 
-       
+
+
+        public RespServiceAchat()
+        {
+            RespServiceAchatID = 0;
+            Email = string.Empty;
+            Password = string.Empty;
+            FirstName = string.Empty;
+            LastName = string.Empty;
+            demandesAchats = new List<DemandeAchat>();
+            devis = new List<Devis>(); 
+        }
+
+        public RespServiceAchat(int receptServiceAchatID, string? email, string? password, string? fn, string? ln)
+        {
+            RespServiceAchatID = receptServiceAchatID;
+            Email = email;
+            Password = password;
+            FirstName = fn;
+            LastName = ln;
+            demandesAchats = new List<DemandeAchat>();
+            devis = new List<Devis>();
+        }
+
+
         public List<DemandeAchat> DemandesAchats
         {
             get { return demandesAchats; }

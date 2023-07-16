@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GAP.Helper;
+using GAP.Models;
 
 namespace GAP.Data
 {
@@ -41,5 +42,9 @@ namespace GAP.Data
         public DbSet<GAP.Models.RespServiceQualite> RespServiceQualite { get; set; } = default!;
 
         public DbSet<GAP.Models.DemandeAchat> DemandeAchat { get; set; } = default!;
+
+        public DbSet<GAP.Helper.HistoryU> HistoryU { get; set; } = default!;
+
+        public DbSet<GAP.Models.Admin> Admin { get; set; } = default!;
     }
 }

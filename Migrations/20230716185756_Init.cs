@@ -12,19 +12,51 @@ namespace GAP.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Fournisseur",
+                name: "Admin",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    AdminID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Nom = table.Column<int>(type: "int", nullable: false),
-                    NombreTransaction = table.Column<int>(type: "int", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fournisseur", x => x.Id);
+                    table.PrimaryKey("PK_Admin", x => x.AdminID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Fournisseur",
+                columns: table => new
+                {
+                    FournisseurID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    NombreTransaction = table.Column<int>(type: "int", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fournisseur", x => x.FournisseurID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HistoryU",
+                columns: table => new
+                {
+                    HistoryUID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Titulair = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoryU", x => x.HistoryUID);
                 });
 
             migrationBuilder.CreateTable(
@@ -101,7 +133,7 @@ namespace GAP.Migrations
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    UserType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,7 +157,7 @@ namespace GAP.Migrations
                         name: "FK_OffreVente_Fournisseur_FournisseurId",
                         column: x => x.FournisseurId,
                         principalTable: "Fournisseur",
-                        principalColumn: "Id",
+                        principalColumn: "FournisseurID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -222,17 +254,17 @@ namespace GAP.Migrations
                     ProduitId = table.Column<int>(type: "int", nullable: false),
                     PrixTTL = table.Column<double>(type: "float", nullable: false),
                     DateReception = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FournisseurId = table.Column<int>(type: "int", nullable: false),
+                    FournisseurID = table.Column<int>(type: "int", nullable: false),
                     NombrePiece = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Devis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Devis_Fournisseur_FournisseurId",
-                        column: x => x.FournisseurId,
+                        name: "FK_Devis_Fournisseur_FournisseurID",
+                        column: x => x.FournisseurID,
                         principalTable: "Fournisseur",
-                        principalColumn: "Id",
+                        principalColumn: "FournisseurID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Devis_Produit_ProduitId",
@@ -283,9 +315,9 @@ namespace GAP.Migrations
                 column: "RespServiceAchatID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Devis_FournisseurId",
+                name: "IX_Devis_FournisseurID",
                 table: "Devis",
-                column: "FournisseurId");
+                column: "FournisseurID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devis_ProduitId",
@@ -332,6 +364,9 @@ namespace GAP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Admin");
+
+            migrationBuilder.DropTable(
                 name: "DemandeAchat");
 
             migrationBuilder.DropTable(
@@ -339,6 +374,9 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Facture");
+
+            migrationBuilder.DropTable(
+                name: "HistoryU");
 
             migrationBuilder.DropTable(
                 name: "RapportReception");

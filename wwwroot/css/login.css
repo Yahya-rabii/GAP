@@ -1,0 +1,80 @@
+.login-form-container {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 5px 5px 10px black;
+    animation: fadeIn 0.5s ease-in-out;
+    width:200%;
+}
+
+.form-container {
+    padding: 20px;
+    border-radius: 10px;
+    animation: blurIn 0.5s ease-in-out;
+    text-align: center; /* this centers the elements inside the form */
+
+    background-color: transparent; /* this makes the background transparent */
+    color: white; /* this sets the text color to white */
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
+
+
+.form-control::placeholder {
+    color: white;
+}
+
+.form-control {
+    box-shadow: 0 0 10px white;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+    .form-control:focus {
+        background-color: white;
+        color: black;
+        border: 2px solid white;
+        box-shadow: 0 0 10px white;
+    }
+
+.glow-on-hover {
+    transition: all 0.3s ease-in-out;
+    margin-top: 50px;
+}
+
+    .glow-on-hover:hover {
+        box-shadow: 0 0 10px white;
+        transform: scale(1.1);
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blurIn {
+    from {
+        filter: blur(5px);
+    }
+
+    to {
+        filter: blur(0);
+    }
+}

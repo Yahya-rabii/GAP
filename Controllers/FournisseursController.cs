@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GAP.Controllers
 {
@@ -36,7 +38,7 @@ namespace GAP.Controllers
             }
 
             var fournisseur = await _context.Fournisseur
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.FournisseurID == id);
             if (fournisseur == null)
             {
                 return NotFound();
@@ -56,7 +58,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Email,Password,Id,Nom,NombreTransaction")] Fournisseur fournisseur)
+        public async Task<IActionResult> Create([Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
             if (ModelState.IsValid)
             {
@@ -88,9 +90,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Email,Password,Id,Nom,NombreTransaction")] Fournisseur fournisseur)
+        public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
-            if (id != fournisseur.Id)
+            if (id != fournisseur.FournisseurID)
             {
                 return NotFound();
             }
@@ -104,7 +106,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FournisseurExists(fournisseur.Id))
+                    if (!FournisseurExists(fournisseur.FournisseurID))
                     {
                         return NotFound();
                     }
@@ -127,7 +129,7 @@ namespace GAP.Controllers
             }
 
             var fournisseur = await _context.Fournisseur
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.FournisseurID == id);
             if (fournisseur == null)
             {
                 return NotFound();
@@ -157,7 +159,105 @@ namespace GAP.Controllers
 
         private bool FournisseurExists(int id)
         {
-          return (_context.Fournisseur?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Fournisseur?.Any(e => e.FournisseurID == id)).GetValueOrDefault();
         }
+
+
+
+
+
+
+
+        // GET: User/Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register([Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
+        {
+            Fournisseur fournisseur1 = fournisseur;
+
+
+            if (ModelState.IsValid)
+            {
+                // Hash the password before saving to the database
+                // you can use a library like BCrypt or Argon2 to hash the password
+                if (fournisseur != null)
+                {
+
+
+                    var preregisteredFournisseur = _context.Fournisseur.FirstOrDefault(u => u.Email == fournisseur.Email);
+
+
+                    if (preregisteredFournisseur != null)
+                    {
+
+                        ModelState.AddModelError("", "user already exist");
+                        return RedirectToAction("Register", "Users");
+
+                    }
+                    else
+                    {
+
+
+                        fournisseur.Password = HashPassword(fournisseur?.Password);
+
+
+                        _context.Fournisseur.Add(fournisseur1);
+                        await _context.SaveChangesAsync();
+
+                        // Redirect to the login page after registration
+                        return RedirectToAction("Login");
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Register");
+                }
+
+
+
+
+            }
+
+            // Return the form with validation errors
+            return View(fournisseur);
+        }
+
+
+        private string HashPassword(string password)
+        {
+            // use a library like BCrypt or Argon2 to hash the password
+            // here's an example using BCrypt
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+
+        public async Task<IActionResult> Logout()
+        {
+
+            // Sign out the user
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // Clear the user's cookies
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties
+            {
+                IsPersistent = false, // or true if you want to keep the user's cookies
+                ExpiresUtc = DateTime.UtcNow.AddMinutes(-1)
+            });
+
+            // Redirect to the login page
+            return RedirectToAction("Login", "Users");
+
+        }
+
+
+
+
+
+
     }
 }

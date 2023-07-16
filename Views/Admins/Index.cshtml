@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GAP.Models.User>
+﻿@model IEnumerable<GAP.Models.Admin>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,7 +25,7 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserType)
+                @Html.DisplayNameFor(model => model.IsAdmin)
             </th>
             <th></th>
         </tr>
@@ -46,12 +46,12 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserType)
+                @Html.DisplayFor(modelItem => item.IsAdmin)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.UserID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.AdminID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AdminID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AdminID">Delete</a>
             </td>
         </tr>
 }

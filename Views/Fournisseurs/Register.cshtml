@@ -1,0 +1,73 @@
+﻿@model GAP.Models.Fournisseur
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<section class="section hero" id="home" aria-label="home">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="login-form-container">
+                    <div class="form-container">
+                        <form asp-action="Register" method="POST" novalidate="">
+                            <!-- Fournisseur registration fields -->
+                            <div class="form-group text-center">
+                                <label asp-for="Email">E-Mail Address</label>
+                                <input id="email" type="email" asp-for="Email" class="form-control rounded-0" style="background-color: transparent; color:white;">
+                                <div class="invalid-feedback">
+                                    Email is invalid
+                                </div>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <label asp-for="Nom">Nom</label>
+                                <input id="nom" type="text" asp-for="Nom" class="form-control rounded-0" style="background-color: transparent; color:white;">
+                                <div class="invalid-feedback">Nom is required</div>
+                            </div>
+                            
+                            <div class="form-group text-center">
+                                <label asp-for="Password">Password</label>
+                                <input id="password" type="password" asp-for="Password" class="form-control rounded-0" style="background-color: transparent; color:white;" data-eye>
+                                <div class="invalid-feedback">Password is required</div>
+                            </div>
+
+                          
+
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-dark rounded-0 glow-on-hover" style="color:white; border: 1px solid white ;background-color: transparent">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <figure class="hero-banner img-holder">
+            </figure>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</section>
+
+
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

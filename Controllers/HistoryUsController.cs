@@ -6,94 +6,91 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
-using GAP.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using GAP.Helper;
 
 namespace GAP.Controllers
 {
-   
-    public class ProduitsController : Controller
+    public class HistoryUsController : Controller
     {
         private readonly GAPContext _context;
 
-        public ProduitsController(GAPContext context)
+        public HistoryUsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: Produits
+        // GET: HistoryUs
         public async Task<IActionResult> Index()
         {
-              return _context.Produit != null ? 
-                          View(await _context.Produit.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Produit'  is null.");
+              return _context.HistoryU != null ? 
+                          View(await _context.HistoryU.ToListAsync()) :
+                          Problem("Entity set 'GAPContext.HistoryU'  is null.");
         }
 
-        // GET: Produits/Details/5
+        // GET: HistoryUs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.HistoryU == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produit == null)
+            var historyU = await _context.HistoryU
+                .FirstOrDefaultAsync(m => m.HistoryUID == id);
+            if (historyU == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(historyU);
         }
 
-        // GET: Produits/Create
+        // GET: HistoryUs/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Produits/Create
+        // POST: HistoryUs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Create([Bind("HistoryUID,Email,Titulair")] HistoryU historyU)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(produit);
+                _context.Add(historyU);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(historyU);
         }
 
-        // GET: Produits/Edit/5
+        // GET: HistoryUs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.HistoryU == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit == null)
+            var historyU = await _context.HistoryU.FindAsync(id);
+            if (historyU == null)
             {
                 return NotFound();
             }
-            return View(produit);
+            return View(historyU);
         }
 
-        // POST: Produits/Edit/5
+        // POST: HistoryUs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("HistoryUID,Email,Titulair")] HistoryU historyU)
         {
-            if (id != produit.Id)
+            if (id != historyU.HistoryUID)
             {
                 return NotFound();
             }
@@ -102,12 +99,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(produit);
+                    _context.Update(historyU);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProduitExists(produit.Id))
+                    if (!HistoryUExists(historyU.HistoryUID))
                     {
                         return NotFound();
                     }
@@ -118,49 +115,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(historyU);
         }
 
-        // GET: Produits/Delete/5
+        // GET: HistoryUs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.HistoryU == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (produit == null)
+            var historyU = await _context.HistoryU
+                .FirstOrDefaultAsync(m => m.HistoryUID == id);
+            if (historyU == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(historyU);
         }
 
-        // POST: Produits/Delete/5
+        // POST: HistoryUs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Produit == null)
+            if (_context.HistoryU == null)
             {
-                return Problem("Entity set 'GAPContext.Produit'  is null.");
+                return Problem("Entity set 'GAPContext.HistoryU'  is null.");
             }
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit != null)
+            var historyU = await _context.HistoryU.FindAsync(id);
+            if (historyU != null)
             {
-                _context.Produit.Remove(produit);
+                _context.HistoryU.Remove(historyU);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProduitExists(int id)
+        private bool HistoryUExists(int id)
         {
-          return (_context.Produit?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.HistoryU?.Any(e => e.HistoryUID == id)).GetValueOrDefault();
         }
     }
 }
