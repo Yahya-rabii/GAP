@@ -60,6 +60,9 @@ namespace GAP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                respServiceAchat.Password = HashPassword(respServiceAchat?.Password);
+
                 _context.Add(respServiceAchat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -159,5 +162,17 @@ namespace GAP.Controllers
         {
           return (_context.RespServiceAchat?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
+
+
+
+
+        private string HashPassword(string password)
+        {
+            // use a library like BCrypt or Argon2 to hash the password
+            // here's an example using BCrypt
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+
     }
 }

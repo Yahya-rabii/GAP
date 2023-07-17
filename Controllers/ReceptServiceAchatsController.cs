@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GAP.Controllers
 {
@@ -60,6 +62,9 @@ namespace GAP.Controllers
         {
             if (ModelState.IsValid)
             {
+                receptServiceAchat.Password = HashPassword(receptServiceAchat?.Password);
+
+
                 _context.Add(receptServiceAchat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -159,5 +164,21 @@ namespace GAP.Controllers
         {
           return (_context.ReceptServiceAchat?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
+
+
+
+        private string HashPassword(string password)
+        {
+            // use a library like BCrypt or Argon2 to hash the password
+            // here's an example using BCrypt
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+
+       
+
+
+
+
     }
 }

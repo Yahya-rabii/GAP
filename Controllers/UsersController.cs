@@ -203,25 +203,27 @@ namespace GAP.Controllers
                 else if (registeredUser is ReceptServiceAchat)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "ReceptServiceAchat"));
-                    return await SignInAndRedirectToAction(claims, "Index", "RapportReception");
+                    return await SignInAndRedirectToAction(claims, "Index", "RapportReceptions");
                 }
                 else if (registeredUser is RespServiceAchat)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "RespServiceAchat"));
-                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchat");
+                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
                 }
                 else if (registeredUser is RespServiceFinance)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "RespServiceFinance"));
-                    return await SignInAndRedirectToAction(claims, "Index", "Facture");
+                    return await SignInAndRedirectToAction(claims, "Index", "Factures");
                 }
                 else if (registeredUser is RespServiceQualite)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "RespServiceQualite"));
-                    return await SignInAndRedirectToAction(claims, "Index", "RapportTestQualite");
+                    return await SignInAndRedirectToAction(claims, "Index", "RapportTestQualites");
                 }
                 else
                 {
+                    
+
                     // User type not recognized
                     ModelState.AddModelError("", "Invalid user type.");
                     return RedirectToAction("Login", "Users");
@@ -229,6 +231,21 @@ namespace GAP.Controllers
             }
             else
             {
+
+                var newregisteredUser = await _context.Fournisseur.FirstOrDefaultAsync(u => u.Email == email);
+
+                if (newregisteredUser != null)
+                {
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString())
+                    };
+
+                    claims.Add(new Claim(ClaimTypes.Role, "Fournisseur"));
+                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
+
+                }
+
                 ModelState.AddModelError("", "Invalid email or password.");
                 return RedirectToAction("Login", "Users");
             }
