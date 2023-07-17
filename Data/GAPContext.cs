@@ -43,6 +43,5 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.DemandeAchat> DemandeAchat { get; set; } = default!;
 
-        public DbSet<GAP.Helper.HistoryU> HistoryU { get; set; } = default!;
     }
 }

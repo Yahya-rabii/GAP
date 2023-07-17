@@ -179,7 +179,6 @@ namespace GAP.Controllers
         // POST: User/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Login(string email, string password)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
@@ -192,16 +191,41 @@ namespace GAP.Controllers
             if (registeredUser != null && BCrypt.Net.BCrypt.Verify(password, registeredUser.Password))
             {
                 var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
-            };
+        {
+            new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
+        };
 
                 if (registeredUser.IsAdmin)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                     return await SignInAndRedirectToAction(claims, "Index", "Home");
                 }
-               return RedirectToAction(nameof(Login));
+                else if (registeredUser is ReceptServiceAchat)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "ReceptServiceAchat"));
+                    return await SignInAndRedirectToAction(claims, "Index", "RapportReception");
+                }
+                else if (registeredUser is RespServiceAchat)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceAchat"));
+                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchat");
+                }
+                else if (registeredUser is RespServiceFinance)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceFinance"));
+                    return await SignInAndRedirectToAction(claims, "Index", "Facture");
+                }
+                else if (registeredUser is RespServiceQualite)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceQualite"));
+                    return await SignInAndRedirectToAction(claims, "Index", "RapportTestQualite");
+                }
+                else
+                {
+                    // User type not recognized
+                    ModelState.AddModelError("", "Invalid user type.");
+                    return RedirectToAction("Login", "Users");
+                }
             }
             else
             {
@@ -209,6 +233,7 @@ namespace GAP.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
+
 
         private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)
         {

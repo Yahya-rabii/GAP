@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230716231658_Init")]
+    [Migration("20230716235139_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,29 +24,6 @@ namespace GAP.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("GAP.Helper.HistoryU", b =>
-                {
-                    b.Property<int>("HistoryUID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HistoryUID"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Titulair")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("HistoryUID");
-
-                    b.ToTable("HistoryU");
-                });
 
             modelBuilder.Entity("GAP.Models.DemandeAchat", b =>
                 {

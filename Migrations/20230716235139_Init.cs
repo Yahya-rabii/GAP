@@ -29,20 +29,6 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HistoryU",
-                columns: table => new
-                {
-                    HistoryUID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Titulair = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HistoryU", x => x.HistoryUID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -291,9 +277,6 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Facture");
-
-            migrationBuilder.DropTable(
-                name: "HistoryU");
 
             migrationBuilder.DropTable(
                 name: "RapportReception");
