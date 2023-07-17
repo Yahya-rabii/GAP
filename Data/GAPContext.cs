@@ -15,6 +15,13 @@ namespace GAP.Data
         {
         }
 
+        public void InitializeData()
+        {
+            var dbInitializer = new DbInitializer(this);
+            dbInitializer.Seed();
+        }
+
+
         public DbSet<GAP.Models.User> User { get; set; } = default!;
 
         public DbSet<Desc> Desc { get; set; } = default!;

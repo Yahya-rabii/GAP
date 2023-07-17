@@ -13,7 +13,7 @@ namespace GAP.Controllers
 {
 
     [Authorize]
-    [Authorize(Roles = "RespServiceAchat")]
+    [Authorize(Roles = "RespServiceAchat,Fournisseur")]
     public class DemandeAchatsController : Controller
     {
         private readonly GAPContext _context;

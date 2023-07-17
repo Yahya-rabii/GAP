@@ -25,8 +25,8 @@ namespace GAP.Models
 
         private List<OffreVente> offreVente;
 
-        [DefaultValue(true)]
-        public bool IsValid { get; set; } = true;
+        [DefaultValue(false)]
+        public bool IsValid { get; set; } = false;
 
 
     }

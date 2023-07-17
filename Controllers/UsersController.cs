@@ -222,8 +222,6 @@ namespace GAP.Controllers
                 }
                 else
                 {
-                    
-
                     // User type not recognized
                     ModelState.AddModelError("", "Invalid user type.");
                     return RedirectToAction("Login", "Users");
@@ -231,23 +229,34 @@ namespace GAP.Controllers
             }
             else
             {
-
                 var newregisteredUser = await _context.Fournisseur.FirstOrDefaultAsync(u => u.Email == email);
 
                 if (newregisteredUser != null)
                 {
-                    var claims = new List<Claim>
+                    if (newregisteredUser.IsValid)
                     {
-                        new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString())
-                    };
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString())
+                        };
 
-                    claims.Add(new Claim(ClaimTypes.Role, "Fournisseur"));
-                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
+                        claims.Add(new Claim(ClaimTypes.Role, "Fournisseur"));
+                        return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
+                    }
+                    else
+                    {
+                        // Account is not valid yet
+                        ModelState.AddModelError("", "Your account is not valid yet. Please wait for approval");
+                        return RedirectToAction("Login", "Users"); // Redirect to an appropriate action
+                    }
 
                 }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid email or password.");
 
-                ModelState.AddModelError("", "Invalid email or password.");
-                return RedirectToAction("Login", "Users");
+                    return RedirectToAction("Login", "Users");
+                }
             }
         }
 
