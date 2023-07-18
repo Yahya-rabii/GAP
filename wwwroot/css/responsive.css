@@ -1,0 +1,186 @@
+/*--------------------------------------------------------------------- 
+File Name: responsive.css 
+---------------------------------------------------------------------*/
+
+@media (min-width: 1200px) and (max-width: 1500px) {
+    .full_bg {
+        padding-top: 100px;
+        height: 100%;
+        background-size: 100% 100%;
+        background: #2e3192;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .full_bg {
+        padding-top: 100px;
+        height: 100%;
+        background-size: 100% 100%;
+        background: #2e3192;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .full_bg {
+        padding-top: 100px;
+        height: 100%;
+        background-size: 100% 100%;
+        background: #2e3192;
+    }
+    .navigation.navbar-dark .navbar-nav .nav-link {
+        padding: 0px 13px;
+    }
+    ul.email li {
+        padding-right: 13px;
+    }
+    #banner1 .carousel-control-next {
+        left: 10%;
+    }
+    .titlepage h2 {
+        font-size: 32px;
+    }
+    .domain-price strong {
+        font-size: 14px;
+    }
+    .order-box p {
+        font-size: 15px;
+    }
+    .order-box p span {
+        font-size: 24px;
+        padding: 0 9px;
+        line-height: 30px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .full_bg {
+        padding-top: 100px;
+        height: 100%;
+        background-size: 100% 100%;
+        background: #2e3192;
+    }
+    #banner1 .carousel-control-next {
+        left: 13%;
+    }
+    .dream_img {
+        padding-top: 30px;
+    }
+    .titlepage h2 {
+        font-size: 36px;
+    }
+    .domain-price span {
+        font-size: 12px;
+    }
+    .domain-price strong {
+        font-size: 12px;
+    }
+    .navigation.navbar {
+        float: right;
+        display: inherit !important;
+        padding: 0;
+        width: 100%;
+    }
+    .navigation .navbar-collapse {
+        background: #2e3192;
+        padding: 20px;
+        margin-top: 24px;
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+        box-shadow: 0 0 59px rgba(30, 30, 29, 0.25);
+    }
+    .navigation.navbar-dark .navbar-nav .nav-link {
+        padding: 10px 0;
+        color: #fff;
+    }
+    .navigation.navbar-dark .navbar-toggler {
+        border: inherit;
+        float: right;
+        padding: 0;
+        width: 100%;
+        outline: inherit;
+        margin-top: -49px;
+    }
+    .navigation.navbar-dark .navbar-toggler-icon {
+        background: url(../images/menu_icon.png);
+        background-repeat: no-repeat;
+        width: 48px;
+        float: right;
+    }
+    .d_none {
+        display: none;
+    }
+}
+
+@media (max-width: 575px) {
+    .full_bg {
+        padding-top: 100px;
+        height: 100%;
+        background-size: 100% 100%;
+        background: #2e3192;
+    }
+    .dream h1 {
+        font-size: 44px;
+        line-height: 55px;
+    }
+    .dream .read_more {
+        margin-bottom: 10px;
+    }
+    .slider_main {
+        padding-top: 20%;
+        height: 100%;
+        width: 100%;
+        background-size: 100% 100%;
+    }
+    .dream_img {
+        padding-top: 20px;
+    }
+    .logo {
+        float: left;
+    }
+    #banner1 .carousel-control-next {
+        left: 24%;
+    }
+    .titlepage h2 {
+        line-height: 35px;
+        font-size: 32px;
+    }
+    .domain-price {
+        padding-bottom: 10px;
+    }
+    .navigation.navbar {
+        float: right;
+        display: inherit !important;
+        padding: 0;
+        width: 100%;
+        margin-top: -49px;
+    }
+    .navigation .navbar-collapse {
+        background: #2e3192;
+        padding: 20px;
+        margin-top: 70px;
+        position: absolute;
+        width: 100%;
+        z-index: 999;
+        box-shadow: 0 0 59px rgba(30, 30, 29, 0.25);
+    }
+    .navigation.navbar-dark .navbar-nav .nav-link {
+        padding: 10px 0;
+        color: #fff;
+    }
+    .navigation.navbar-dark .navbar-toggler {
+        float: right;
+        border: inherit;
+        margin-top: 1px;
+        padding: 0;
+        outline: inherit;
+    }
+    .navigation.navbar-dark .navbar-toggler-icon {
+        background: url(../images/menu_icon.png);
+        background-repeat: no-repeat;
+        width: 48px;
+    }
+    .d_none {
+        display: none;
+    }
+}

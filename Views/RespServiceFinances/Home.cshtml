@@ -1,0 +1,123 @@
+﻿@model GAP.Models.RespServiceFinance
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+@section Scripts {
+    <script>
+        // JavaScript code for sliding menu functionality
+        document.addEventListener("DOMContentLoaded", function () {
+            var menuToggle = document.querySelector(".menu-toggle");
+            var slidingMenu = document.querySelector(".sliding-menu");
+
+            menuToggle.addEventListener("click", function () {
+                slidingMenu.classList.toggle("open");
+            });
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        /* CSS styles for the sliding menu and buttons */
+        .sliding-menu {
+            position: fixed;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100vh;
+            background-color: blue;
+            color: white;
+            padding: 20px;
+            transition: left 0.3s ease-in-out;
+        }
+
+            .sliding-menu.open {
+                left: 0;
+            }
+
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background-color: yellow;
+            color: blue;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+            .menu-toggle .sandwich-bar {
+                width: 25px;
+                height: 3px;
+                background-color: blue;
+                margin: 4px 0;
+            }
+
+        .menu-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .menu-item {
+            display: block;
+            background-color: yellow;
+            color: blue;
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .sub-menu {
+            display: none;
+            margin-left: 10px;
+        }
+
+            .sub-menu li {
+                margin-bottom: 5px;
+            }
+
+        .menu-item:hover .sub-menu {
+            display: block;
+        }
+    </style>
+}
+
+<button class="menu-toggle">
+    <div class="sandwich-bar"></div>
+    <div class="sandwich-bar"></div>
+    <div class="sandwich-bar"></div>
+</button>
+
+<div class="sliding-menu">
+    <ul class="menu-items">
+        <li>
+            <button class="menu-item">Offre</button>
+            <ul class="sub-menu">
+                <li><a href="/RespServiceAchat/CreateOffre">Create</a></li>
+                <li><a href="/RespServiceAchat/UpdateOffre">Update</a></li>
+                <li><a href="/RespServiceAchat/DeleteOffre">Delete</a></li>
+            </ul>
+        </li>
+        <li>
+            <button class="menu-item">Devis</button>
+            <ul class="sub-menu">
+                <li><a href="/RespServiceAchat/CreateDevis">Create</a></li>
+                <li><a href="/RespServiceAchat/UpdateDevis">Update</a></li>
+                <li><a href="/RespServiceAchat/DeleteDevis">Delete</a></li>
+            </ul>
+        </li>
+        <li>
+            <button class="menu-item">Demandes</button>
+            <ul class="sub-menu">
+                <li><a href="/RespServiceAchat/CreateDemande">Create</a></li>
+                <li><a href="/RespServiceAchat/UpdateDemande">Update</a></li>
+                <li><a href="/RespServiceAchat/DeleteDemande">Delete</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>

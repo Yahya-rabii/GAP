@@ -5,7 +5,8 @@
     padding: 20px;
     box-shadow: 5px 5px 10px black;
     animation: fadeIn 0.5s ease-in-out;
-    width:200%;
+    width:100%;
+    position:relative;
 }
 
 .form-container {

@@ -174,5 +174,35 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+
+
+
+
+
+        public IActionResult Home()
+        {
+            // Implementation for creating an Offre
+            return View();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

@@ -28,4 +28,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\SideMenues\" />
+  </ItemGroup>
+
 </Project>
