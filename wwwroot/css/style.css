@@ -37,9 +37,8 @@ basic
 }
 
 .container {
-    max-width: 1170px;
-    position:relative;
-
+    max-width: 1180px;
+    position: relative;
 }
 
 html {
@@ -52,8 +51,6 @@ body {
     font-family: 'Roboto', sans-serif;
     line-height: 1.80857;
     font-weight: normal;
-    position: relative;
-    padding-bottom:40%;
 }
 
 a {
@@ -398,13 +395,19 @@ ul.email li {
 
 
 /** footer **/
-
-.footer {
+footer {
     position: relative;
-    margin-top: 100px;
-    padding-top: 90px;
+    margin-top:600px;
+}
+.footer {
+    bottom: 100%; 
     background: #223781;
     text-align: center;
+}
+
+.containerft {
+    padding: 10px;
+    margin:40px;
 }
 
 .form_subscri {

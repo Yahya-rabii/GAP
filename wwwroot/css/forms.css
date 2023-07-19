@@ -13,7 +13,7 @@
     max-width: 650px;
     max-height: auto;
     position: relative;
-    top: 50%;
+    top: 200px;
     left: 50%;
     transform: translate(-50%, -50%);
     background: rgba(255, 255, 255, 0.068);
@@ -31,7 +31,7 @@
 .frminput-box {
     position: relative;
     margin: 10px 0;
-    padding-bottom: 2px;
+    padding-bottom: 20px;
 }
 
 .frminput-text {
@@ -108,7 +108,9 @@ textarea::placeholder {
 .DET-button,
 .EDI-button,
 .BTL-button {
-    padding: 1px;
+    padding: 10px;
+    position:relative;
+    display:inline-block;
     flex: 1;
     border-radius: 10px;
     color: rgb(46, 66, 139);

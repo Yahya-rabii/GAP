@@ -4,11 +4,41 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<main>
+    <article>
+
+            <div class="datatable-container">
+
+                <h1 class="form-header">Users</h1>
+
+                <!-- ======= Header tools ======= -->
+                <div class="header-tools">
+                    <div class="tools">
+                        <ul>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="search">
+                        <form method="get" asp-action="Index">
+
+
+                            <input type="search" id="form1" class="search-input" placeholder="user name..." name="SearchString" style="color:white;" />
+
+                        </form>
+                    </div>
+                </div>
+
+
 <table class="table">
     <thead>
         <tr>
@@ -48,12 +78,41 @@
             <td>
                 @Html.DisplayFor(modelItem => item.IsAdmin)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UserID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                                <td>
+                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                        <a asp-action="Edit" asp-route-id="@item.UserID">
+                                            <input type="submit" value="Edit"
+                                                   class="form-button EDI-button" style="margin-right: 5px;" />
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.UserID">
+                                            <input type="button" class="form-button DET-button"
+                                                   value="Details" style="margin-right: 5px;">
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.UserID">
+                                            <input type="button" class="form-button DEL-button"
+                                                   value="Delete" style="margin-right: 5px;">
+                                        </a>
+
+                                    </div>
+                                </td>
+
+
+
+
+                            </tr>
+                        }
+
+
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+
+
+    </article>
+</main>

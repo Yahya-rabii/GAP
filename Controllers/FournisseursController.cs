@@ -14,8 +14,7 @@ using System.Data;
 
 namespace GAP.Controllers
 {
-    [Authorize]
-    [Authorize(Roles = "Admin")]
+    
     public class FournisseursController : Controller
     {
         private readonly GAPContext _context;
@@ -26,6 +25,8 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs
+        
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
               return _context.Fournisseur != null ? 
@@ -34,6 +35,8 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs/Details/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Fournisseur == null)
@@ -52,6 +55,8 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs/Create
+        [Authorize(Roles = "Admin")]
+
         public IActionResult Create()
         {
             return View();
@@ -62,6 +67,8 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Create([Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
             if (ModelState.IsValid)
@@ -74,6 +81,8 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs/Edit/5
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Fournisseur == null)
@@ -94,6 +103,8 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
             if (id != fournisseur.FournisseurID)
@@ -145,6 +156,8 @@ namespace GAP.Controllers
         // POST: Fournisseurs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Fournisseur == null)

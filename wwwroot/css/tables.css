@@ -1,217 +1,212 @@
 :root {
-  --primary-color: white;
-  --secondary-color: rgb(61, 68, 73);
-  --highlight-color: #3282b8;
-
-  --dt-status-available-color: greenyellow;
-  --dt-status-away-color: lightsalmon;
-  --dt-status-offline-color: lightgray;
-
-  --dt-padding: 12px;
-  --dt-padding-s: 6px;
-  --dt-padding-xs: 2px;
-
-  --dt-border-radius: 3px;
-
-  --dt-background-color-container: #2a3338;
-  --dt-border-color: var(--secondary-color);
-  --dt-bg-color: var(--highlight-color);
-  --dt-text-color: var(--primary-color);
-  --dt-bg-active-button: var(--highlight-color);
-  --dt-text-color-button: var(--primary-color);
-  --dt-text-color-active-button: var(--primary-color);
-  --dt-hover-cell-color: var(--highlight-color);
-  --dt-even-row-color: var(--secondary-color);
-  --dt-focus-color: var(--highlight-color);
-  --dt-input-background-color: var(--secondary-color);
-  --dt-input-color: var(--primary-color);
+    --primary-color: white;
+    --secondary-color: rgb(61, 68, 73);
+    --highlight-color: #3282b8;
+    --dt-status-available-color: greenyellow;
+    --dt-status-away-color: lightsalmon;
+    --dt-status-offline-color: lightgray;
+    --dt-padding: 12px;
+    --dt-padding-s: 6px;
+    --dt-padding-xs: 2px;
+    --dt-border-radius: 3px;
+    --dt-background-color-container: #2a3338;
+    --dt-border-color: var(--secondary-color);
+    --dt-bg-color: var(--highlight-color);
+    --dt-text-color: var(--primary-color);
+    --dt-bg-active-button: var(--highlight-color);
+    --dt-text-color-button: var(--primary-color);
+    --dt-text-color-active-button: var(--primary-color);
+    --dt-hover-cell-color: var(--highlight-color);
+    --dt-even-row-color: var(--secondary-color);
+    --dt-focus-color: var(--highlight-color);
+    --dt-input-background-color: var(--secondary-color);
+    --dt-input-color: var(--primary-color);
 }
 
 .material-icons {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .datatable-container {
     font-family: sans-serif;
     border-bottom-style: double;
+    position: relative;
     color: var(--dt-text-color);
     font-size: 12px;
-    bottom: 125px;
-    position: relative;
-    align-content:center;
-    align-items:center;
-    margin-left: 50px;
-    margin-right: 50px;
+    overflow: auto;
+    width:fit-content;
+    padding:10px;
     background: rgba(255, 255, 255, 0.068);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.048);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
-    padding: 50px;
-    BORDER-RADIUS: 10PX;
+    border-radius: 10px;
+    table-layout: auto;
 }
 
-.datatable-container .header-tools {
-  border-bottom: solid 1px var(--dt-border-color);
-  padding: var(--dt-padding);
-  padding-left: 0;
-  display: flex;
-  align-items: baseline;
-}
-
-.datatable-container .header-tools .search {
-  width: 30%;
-}
-
-.datatable-container .header-tools .search .search-input {
-    position:relative;
-  width: 100%;
-  height: calc(1.5em + 0.75rem + 2px);
-  padding: 0.375rem 0.75rem;
-  background-color: var(--dt-input-background-color);
-  display: block;
-  box-sizing: border-box;
-  border-radius: var(--dt-border-radius);
-  border: solid 1px var(--dt-border-color);
-  color: var(--dt-input-color);
-}
-
-.datatable-container .header-tools .tools {
-  width: 70%;
-}
-
-.datatable-container .header-tools .tools ul {
-  margin: 0;
-  padding: 0;
-  justify-content: start;
-  align-items: baseline;
-}
-
-.datatable-container .header-tools .tools ul li {
-  margin: 0 var(--dt-padding-xs);
-  align-items: baseline;
-}
-
-
-.datatable-container .footer-tools .list-items {
-  width: 50%;
-}
-
-.datatable-container .footer-tools .pages {
-  margin-left: auto;
-  margin-right: 0;
-  width: 50%;
-}
-
-.datatable-container .footer-tools .pages ul {
-  margin: 0;
-  padding: 0;
-  align-items: baseline;
-  justify-content: flex-end;
-}
-
-.datatable-container .footer-tools .pages ul li {
-  display: inline-block;
-  margin: 0 var(--dt-padding-xs);
-}
-
-.datatable-container .footer-tools .pages ul li button,
-.datatable-container .header-tools .tools ul li button {
-  color: var(--dt-text-color-button);
-  width: 100%;
-  box-sizing: border-box;
-  border: 0;
-  border-radius: var(--dt-border-radius);
-  background: transparent;
-  cursor: pointer;
-}
-
-.datatable-container .footer-tools .pages ul li button:hover,
-.datatable-container .header-tools .tools ul li button:hover {
-  background: var(--dt-bg-active-button);
-  color: var(--dt-text-color-active-button);
-}
-
-.datatable-container .footer-tools .pages ul li span.active {
-  background-color: var(--dt-bg-color);
-  border-radius: var(--dt-border-radius);
-}
-
-.datatable-container .footer-tools .pages ul li button,
-.datatable-container .footer-tools .pages ul li span,
-.datatable-container .header-tools .tools ul li button {
-  padding: var(--dt-padding-s) var(--dt-padding);
-}
-
-.datatable-container .datatable {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-    .datatable-container .datatable,
-    .datatable-container .datatable th,
-    .datatable-container .datatable td {
-        padding: var(--dt-padding) var(--dt-padding);
+    .datatable-container .header-tools {
+        border-bottom: solid 1px var(--dt-border-color);
+        padding: var(--dt-padding);
+        padding-left: 0;
+        display: flex;
+        align-items: baseline;
     }
 
-.datatable-container .datatable th {
-
-  font-weight: bolder;
-  text-align: left;
-  border-bottom: solid 1px var(--dt-border-color);
-}
-
-        .datatable-container .datatable td {
-            border-bottom: solid 1px var(--dt-border-color);
-            position: relative;
-            max-width:300px;
+        .datatable-container .header-tools .search {
+            width: 30%;
         }
 
+            .datatable-container .header-tools .search .search-input {
+                position: relative;
+                width: 100%;
+                left: 10px;
+                height: calc(1.5em + 0.75rem + 2px);
+                padding: 0.375rem 0.75rem;
+                background-color: var(--dt-input-background-color);
+                display: block;
+                box-sizing: border-box;
+                border: solid 1px var(--dt-border-color);
+                color: var(--dt-input-color);
+                background: rgba(255, 255, 255, 0.068);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.048);
+                box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
+                border-radius: 10px;
+            }
 
+        .datatable-container .header-tools .tools {
+            width: 70%;
+        }
 
+            .datatable-container .header-tools .tools ul {
+                margin: 0;
+                position: relative;
+                justify-content: center;
+                align-items: baseline;
+            }
 
-.datatable-container .datatable tbody tr .available::after,
-.datatable-container .datatable tbody tr .away::after,
-.datatable-container .datatable tbody tr .offline::after {
-  display: inline-block;
-  vertical-align: middle;
-}
+                .datatable-container .header-tools .tools ul li {
+                    margin: 0 var(--dt-padding-xs);
+                    align-items: center;
+                    display: inline-block;
+                }
 
-.datatable-container .datatable tbody tr .available::after {
-  content: "Online";
-  color: var(--dt-status-available-color);
-}
+    .datatable-container .footer-tools .list-items {
+        width: 50%;
+    }
 
-.datatable-container .datatable tbody tr .away::after {
-  content: "Away";
-  color: var(--dt-status-away-color);
-}
+    .datatable-container .footer-tools .pages {
+        margin-left: auto;
+        margin-right: 0;
+        width: 50%;
+    }
 
-.datatable-container .datatable tbody tr .offline::after {
-  content: "Offline";
-  color: var(--dt-status-offline-color);
-}
+        .datatable-container .footer-tools .pages ul {
+            margin: 0;
+            padding: 0;
+            align-items: baseline;
+            justify-content: center;
+        }
 
-.datatable-container .datatable tbody tr .available::before,
-.datatable-container .datatable tbody tr .away::before,
-.datatable-container .datatable tbody tr .offline::before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  margin-right: 10px;
-  border-radius: 50%;
-  vertical-align: middle;
-}
+            .datatable-container .footer-tools .pages ul li {
+                display: inline;
+                margin: 0 var(--dt-padding-xs);
+            }
 
-.datatable-container .datatable tbody tr .available::before {
-  background-color: var(--dt-status-available-color);
-}
+                .datatable-container .footer-tools .pages ul li button,
+                .datatable-container .header-tools .tools ul li button {
+                    color: var(--dt-text-color-button);
+                    width: 100%;
+                    box-sizing: border-box;
+                    border: 0;
+                    border-radius: var(--dt-border-radius);
+                    background: transparent;
+                    cursor: pointer;
+                }
 
-.datatable-container .datatable tbody tr .away::before {
-  background-color: var(--dt-status-away-color);
-}
+                    .datatable-container .footer-tools .pages ul li button:hover,
+                    .datatable-container .header-tools .tools ul li button:hover {
+                        background: var(--dt-bg-active-button);
+                        color: var(--dt-text-color-active-button);
+                    }
 
-.datatable-container .datatable tbody tr .offline::before {
-  background-color: var(--dt-status-offline-color);
-}
+                .datatable-container .footer-tools .pages ul li span.active {
+                    background-color: var(--dt-bg-color);
+                    border-radius: var(--dt-border-radius);
+                }
+
+                .datatable-container .footer-tools .pages ul li button,
+                .datatable-container .footer-tools .pages ul li span,
+                .datatable-container .header-tools .tools ul li button {
+                    padding: var(--dt-padding-s) var(--dt-padding);
+                }
+
+    .datatable-container .datatable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .datatable-container .datatable,
+        .datatable-container .datatable th,
+        .datatable-container .datatable td {
+            padding: var(--dt-padding) var(--dt-padding);
+        }
+
+            .datatable-container .datatable th {
+                font-weight: bolder;
+                text-align: left;
+                border-bottom: solid 1px var(--dt-border-color);
+            }
+
+            .datatable-container .datatable td {
+                border-bottom: solid 1px var(--dt-border-color);
+                max-width: 3px; /* You can adjust this value as needed */
+            }
+
+            .datatable-container .datatable tbody tr .available::after,
+            .datatable-container .datatable tbody tr .away::after,
+            .datatable-container .datatable tbody tr .offline::after {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .datatable-container .datatable tbody tr .available::after {
+                content: "Online";
+                color: var(--dt-status-available-color);
+            }
+
+            .datatable-container .datatable tbody tr .away::after {
+                content: "Away";
+                color: var(--dt-status-away-color);
+            }
+
+            .datatable-container .datatable tbody tr .offline::after {
+                content: "Offline";
+                color: var(--dt-status-offline-color);
+            }
+
+            .datatable-container .datatable tbody tr .available::before,
+            .datatable-container .datatable tbody tr .away::before,
+            .datatable-container .datatable tbody tr .offline::before {
+                content: "";
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                margin-right: 10px;
+                border-radius: 50%;
+                vertical-align: middle;
+            }
+
+            .datatable-container .datatable tbody tr .available::before {
+                background-color: var(--dt-status-available-color);
+            }
+
+            .datatable-container .datatable tbody tr .away::before {
+                background-color: var(--dt-status-away-color);
+            }
+
+            .datatable-container .datatable tbody tr .offline::before {
+                background-color: var(--dt-status-offline-color);
+            }
