@@ -12,7 +12,8 @@ using System.Data;
 
 namespace GAP.Controllers
 {
-   
+    [Authorize]
+    [Authorize(Roles = "Fournisseur")]
     public class ProduitsController : Controller
     {
         private readonly GAPContext _context;
@@ -39,7 +40,7 @@ namespace GAP.Controllers
             }
 
             var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ProduitID == id);
             if (produit == null)
             {
                 return NotFound();
@@ -59,7 +60,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Create([Bind("ProduitID,PrixUnitaire,Nom,NombrePiece,Desc")] Produit produit)
         {
             if (ModelState.IsValid)
             {
@@ -91,9 +92,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PrixUnitaire,PrixTotal")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("ProduitID,PrixUnitaire,Nom,NombrePiece,Desc")] Produit produit)
         {
-            if (id != produit.Id)
+            if (id != produit.ProduitID)
             {
                 return NotFound();
             }
@@ -107,7 +108,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProduitExists(produit.Id))
+                    if (!ProduitExists(produit.ProduitID))
                     {
                         return NotFound();
                     }
@@ -130,7 +131,7 @@ namespace GAP.Controllers
             }
 
             var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.ProduitID == id);
             if (produit == null)
             {
                 return NotFound();
@@ -160,7 +161,7 @@ namespace GAP.Controllers
 
         private bool ProduitExists(int id)
         {
-          return (_context.Produit?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Produit?.Any(e => e.ProduitID == id)).GetValueOrDefault();
         }
     }
 }

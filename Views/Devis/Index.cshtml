@@ -16,13 +16,19 @@
                 @Html.DisplayNameFor(model => model.DateCreation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrixTTL)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.DateReception)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PrixTTL)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NombrePiece)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Produit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fournisseur)
             </th>
             <th></th>
         </tr>
@@ -34,18 +40,24 @@
                 @Html.DisplayFor(modelItem => item.DateCreation)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PrixTTL)
+                @Html.DisplayFor(modelItem => item.DateReception)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateReception)
+                @Html.DisplayFor(modelItem => item.PrixTTL)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NombrePiece)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.DisplayFor(modelItem => item.Produit.ProduitID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fournisseur.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DevisID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DevisID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DevisID">Delete</a>
             </td>
         </tr>
 }

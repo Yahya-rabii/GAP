@@ -9,11 +9,10 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+
 namespace GAP.Controllers
 {
-
     [Authorize]
-    [Authorize(Roles = "RespServiceAchat,Fournisseur")]
     public class DemandeAchatsController : Controller
     {
         private readonly GAPContext _context;
@@ -24,14 +23,27 @@ namespace GAP.Controllers
         }
 
         // GET: DemandeAchats
+        [Authorize(Roles = "RespServiceAchat")]
+
         public async Task<IActionResult> Index()
         {
-              return _context.DemandeAchat != null ? 
-                          View(await _context.DemandeAchat.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.DemandeAchat'  is null.");
+            return _context.DemandeAchat != null ?
+                        View(await _context.DemandeAchat.ToListAsync()) :
+                        Problem("Entity set 'GAPContext.DemandeAchat'  is null.");
+        }
+        // GET: DemandeAchats for fournisseur, this method will be allowed for the fournisseur role
+        [Authorize(Roles = "Fournisseur")]
+        public async Task<IActionResult> IndexFour()
+        {
+            return _context.DemandeAchat != null ?
+                        View(await _context.DemandeAchat.ToListAsync()) :
+                        Problem("Entity set 'GAPContext.DemandeAchat'  is null.");
         }
 
+
         // GET: DemandeAchats/Details/5
+        [Authorize(Roles = "RespServiceAchat")]
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.DemandeAchat == null)
@@ -40,7 +52,7 @@ namespace GAP.Controllers
             }
 
             var demandeAchat = await _context.DemandeAchat
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.DemandeAchatID == id);
             if (demandeAchat == null)
             {
                 return NotFound();
@@ -50,6 +62,8 @@ namespace GAP.Controllers
         }
 
         // GET: DemandeAchats/Create
+        [Authorize(Roles = "RespServiceAchat")]
+
         public IActionResult Create()
         {
             return View();
@@ -60,7 +74,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Budget")] DemandeAchat demandeAchat)
+        [Authorize(Roles = "RespServiceAchat")]
+
+        public async Task<IActionResult> Create([Bind("DemandeAchatID,CreationDate,Description,Budget")] DemandeAchat demandeAchat)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +88,8 @@ namespace GAP.Controllers
         }
 
         // GET: DemandeAchats/Edit/5
+        [Authorize(Roles = "RespServiceAchat")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.DemandeAchat == null)
@@ -92,9 +110,11 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Budget")] DemandeAchat demandeAchat)
+        [Authorize(Roles = "RespServiceAchat")]
+
+        public async Task<IActionResult> Edit(int id, [Bind("DemandeAchatID,CreationDate,Description,Budget")] DemandeAchat demandeAchat)
         {
-            if (id != demandeAchat.Id)
+            if (id != demandeAchat.DemandeAchatID)
             {
                 return NotFound();
             }
@@ -108,7 +128,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DemandeAchatExists(demandeAchat.Id))
+                    if (!DemandeAchatExists(demandeAchat.DemandeAchatID))
                     {
                         return NotFound();
                     }
@@ -123,6 +143,8 @@ namespace GAP.Controllers
         }
 
         // GET: DemandeAchats/Delete/5
+        [Authorize(Roles = "RespServiceAchat")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.DemandeAchat == null)
@@ -131,7 +153,7 @@ namespace GAP.Controllers
             }
 
             var demandeAchat = await _context.DemandeAchat
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.DemandeAchatID == id);
             if (demandeAchat == null)
             {
                 return NotFound();
@@ -143,6 +165,8 @@ namespace GAP.Controllers
         // POST: DemandeAchats/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "RespServiceAchat")]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.DemandeAchat == null)
@@ -161,7 +185,7 @@ namespace GAP.Controllers
 
         private bool DemandeAchatExists(int id)
         {
-          return (_context.DemandeAchat?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.DemandeAchat?.Any(e => e.DemandeAchatID == id)).GetValueOrDefault();
         }
     }
 }

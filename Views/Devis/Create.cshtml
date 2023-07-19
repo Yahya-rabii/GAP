@@ -12,30 +12,32 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+         
             <div class="form-group">
-                <label asp-for="RespServiceAchatId" class="control-label"></label>
-                <select asp-for="RespServiceAchatId" class ="form-control" asp-items="ViewBag.RespServiceAchatId"></select>
+                <label asp-for="DateReception" class="control-label"></label>
+                <input asp-for="DateReception" class="form-control" />
+                <span asp-validation-for="DateReception" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DateCreation" class="control-label"></label>
-                <input asp-for="DateCreation" class="form-control" />
-                <span asp-validation-for="DateCreation" class="text-danger"></span>
-            </div>
+          
             <div class="form-group">
                 <label asp-for="PrixTTL" class="control-label"></label>
                 <input asp-for="PrixTTL" class="form-control" />
                 <span asp-validation-for="PrixTTL" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateReception" class="control-label"></label>
-                <input asp-for="DateReception" class="form-control" />
-                <span asp-validation-for="DateReception" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="NombrePiece" class="control-label"></label>
                 <input asp-for="NombrePiece" class="form-control" />
                 <span asp-validation-for="NombrePiece" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="FournisseurID" class="control-label"></label>
+                <select asp-for="FournisseurID" class ="form-control" asp-items="ViewBag.FournisseurID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProduitID" class="control-label"></label>
+                <select asp-for="ProduitID" class="form-control" asp-items="ViewBag.ProduitID"></select>
+            </div>
+           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -11,7 +11,6 @@ namespace GAP.Models
 
         public RespServiceQualite() : base()
         {
-          
             historiqueRapportQualite= new List<RapportTestQualite>();
         }
 
@@ -26,6 +25,7 @@ namespace GAP.Models
             get { return historiqueRapportQualite; }
             set { historiqueRapportQualite = value; }
         }
+   
 
     }
 

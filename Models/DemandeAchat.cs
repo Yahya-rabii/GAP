@@ -1,37 +1,19 @@
-﻿using GAP.Helper;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GAP.Models
 {
     public class DemandeAchat
     {
-        private int id;
-        private int date;
-        private Desc description;
-        private double budget;
 
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        public int DemandeAchatID { get; set; }
+        public DateTime CreationDate  { get; set; }
 
-        public int Date
-        {
-            get { return date; }
-            set { date = value; }
-        }
+        [Required]
+        [StringLength(255)]
+        public string? Description { get; set; }
+        public double Budget { get; set; }
 
-        public Desc Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-
-        public double Budget
-        {
-            get { return budget; }
-            set { budget = value; }
-        }
+   
     }
 
 }

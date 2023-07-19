@@ -9,9 +9,9 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+
 namespace GAP.Controllers
 {
-
     [Authorize]
     [Authorize(Roles = "RespServiceFinance")]
     public class FacturesController : Controller
@@ -40,7 +40,7 @@ namespace GAP.Controllers
             }
 
             var facture = await _context.Facture
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.FactureID == id);
             if (facture == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
+        public async Task<IActionResult> Create([Bind("FactureID,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
         {
             if (ModelState.IsValid)
             {
@@ -92,9 +92,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
+        public async Task<IActionResult> Edit(int id, [Bind("FactureID,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
         {
-            if (id != facture.Id)
+            if (id != facture.FactureID)
             {
                 return NotFound();
             }
@@ -108,7 +108,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FactureExists(facture.Id))
+                    if (!FactureExists(facture.FactureID))
                     {
                         return NotFound();
                     }
@@ -131,7 +131,7 @@ namespace GAP.Controllers
             }
 
             var facture = await _context.Facture
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.FactureID == id);
             if (facture == null)
             {
                 return NotFound();
@@ -161,7 +161,7 @@ namespace GAP.Controllers
 
         private bool FactureExists(int id)
         {
-          return (_context.Facture?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Facture?.Any(e => e.FactureID == id)).GetValueOrDefault();
         }
     }
 }

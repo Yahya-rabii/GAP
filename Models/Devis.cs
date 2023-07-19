@@ -4,56 +4,19 @@ namespace GAP.Models
 {
     public class Devis
     {
-        private int id;
-        private DateTime dateCreation;
-        private Produit produit;
-        private double prixTTL;
-        private DateTime dateReception;
-        private Fournisseur fournisseur;
-        private int nombrePiece;
-        [ForeignKey("RespServiceAchat")]
-        public int RespServiceAchatId { get; set; } // Foreign key property
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+        public int DevisID { get; set; }
+        public DateTime DateCreation { get; set; }
+        public DateTime DateReception { get; set; }
+        public int? ProduitID { get; set; } // Foreign key for Product
+        public double? PrixTTL { get; set; }
+        public int NombrePiece { get; set; }
+        public int? FournisseurID { get; set; } // Foreign key for Fournisseur
+        public int? RespServiceAchatId { get; set; }
 
-        public DateTime DateCreation
-        {
-            get { return dateCreation; }
-            set { dateCreation = value; }
-        }
+        [ForeignKey("ProduitID")]
+        public Produit? Produit { get; set; }
 
-        public Produit Produit
-        {
-            get { return produit; }
-            set { produit = value; }
-        }
-
-        public double PrixTTL
-        {
-            get { return prixTTL; }
-            set { prixTTL = value; }
-        }
-
-        public DateTime DateReception
-        {
-            get { return dateReception; }
-            set { dateReception = value; }
-        }
-
-        public Fournisseur Fournisseur
-        {
-            get { return fournisseur; }
-            set { fournisseur = value; }
-        }
-
-        public int NombrePiece
-        {
-            get { return nombrePiece; }
-            set { nombrePiece = value; }
-        }
+        [ForeignKey("FournisseurID")]
+        public Fournisseur? Fournisseur { get; set; }
     }
-
 }

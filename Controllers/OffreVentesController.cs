@@ -9,9 +9,9 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+
 namespace GAP.Controllers
 {
-
     [Authorize]
     [Authorize(Roles = "Fournisseur")]
     public class OffreVentesController : Controller
@@ -26,7 +26,7 @@ namespace GAP.Controllers
         // GET: OffreVentes
         public async Task<IActionResult> Index()
         {
-            var gAPContext = _context.OffreVente.Include(o => o.Provider);
+            var gAPContext = _context.OffreVente.Include(o => o.Fournisseur);
             return View(await gAPContext.ToListAsync());
         }
 
@@ -39,8 +39,8 @@ namespace GAP.Controllers
             }
 
             var offreVente = await _context.OffreVente
-                .Include(o => o.Provider)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(o => o.Fournisseur)
+                .FirstOrDefaultAsync(m => m.OffreVenteID == id);
             if (offreVente == null)
             {
                 return NotFound();
@@ -52,7 +52,7 @@ namespace GAP.Controllers
         // GET: OffreVentes/Create
         public IActionResult Create()
         {
-            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email");
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email");
             return View();
         }
 
@@ -61,7 +61,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FournisseurId,Id,PrixTTL,Validite")] OffreVente offreVente)
+        public async Task<IActionResult> Create([Bind("OffreVenteID,PrixTTL,Validite,FournisseurId")] OffreVente offreVente)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace GAP.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -86,7 +86,7 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
-            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -95,9 +95,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FournisseurId,Id,PrixTTL,Validite")] OffreVente offreVente)
+        public async Task<IActionResult> Edit(int id, [Bind("OffreVenteID,PrixTTL,Validite,FournisseurId")] OffreVente offreVente)
         {
-            if (id != offreVente.Id)
+            if (id != offreVente.OffreVenteID)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OffreVenteExists(offreVente.Id))
+                    if (!OffreVenteExists(offreVente.OffreVenteID))
                     {
                         return NotFound();
                     }
@@ -122,7 +122,7 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "Id", "Email", offreVente.FournisseurId);
+            ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", offreVente.FournisseurId);
             return View(offreVente);
         }
 
@@ -135,8 +135,8 @@ namespace GAP.Controllers
             }
 
             var offreVente = await _context.OffreVente
-                .Include(o => o.Provider)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Include(o => o.Fournisseur)
+                .FirstOrDefaultAsync(m => m.OffreVenteID == id);
             if (offreVente == null)
             {
                 return NotFound();
@@ -166,7 +166,7 @@ namespace GAP.Controllers
 
         private bool OffreVenteExists(int id)
         {
-          return (_context.OffreVente?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.OffreVente?.Any(e => e.OffreVenteID == id)).GetValueOrDefault();
         }
     }
 }

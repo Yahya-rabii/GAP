@@ -7,6 +7,7 @@
     animation: fadeIn 0.5s ease-in-out;
     width:100%;
     position:relative;
+    bottom:200px;
 }
 
 .form-container {

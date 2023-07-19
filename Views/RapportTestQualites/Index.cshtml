@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GAP.Models.RapportTestQualite>
+﻿@model IEnumerable<RapportTestQualiteViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,45 +9,60 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ValiditeEtat)
+                @Html.DisplayNameFor(model => model.RapportTestQualite.ValiditeEtat)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValiditeNbrPiece)
+                @Html.DisplayNameFor(model => model.RapportTestQualite.ValiditeNbrPiece)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ValiditeFonctionnement)
+                @Html.DisplayNameFor(model => model.RapportTestQualite.ValiditeFonctionnement)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RespServiceQualite)
+                @Html.DisplayNameFor(model => model.RapportTestQualite.DevisId)
+            </th>
+            <th>
+                <strong>Produit Name</strong>
+            </th>
+            <th>
+                <strong>Fournisseur Email</strong>
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValiditeEtat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValiditeNbrPiece)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValiditeFonctionnement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RespServiceQualite.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RapportTestQualite.ValiditeEtat)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RapportTestQualite.ValiditeNbrPiece)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RapportTestQualite.ValiditeFonctionnement)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RapportTestQualite.DevisId)
+                </td>
+                <td>
+                    @item.Devis?.Produit.Nom <!-- Using the null conditional operator to handle null cases -->
+                </td>
+                <td>
+                    @item.Devis?.Fournisseur.Email <!-- Using the null conditional operator to handle null cases -->
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RapportTestQualite.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.RapportTestQualite.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RapportTestQualite.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

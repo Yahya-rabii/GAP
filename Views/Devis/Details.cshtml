@@ -17,16 +17,16 @@
             @Html.DisplayFor(model => model.DateCreation)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixTTL)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrixTTL)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateReception)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateReception)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PrixTTL)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PrixTTL)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NombrePiece)
@@ -34,9 +34,21 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NombrePiece)
         </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Produit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Produit.ProduitID)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fournisseur)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fournisseur.Email)
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.DevisID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

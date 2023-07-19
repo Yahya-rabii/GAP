@@ -28,8 +28,9 @@
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="RespServiceQualiteId" class="control-label"></label>
-                <select asp-for="RespServiceQualiteId" class ="form-control" asp-items="ViewBag.RespServiceQualiteId"></select>
+                <label asp-for="DevisId" class="control-label"></label>
+                <select asp-for="DevisId" class="form-control" asp-items="@ViewBag.DevisList"></select>
+                <span asp-validation-for="DevisId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -43,5 +44,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

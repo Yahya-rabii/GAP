@@ -50,15 +50,15 @@ namespace GAP.Migrations
                 name: "OffreVente",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    OffreVenteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FournisseurId = table.Column<int>(type: "int", nullable: false),
                     PrixTTL = table.Column<double>(type: "float", nullable: false),
-                    Validite = table.Column<bool>(type: "bit", nullable: false)
+                    Validite = table.Column<bool>(type: "bit", nullable: false),
+                    FournisseurId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OffreVente", x => x.Id);
+                    table.PrimaryKey("PK_OffreVente", x => x.OffreVenteID);
                     table.ForeignKey(
                         name: "FK_OffreVente_Fournisseur_FournisseurId",
                         column: x => x.FournisseurId,
@@ -71,15 +71,16 @@ namespace GAP.Migrations
                 name: "DemandeAchat",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DemandeAchatID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Budget = table.Column<double>(type: "float", nullable: false),
                     RespServiceAchatUserID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DemandeAchat", x => x.Id);
+                    table.PrimaryKey("PK_DemandeAchat", x => x.DemandeAchatID);
                     table.ForeignKey(
                         name: "FK_DemandeAchat_User_RespServiceAchatUserID",
                         column: x => x.RespServiceAchatUserID,
@@ -116,7 +117,8 @@ namespace GAP.Migrations
                     ValiditeEtat = table.Column<bool>(type: "bit", nullable: false),
                     ValiditeNbrPiece = table.Column<bool>(type: "bit", nullable: false),
                     ValiditeFonctionnement = table.Column<bool>(type: "bit", nullable: false),
-                    RespServiceQualiteId = table.Column<int>(type: "int", nullable: false)
+                    RespServiceQualiteId = table.Column<int>(type: "int", nullable: true),
+                    DevisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,74 +127,72 @@ namespace GAP.Migrations
                         name: "FK_RapportTestQualite_User_RespServiceQualiteId",
                         column: x => x.RespServiceQualiteId,
                         principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Produit",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    ProduitID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PrixUnitaire = table.Column<int>(type: "int", nullable: false),
-                    PrixTotal = table.Column<int>(type: "int", nullable: false),
-                    OffreVenteId = table.Column<int>(type: "int", nullable: true)
+                    PrixUnitaire = table.Column<float>(type: "real", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NombrePiece = table.Column<int>(type: "int", nullable: true),
+                    Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OffreVenteID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Produit", x => x.Id);
+                    table.PrimaryKey("PK_Produit", x => x.ProduitID);
                     table.ForeignKey(
-                        name: "FK_Produit_OffreVente_OffreVenteId",
-                        column: x => x.OffreVenteId,
+                        name: "FK_Produit_OffreVente_OffreVenteID",
+                        column: x => x.OffreVenteID,
                         principalTable: "OffreVente",
-                        principalColumn: "Id");
+                        principalColumn: "OffreVenteID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Devis",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    DevisID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RespServiceAchatId = table.Column<int>(type: "int", nullable: false),
                     DateCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProduitId = table.Column<int>(type: "int", nullable: false),
-                    PrixTTL = table.Column<double>(type: "float", nullable: false),
                     DateReception = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FournisseurID = table.Column<int>(type: "int", nullable: false),
-                    NombrePiece = table.Column<int>(type: "int", nullable: false)
+                    ProduitID = table.Column<int>(type: "int", nullable: true),
+                    PrixTTL = table.Column<double>(type: "float", nullable: true),
+                    NombrePiece = table.Column<int>(type: "int", nullable: false),
+                    FournisseurID = table.Column<int>(type: "int", nullable: true),
+                    RespServiceAchatId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Devis", x => x.Id);
+                    table.PrimaryKey("PK_Devis", x => x.DevisID);
                     table.ForeignKey(
                         name: "FK_Devis_Fournisseur_FournisseurID",
                         column: x => x.FournisseurID,
                         principalTable: "Fournisseur",
-                        principalColumn: "FournisseurID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "FournisseurID");
                     table.ForeignKey(
-                        name: "FK_Devis_Produit_ProduitId",
-                        column: x => x.ProduitId,
+                        name: "FK_Devis_Produit_ProduitID",
+                        column: x => x.ProduitID,
                         principalTable: "Produit",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProduitID");
                     table.ForeignKey(
                         name: "FK_Devis_User_RespServiceAchatId",
                         column: x => x.RespServiceAchatId,
                         principalTable: "User",
-                        principalColumn: "UserID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Facture",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    FactureID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProduitId = table.Column<int>(type: "int", nullable: false),
+                    ProduitID = table.Column<int>(type: "int", nullable: true),
                     Prix = table.Column<double>(type: "float", nullable: false),
                     FournisseurEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Validite = table.Column<bool>(type: "bit", nullable: false),
@@ -200,13 +200,12 @@ namespace GAP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Facture", x => x.Id);
+                    table.PrimaryKey("PK_Facture", x => x.FactureID);
                     table.ForeignKey(
-                        name: "FK_Facture_Produit_ProduitId",
-                        column: x => x.ProduitId,
+                        name: "FK_Facture_Produit_ProduitID",
+                        column: x => x.ProduitID,
                         principalTable: "Produit",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProduitID");
                     table.ForeignKey(
                         name: "FK_Facture_User_RespServiceFinanceId",
                         column: x => x.RespServiceFinanceId,
@@ -226,9 +225,9 @@ namespace GAP.Migrations
                 column: "FournisseurID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Devis_ProduitId",
+                name: "IX_Devis_ProduitID",
                 table: "Devis",
-                column: "ProduitId");
+                column: "ProduitID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devis_RespServiceAchatId",
@@ -236,9 +235,9 @@ namespace GAP.Migrations
                 column: "RespServiceAchatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Facture_ProduitId",
+                name: "IX_Facture_ProduitID",
                 table: "Facture",
-                column: "ProduitId");
+                column: "ProduitID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Facture_RespServiceFinanceId",
@@ -251,9 +250,9 @@ namespace GAP.Migrations
                 column: "FournisseurId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Produit_OffreVenteId",
+                name: "IX_Produit_OffreVenteID",
                 table: "Produit",
-                column: "OffreVenteId");
+                column: "OffreVenteID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RapportReception_ReceptServiceAchatId",

@@ -9,9 +9,13 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GAP.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class FournisseursController : Controller
     {
         private readonly GAPContext _context;

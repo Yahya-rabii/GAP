@@ -17,14 +17,26 @@
             @Html.DisplayFor(model => model.PrixUnitaire)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixTotal)
+            @Html.DisplayNameFor(model => model.Nom)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrixTotal)
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NombrePiece)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NombrePiece)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Desc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Desc)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.ProduitID">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

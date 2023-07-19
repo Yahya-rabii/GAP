@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using System.Security.Claims;
+
 namespace GAP.Controllers
 {
-
-    [Authorize]
-    [Authorize(Roles = "RespServiceQualite")]
     public class RapportTestQualitesController : Controller
     {
         private readonly GAPContext _context;
@@ -22,13 +19,31 @@ namespace GAP.Controllers
         {
             _context = context;
         }
-
-        // GET: RapportTestQualites
         public async Task<IActionResult> Index()
         {
-            var gAPContext = _context.RapportTestQualite.Include(r => r.RespServiceQualite);
-            return View(await gAPContext.ToListAsync());
+            var rapportTestQualites = await _context.RapportTestQualite.ToListAsync();
+
+            // Load the related Devis data (Produit and Fournisseur)
+            var devisList = await _context.Devis
+                .Include(d => d.Produit)
+                .Include(d => d.Fournisseur)
+                .ToListAsync();
+
+            // Create a ViewModel list by combining RapportTestQualite and Devis information
+            var viewModelList = rapportTestQualites.Select(rtq => new RapportTestQualiteViewModel
+            {
+                RapportTestQualite = rtq,
+                Devis = devisList.FirstOrDefault(d => d.DevisID == rtq.DevisId)
+            }).ToList();
+
+            // Create the select list for dropdown menu
+            // Assuming DevisID is an int property in the Devis model
+            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DisplayText");
+
+            return View(viewModelList);
         }
+
+
 
         // GET: RapportTestQualites/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -39,7 +54,6 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
-                .Include(r => r.RespServiceQualite)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rapportTestQualite == null)
             {
@@ -49,27 +63,59 @@ namespace GAP.Controllers
             return View(rapportTestQualite);
         }
 
-        // GET: RapportTestQualites/Create
+        // GET: RapportTestQualite/Create
         public IActionResult Create()
         {
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email");
+            // Fetch the list of all devis with corresponding product and supplier names
+            var devisList = _context.Devis
+               .Include(d => d.Produit)
+               .Include(d => d.Fournisseur)
+               .Select(d => new SelectListItem
+               {
+                   Value = d.DevisID.ToString(),
+                   Text = $"devis: {d.DevisID } | produit id : {d.Produit.Nom} | provider id : {d.Fournisseur.Email}" // Combine product name and supplier email
+               })
+               .ToList();
+
+            // Create the select list for dropdown menu
+            ViewBag.DevisList = new SelectList(devisList, "Value", "Text");
+
             return View();
         }
 
-        // POST: RapportTestQualites/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: RapportTestQualite/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId")] RapportTestQualite rapportTestQualite)
+        public IActionResult Create(RapportTestQualite rapportTestQualite)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(rapportTestQualite);
-                await _context.SaveChangesAsync();
+
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                rapportTestQualite.RespServiceQualiteId = userId;
+                // Save the RapportTestQualite object to the database
+                _context.RapportTestQualite.Add(rapportTestQualite);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
+
+            // If the model state is not valid, refill the dropdown list and return the view with validation errors.
+            var devisList = _context.Devis
+                .Include(d => d.Produit)
+                .ThenInclude(p=>p.Nom)
+                .Include(d => d.Fournisseur)
+                .ThenInclude(d=>d.Email)
+                .Select(d => new
+                {
+                    DevisID = d.DevisID,
+                    DevisProductName = d.Produit.Nom,
+                    DevisFournisseurName = d.Fournisseur.Email
+                })
+                .ToList();
+
+            // Create the select list for dropdown menu
+            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DevisProductName", "DevisFournisseurName");
+
             return View(rapportTestQualite);
         }
 
@@ -86,7 +132,6 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -95,7 +140,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId")] RapportTestQualite rapportTestQualite)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId,DevisId")] RapportTestQualite rapportTestQualite)
         {
             if (id != rapportTestQualite.Id)
             {
@@ -122,7 +167,6 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RespServiceQualiteId"] = new SelectList(_context.RespServiceQualite, "RespServiceQualiteID", "Email", rapportTestQualite.RespServiceQualiteId);
             return View(rapportTestQualite);
         }
 
@@ -135,7 +179,6 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
-                .Include(r => r.RespServiceQualite)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rapportTestQualite == null)
             {

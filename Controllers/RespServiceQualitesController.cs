@@ -171,7 +171,5 @@ namespace GAP.Controllers
             // here's an example using BCrypt
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-
-
     }
 }

@@ -241,7 +241,7 @@ namespace GAP.Controllers
                         };
 
                         claims.Add(new Claim(ClaimTypes.Role, "Fournisseur"));
-                        return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
+                        return await SignInAndRedirectToAction(claims, "IndexFour", "DemandeAchats");
                     }
                     else
                     {

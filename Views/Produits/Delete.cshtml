@@ -18,15 +18,27 @@
             @Html.DisplayFor(model => model.PrixUnitaire)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixTotal)
+            @Html.DisplayNameFor(model => model.Nom)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrixTotal)
+            @Html.DisplayFor(model => model.Nom)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NombrePiece)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NombrePiece)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Desc)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Desc)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ProduitID" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

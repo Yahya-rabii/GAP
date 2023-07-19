@@ -129,3 +129,14 @@ function getURL() { window.location.href; } var protocol = location.protocol; $.
         });
     });
 
+
+
+$(document).ready(function () {
+    $('.menu-btn').click(function () {
+        $('.sidenav').toggleClass('nav-open');
+        $('.line--1').toggleClass('line-cross');
+        $('.line--2').toggleClass('line-fade-out');
+        $('.line--3').toggleClass('line-cross');
+        $('.nav-links').toggleClass('fade-in');
+    });
+});

@@ -13,7 +13,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Provider)
+                @Html.DisplayNameFor(model => model.Fournisseur)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PrixTTL)
@@ -28,7 +28,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Provider.Email)
+                @Html.DisplayFor(modelItem => item.Fournisseur.Email)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PrixTTL)
@@ -37,9 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Validite)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.OffreVenteID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.OffreVenteID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.OffreVenteID">Delete</a>
             </td>
         </tr>
 }

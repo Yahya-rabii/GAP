@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using GAP.Helper;
 using GAP.Models;
 
 namespace GAP.Data
@@ -24,17 +23,11 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.User> User { get; set; } = default!;
 
-        public DbSet<Desc> Desc { get; set; } = default!;
-
         public DbSet<GAP.Models.Devis> Devis { get; set; } = default!;
 
         public DbSet<GAP.Models.Facture> Facture { get; set; } = default!;
 
         public DbSet<GAP.Models.Fournisseur> Fournisseur { get; set; } = default!;
-
-        public DbSet<GAP.Models.OffreVente> OffreVente { get; set; } = default!;
-
-        public DbSet<GAP.Models.Produit> Produit { get; set; } = default!;
 
         public DbSet<GAP.Models.RapportReception> RapportReception { get; set; } = default!;
 
@@ -49,6 +42,11 @@ namespace GAP.Data
         public DbSet<GAP.Models.RespServiceQualite> RespServiceQualite { get; set; } = default!;
 
         public DbSet<GAP.Models.DemandeAchat> DemandeAchat { get; set; } = default!;
+
+        public DbSet<GAP.Models.OffreVente> OffreVente { get; set; } = default!;
+
+        public DbSet<GAP.Models.Produit> Produit { get; set; } = default!;
+
 
     }
 }

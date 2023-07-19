@@ -1,53 +1,20 @@
-﻿using GAP.Helper;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAP.Models
 {
     public class OffreVente
     {
-        private int id;
-        private Fournisseur provider;
-        private double prixTTL;
-        private List<Produit> produit;
-        private Desc description;
-        private bool validite;
-        [ForeignKey("Fournisseur")]
+
+
+        public int OffreVenteID { get; set; }
+        public Fournisseur? Fournisseur { get; set; }
+        public double PrixTTL { get; set; }
+        public List<Produit>? Produits { get; set; }
+        public bool Validite { get; set; }
+
+          [ForeignKey("Fournisseur")]
         public int FournisseurId { get; set; } // Foreign key property
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
-
-        public Fournisseur Provider
-        {
-            get { return provider; }
-            set { provider = value; }
-        }
-
-        public double PrixTTL
-        {
-            get { return prixTTL; }
-            set { prixTTL = value; }
-        }
-
-        public List<Produit> Produit
-        {
-            get { return produit; }
-            set { produit = value; }
-        }
-
-        public Desc Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-
-        public bool Validite
-        {
-            get { return validite; }
-            set { validite = value; }
-        }
+       
     }
 
 }

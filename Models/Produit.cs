@@ -1,37 +1,35 @@
-﻿using GAP.Helper;
-
-namespace GAP.Models
+﻿namespace GAP.Models
 {
     public class Produit
     {
-        private int id;
-        private int prixUnitaire;
-        private int prixTotal;
-        private Desc description;
+        public int ProduitID { get; set; }
+        public float PrixUnitaire { get; set; }
 
-        public int Id
+        public string? Nom { get; set; }
+        public int? NombrePiece { get; set; }
+        public string? Desc { get; set; }
+
+
+        public Produit() {
+        
+            PrixUnitaire = 0;
+            NombrePiece = 0;
+            Nom = string.Empty;
+            Desc = string.Empty;
+
+
+        }
+        public Produit(int ID , float prixUnitaire , string nom , int nbrpiece ,string desc)
         {
-            get { return id; }
-            set { id = value; }
+            ProduitID = ID;
+            PrixUnitaire = prixUnitaire; 
+            Nom = nom;
+            Desc = desc;
+            NombrePiece= nbrpiece;
         }
 
-        public int PrixUnitaire
-        {
-            get { return prixUnitaire; }
-            set { prixUnitaire = value; }
-        }
 
-        public int PrixTotal
-        {
-            get { return prixTotal; }
-            set { prixTotal = value; }
-        }
-
-        public Desc Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
+   
     }
 
 }

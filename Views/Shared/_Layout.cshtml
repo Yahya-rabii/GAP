@@ -2,232 +2,242 @@
 <html lang="en">
 
 <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- basic -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
-   <meta charset="utf-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <!-- basic -->
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <!-- mobile metas -->
+    <title>@ViewData["Title"] - GAP</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/GAP.styles.css" asp-append-version="true" />
 
-   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
 
-   <title>@ViewData["Title"] - GAP</title>
-   <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-   <link rel="stylesheet" href="~/GAP.styles.css" asp-append-version="true" />
-
-   <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-   <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
-   <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
-   <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
-
-   <meta name="keywords" content="">
-   <meta name="description" content="">
-   <meta name="author" content="">
-   <!-- bootstrap css -->
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- bootstrap css -->
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
-   <!-- style css -->
+    <!-- style css -->
     <link rel="stylesheet" href="~/css/style.css">
-   <!-- Responsive-->
+    <!-- Responsive-->
     <link rel="stylesheet" href="~/css/responsive.css">
-   <!-- fevicon -->
+    <!-- fevicon -->
     <link rel="icon" href="~/images/fevicon.png" type="image/gif" />
-   <!-- Tweaks for older IEs-->
-   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-   <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Tweaks for older IEs-->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+    <!--[if lt IE 9]>
+       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <!-- body -->
 
 <body class="main-layout">
-   <!-- loader  -->
-   <div class="loader_bg">
+    <!-- loader  -->
+    <div class="loader_bg">
         <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
-   </div>
-   <!-- end loader -->
-   <!-- header -->
-   <div class="header">
-      <div class="container">
-         <div class="row d_flex">
-            <div class=" col-md-2 col-sm-3 col logo_section">
-               <div class="full">
-                  <div class="center-desk">
-                     <div class="logo">
+    </div>
+    <!-- end loader -->
+    <!-- header -->
+    <div class="header">
+        <div class="container">
+            <div class="row d_flex">
+                <div class=" col-md-2 col-sm-3 col logo_section">
+                    <div class="full">
+                        <div class="center-desk">
+                            <div class="logo">
                                 <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="col-md-8 col-sm-12">
-               <nav class="navigation navbar navbar-expand-md navbar-dark ">
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
-                     aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                     <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarsExample04">
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <ul class="navbar-nav mr-auto">
-                                        <li class="nav-item">
-                                            <a class="nav-link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add RespServiceAchat</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add RespServicequalite</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add RespServiceFinances</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add RecepServicAchats</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" onclick="location.href='@Url.Action("Logout", "Users")'">Logout</a>
-                                        </li>
-                                    </ul>
-                                }
-                                else
-                                {
-                                    <ul class="navbar-list">
-                                        <li class="navbar-item">
-                                            <a class="navbar-link skewBg" asp-area="" asp-controller="Produits" asp-action="List">Games</a>
-                                        </li>
-                                        <li class="navbar-item">
-                                            <button class="navbar-button skewBg" onclick="location.href='@Url.Action("Logout", "Users")'">Logout</button>
-                                        </li>
-                                    </ul>
-                                }
-                            }
-
-
-                     </ul>
-                  </div>
-               </nav>
-            </div>
-
-         </div>
-      </div>
-   </div>
-   <!-- end header inner -->
-   <!-- top -->
-   <div class="full_bg">
-      <div class="slider_main">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-12">
-                  <!-- carousel code -->
-                  <div id="banner1" class="carousel slide">
-                     <ol class="carousel-indicators">
-                        <li data-target="#banner1" data-slide-to="0" class="active"></li>
-                     </ol>
-                     <div class="carousel-inner">
-                        <!-- first slide -->
-                        <div class="carousel-item active">
-                           <div class="carousel-caption relative">
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <div class="dream">
-
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div class="dream_img">
-                                                    <figure><img src="~/images/dream_img.png" alt="#" /></figure>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
+                                aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarsExample04">
+                            <ul class="navbar-nav mr-auto">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-item">
+                                        <a class="logout" onclick="location.href='@Url.Action("Logout", "Users")'">
+                                            <span>Logout</span>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header inner -->
 
-                        <!-- controls -->
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
-      <div class="container">
-         <main role="main" class="pb-3">
-            @RenderBody()
-         </main>
-      </div>
-      <footer>
-         <div class="footer">
+    <div class="sidenav">
+        <div class="menu-btn">
+            <div class="line line--1"></div>
+            <div class="line line--2"></div>
+            <div class="line line--3"></div>
+        </div>
+        <div class="nav-links">
+            @if (User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("Admin"))
+                {
+                     <a class="link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add RespServiceAchat</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add RespServicequalite</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add RespServiceFinances</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add RecepServicAchats</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a>
+                }
+            }
+           
+        </div>
+    </div>
+
+    <!-- top -->
+    <div class="full_bg">
+        <div class="slider_main">
             <div class="container">
-               <div class="row">
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                     <div class="infoma text_align_left">
-                        <h3>Choose.</h3>
-                        <ul class="commodo">
-                           <li>Commodo</li>
-                           <li>consequat. Duis a</li>
-                           <li>ute irure dolor</li>
-                           <li>in reprehenderit </li>
-                           <li>in voluptate </li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="infoma">
-                        <h3>Get Support.</h3>
-                        <ul class="conta">
-                           <li><i class="fa fa-map-marker" aria-hidden="true"></i>Address : Loram Ipusm
-                           </li>
-                           <li><i class="fa fa-phone" aria-hidden="true"></i>Call : +01 1234567890</li>
-                           <li> <i class="fa fa-envelope" aria-hidden="true"></i><a href="Javascript:void(0)"> Email :
-                                 demo@gmail.com</a></li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="col-lg-3 col-md-6 col-sm-6">
-                     <div class="infoma">
-                        <h3>Company.</h3>
-                        <ul class="menu_footer">
-                           <li><a href="index.html">Home</a></li>
-                           <li><a href="about.html">About </a></li>
-                           <li><a href="domain.html">Domain</a></li>
-                           <li><a href="hosting.html">Hosting</a></li>
-                           <li><a href="contact.html">Contact</a></li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="col-lg-2 col-md-6 col-sm-6">
-                     <div class="infoma text_align_left">
-                        <h3>Services.</h3>
-                        <ul class="commodo">
-                           <li>Commodo</li>
-                           <li>consequat. Duis a</li>
-                           <li>ute irure dolor</li>
-                           <li>in reprehenderit </li>
-                           <li>in voluptate </li>
-                        </ul>
-                     </div>
-                  </div>
-               </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- carousel code -->
+                        <div id="banner1" class="carousel slide">
+                            <ol class="carousel-indicators">
+                                <li data-target="#banner1" data-slide-to="0" class="active"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <!-- first slide -->
+                                <div class="carousel-item active">
+                                    <div class="carousel-caption relative">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="dream">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="dream_img">
+                                                    <figure><img src="~/images/dream_img.png" alt="#" /></figure>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- controls -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="copyright">
-               <div class="container">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <p>© 2020 All Rights Reserved. <a href="https://html.design/"> Free html Templates</a></p>
-                     </div>
-                  </div>
-               </div>
+        </div>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <footer>
+            <div class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="infoma text_align_left">
+                                <h3>Choose.</h3>
+                                <ul class="commodo">
+                                    <li>Commodo</li>
+                                    <li>consequat. Duis a</li>
+                                    <li>ute irure dolor</li>
+                                    <li>in reprehenderit </li>
+                                    <li>in voluptate </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="infoma">
+                                <h3>Get Support.</h3>
+                                <ul class="conta">
+                                    <li>
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>Address : Loram Ipusm
+                                    </li>
+                                    <li><i class="fa fa-phone" aria-hidden="true"></i>Call : +01 1234567890</li>
+                                    <li>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i><a href="Javascript:void(0)">
+                                            Email :
+                                            demo@gmail.com
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="infoma">
+                                <h3>Company.</h3>
+                                <ul class="menu_footer">
+                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="about.html">About </a></li>
+                                    <li><a href="domain.html">Domain</a></li>
+                                    <li><a href="hosting.html">Hosting</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-6 col-sm-6">
+                            <div class="infoma text_align_left">
+                                <h3>Services.</h3>
+                                <ul class="commodo">
+                                    <li>Commodo</li>
+                                    <li>consequat. Duis a</li>
+                                    <li>ute irure dolor</li>
+                                    <li>in reprehenderit </li>
+                                    <li>in voluptate </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>© 2020 All Rights Reserved. <a href="https://html.design/"> Free html Templates</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </footer>
-      <!-- end footer -->
-      <!-- Javascript files-->
+        </footer>
+        <!-- end footer -->
+        <!-- Javascript files-->
+        <script>
+            var menuBtn = document.querySelector('.menu-btn');
+            var nav = document.querySelector('.sidenav');
+            var lineOne = document.querySelector('.sidenav .menu-btn .line--1');
+            var lineTwo = document.querySelector('.sidenav .menu-btn .line--2');
+            var lineThree = document.querySelector('.sidenav .menu-btn .line--3');
+            var link = document.querySelector('.sidenav .nav-links');
+            menuBtn.addEventListener('click', () => {
+                nav.classList.toggle('nav-open');
+                lineOne.classList.toggle('line-cross');
+                lineTwo.classList.toggle('line-fade-out');
+                lineThree.classList.toggle('line-cross');
+                link.classList.toggle('fade-in');
+            })
+        </script>
         <script src="~/js/jquery.min.js"></script>
         <script src="~/js/bootstrap.bundle.min.js"></script>
-      <!-- sidebar -->
+        <!-- sidebar -->
         <script src="~/js/custom.js"></script>
-      @await RenderSectionAsync("Scripts", required: false)
-
+        @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>

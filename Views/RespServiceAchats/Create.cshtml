@@ -4,49 +4,53 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
 
-<h4>RespServiceAchat</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
+
+            <div class="frmcontainer">
+                <h1 class="form-header"> ADD RespServiceAchat</h1>
+
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+                    <div class="form-group">
+                        <input asp-for="Email" class="form-control  text-light" style="background-color: transparent; border: 1px solid white" placeholder="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="Password" class="form-control text-light" style="background-color: transparent; border: 1px solid white" placeholder="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="FirstName" class="form-control text-light" style="background-color: transparent; border: 1px solid white" placeholder="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="LastName" class="form-control text-light" style="background-color: transparent; border: 1px solid white" placeholder="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+          
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                    <div class="BTNS">
+
+                        <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
