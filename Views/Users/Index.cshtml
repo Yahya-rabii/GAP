@@ -1,118 +1,110 @@
-﻿@model IEnumerable<GAP.Models.User>
+﻿@model X.PagedList.IPagedList<GAP.Models.User>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-
 <main>
     <article>
 
-            <div class="datatable-container">
+        <div class="datatable-container">
 
-                <h1 class="form-header">Users</h1>
+            <h1 class="form-header">Users</h1>
 
-                <!-- ======= Header tools ======= -->
-                <div class="header-tools">
-                    <div class="tools">
-                        <ul>
-                            <li>
-
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+               
+                
+                
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
                             </li>
-                            <li>
-
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
                             </li>
-                            <li>
-
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
                             </li>
                         </ul>
                     </div>
-
-                    <div class="search">
-                        <form method="get" asp-action="Index">
-
-
-                            <input type="search" id="form1" class="search-input" placeholder="user name..." name="SearchString" style="color:white;" />
-
-                        </form>
-                    </div>
                 </div>
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAdmin)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAdmin)
-            </td>
-                                <td>
-                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
-                                        <a asp-action="Edit" asp-route-id="@item.UserID">
-                                            <input type="submit" value="Edit"
-                                                   class="form-button EDI-button" style="margin-right: 5px;" />
-                                        </a>
-                                        <a asp-action="Details" asp-route-id="@item.UserID">
-                                            <input type="button" class="form-button DET-button"
-                                                   value="Details" style="margin-right: 5px;">
-                                        </a>
-                                        <a asp-action="Delete" asp-route-id="@item.UserID">
-                                            <input type="button" class="form-button DEL-button"
-                                                   value="Delete" style="margin-right: 5px;">
-                                        </a>
-
-                                    </div>
-                                </td>
-
-
-
-
-                            </tr>
-                        }
-
-
-
-
-                    </tbody>
-                </table>
-
-
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="user Email..." name="SearchString" style="color:white;" />
+                    </form>
+                </div>
             </div>
 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Password
+                        </th>
+                        <th>
+                            FirstName
+                        </th>
+                        <th>
+                            LastName
+                        </th>
+                        <th>
+                            IsAdmin
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Password)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsAdmin)
+                            </td>
+                            <td>
+                                <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                    <a asp-action="Edit" asp-route-id="@item.UserID">
+                                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.UserID">
+                                        <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.UserID">
+                                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-
-
+ 
+        </div>
     </article>
 </main>

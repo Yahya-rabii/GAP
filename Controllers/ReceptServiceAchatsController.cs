@@ -9,6 +9,8 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Humanizer;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GAP.Controllers
 {
@@ -53,24 +55,32 @@ namespace GAP.Controllers
             return View();
         }
 
-        // POST: ReceptServiceAchats/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] ReceptServiceAchat receptServiceAchat)
         {
             if (ModelState.IsValid)
             {
+                // Check if the user with the provided email already exists in the database
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == receptServiceAchat.Email);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists, inform the user with a message
+                    ModelState.AddModelError("Email", "User with this email already exists.");
+                    return View(receptServiceAchat);
+                }
+
+                // If the user does not exist, proceed with adding them to the database
                 receptServiceAchat.Password = HashPassword(receptServiceAchat?.Password);
-
-
                 _context.Add(receptServiceAchat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(receptServiceAchat);
         }
+
+
 
         // GET: ReceptServiceAchats/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -102,6 +112,17 @@ namespace GAP.Controllers
 
             if (ModelState.IsValid)
             {
+
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == receptServiceAchat.Email && u.UserID != id);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists (and has a different ID), inform the user with a message
+                    ModelState.AddModelError("Email", "Another user with this email already exists.");
+                    return View(receptServiceAchat);
+                }
+
+
+
                 try
                 {
                     _context.Update(receptServiceAchat);

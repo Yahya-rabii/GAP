@@ -10,6 +10,7 @@ using GAP.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -22,13 +23,29 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
+
+
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
-              return _context.User != null ? 
-                          View(await _context.User.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.User'  is null.");
+            IQueryable<User> iseriq = from s in _context.User
+                                      select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.User.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
+
+
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -63,6 +80,15 @@ namespace GAP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists (and has a different ID), inform the user with a message
+                    ModelState.AddModelError("Email", "Another user with this email already exists.");
+                    return View(user);
+                }
+
                 _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -100,6 +126,16 @@ namespace GAP.Controllers
 
             if (ModelState.IsValid)
             {
+
+
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email && u.UserID != id);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists (and has a different ID), inform the user with a message
+                    ModelState.AddModelError("Email", "Another user with this email already exists.");
+                    return View(user);
+                }
+
                 try
                 {
                     _context.Update(user);

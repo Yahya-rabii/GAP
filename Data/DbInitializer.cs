@@ -20,7 +20,7 @@ namespace GAP.Data
                 // Create the pre-registered admin user
                 var adminUser = new User
                 {
-                    Email = "admin11@gmail.com",
+                    Email = "admin@gmail.com",
                     Password = "$2a$10$9OJ3LDj0MJ70gcyS3bZmjutk4Y5TFu8PSCCA5GtjLOBftMPlbZirK",
                     FirstName = "admin",
                     LastName = "admin",

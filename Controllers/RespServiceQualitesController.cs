@@ -60,6 +60,16 @@ namespace GAP.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Check if the user with the provided email already exists in the database
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == respServiceQualite.Email);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists, inform the user with a message
+                    ModelState.AddModelError("Email", "User with this email already exists.");
+                    return View(respServiceQualite);
+                }
+
                 respServiceQualite.Password = HashPassword(respServiceQualite?.Password);
 
                 _context.Add(respServiceQualite);
@@ -88,40 +98,50 @@ namespace GAP.Controllers
         // POST: RespServiceQualites/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceQualite respServiceQualite)
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] RespServiceQualite respServiceQualite)
+    {
+        if (id != respServiceQualite.UserID)
         {
-            if (id != respServiceQualite.UserID)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(respServiceQualite);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RespServiceQualiteExists(respServiceQualite.UserID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(respServiceQualite);
+            return NotFound();
         }
 
-        // GET: RespServiceQualites/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        if (ModelState.IsValid)
+        {
+            // Check if the user with the provided email already exists in the database
+            var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == respServiceQualite.Email && u.UserID != id);
+            if (existingUser != null)
+            {
+                // If user with the same email exists (and has a different ID), inform the user with a message
+                ModelState.AddModelError("Email", "Another user with this email already exists.");
+                return View(respServiceQualite);
+            }
+
+            try
+            {
+                _context.Update(respServiceQualite);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RespServiceQualiteExists(respServiceQualite.UserID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        return View(respServiceQualite);
+    }
+
+
+    // GET: RespServiceQualites/Delete/5
+    public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.RespServiceQualite == null)
             {

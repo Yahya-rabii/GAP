@@ -210,3 +210,12 @@
             .datatable-container .datatable tbody tr .offline::before {
                 background-color: var(--dt-status-offline-color);
             }
+
+
+    .datatable-container .header-tools .pagination-container {
+        border-bottom: solid 1px var(--dt-border-color);
+        padding: var(--dt-padding);
+        padding-left: 0;
+        position: relative;
+        right: 30%;
+    }

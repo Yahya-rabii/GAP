@@ -61,6 +61,14 @@ namespace GAP.Controllers
             if (ModelState.IsValid)
             {
 
+                // Check if the user with the provided email already exists in the database
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == respServiceAchat.Email);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists, inform the user with a message
+                    ModelState.AddModelError("Email", "User with this email already exists.");
+                    return View(respServiceAchat);
+                }
                 respServiceAchat.Password = HashPassword(respServiceAchat?.Password);
 
                 _context.Add(respServiceAchat);
@@ -100,6 +108,17 @@ namespace GAP.Controllers
 
             if (ModelState.IsValid)
             {
+
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == respServiceAchat.Email && u.UserID != id);
+                if (existingUser != null)
+                {
+                    // If user with the same email exists (and has a different ID), inform the user with a message
+                    ModelState.AddModelError("Email", "Another user with this email already exists.");
+                    return View(respServiceAchat);
+                }
+
+
+
                 try
                 {
                     _context.Update(respServiceAchat);
