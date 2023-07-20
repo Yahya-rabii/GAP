@@ -87,6 +87,7 @@
             <div class="line line--2"></div>
             <div class="line line--3"></div>
         </div>
+
         <div class="nav-links">
             @if (User.Identity.IsAuthenticated)
             {
@@ -94,11 +95,45 @@
                 {
                      <a class="link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
 
-                    <a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add RespServiceAchat</a>
-                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add RespServicequalite</a>
-                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add RespServiceFinances</a>
-                    <a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add RecepServicAchats</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add Resp Service qualite</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add Resp Service Finances</a>
+                    <a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add Recep Service Achats</a>
                     <a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a>
+                }
+                @if (User.IsInRole("Fournisseur"))
+                {
+
+                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offre Ventes</a>//+add 
+                    <a class="link" onclick="location.href='@Url.Action("Indexfour", "DemandeAchats")'">Add RespServiceFinances</a>
+                    <a class="link" onclick="location.href='@Url.Action("Details", "Fournisseurs")'">Account</a>
+
+                } @if (User.IsInRole("RespServiceAchat"))
+                {
+
+                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offre Ventes</a>
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>//+add
+                    <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>//+add
+                
+                }
+            }@if (User.IsInRole("RespServiceFinance"))
+                {
+                     
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Factures")'">Factures</a>
+
+
+            }@if (User.IsInRole("ReceptServiceAchat"))
+                {
+
+
+                <a class="link" onclick="location.href='@Url.Action("Index", "RapportReceptions")'">RapportReceptions</a>//+add
+
+            }@if (User.IsInRole("RespServiceQualite"))
+                {
+
+                <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>//+add
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
+                
                 }
             }
            

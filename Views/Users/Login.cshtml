@@ -11,28 +11,29 @@
             <div class="col-md-6">
                 <div class="login-form-container">
                     <div class="form-container">
-                        <form asp-action="Login" method="POST" novalidate="">
 
-                            <div class="form-group  text-center">
-                                    <label asp-for="Email">E-Mail Address</label>
-                                <input id="email" type="email" rounded-pill" name="email" value="" required autofocus class="form-control rounded-0" placeholder="Enter Email" style="background-color: transparent;  color:white;">
-                                    <div class="invalid-feedback">
-                                        Email is invalid
-                                    </div>
-                                </div>
+                        <form asp-action="Login" method="POST" novalidate="">
+                            <div asp-validation-summary="All" class="text-danger"></div>
 
                             <div class="form-group text-center">
-                                    <label label asp-for="Password">Password </label>
-                                <input id="password" type="password" class="form-control rounded-0" placeholder="Enter password" style="background-color: transparent;color:white;" rounded-pill" name="password" required data-eye>
-                                    <div class="invalid-feedback"> Password is required </div>
+                                <label asp-for="Email">E-Mail Address</label>
+                                <input id="email" type="email" rounded-pill" name="email" value="" required autofocus class="form-control rounded-0" placeholder="Enter Email" style="background-color: transparent;  color:white;">
+                                <div class="invalid-feedback">
+                                    Email is invalid
                                 </div>
+                            </div>
+
+                            <div class="form-group text-center">
+                                <label label asp-for="Password">Password </label>
+                                <input id="password" type="password" class="form-control rounded-0" placeholder="Enter password" style="background-color: transparent;color:white;" rounded-pill" name="password" required data-eye>
+                                <div class="invalid-feedback"> Password is required </div>
+                            </div>
                             <div class="form-group text-center">
                                 <button type="submit" class="btn btn-dark rounded-0 glow-on-hover "
                                         style="color:white; border: 1px solid white ;background-color: transparent">
                                     Login
                                 </button>
                             </div>
-
 
                             <div style="display: flex;">
                                 <span style="margin-right: 10px">Register as Provider</span>
@@ -50,12 +51,6 @@
             </figure>
         </div>
     </div>
-
-
-
-
-
-
 </section>
 
 @section Scripts {

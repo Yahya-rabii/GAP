@@ -231,37 +231,43 @@ namespace GAP.Controllers
             new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
         };
 
-                if (registeredUser.IsAdmin)
+                string redirectAction = string.Empty;
+                string redirectController = string.Empty;
+
+                switch (registeredUser)
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, "Admin"));
-                    return await SignInAndRedirectToAction(claims, "Index", "Home");
+                    case ReceptServiceAchat _:
+                        claims.Add(new Claim(ClaimTypes.Role, "ReceptServiceAchat"));
+                        redirectAction = "Index";
+                        redirectController = "RapportReceptions";
+                        break;
+                    case RespServiceAchat _:
+                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceAchat"));
+                        redirectAction = "Index";
+                        redirectController = "DemandeAchats";
+                        break;
+                    case RespServiceFinance _:
+                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceFinance"));
+                        redirectAction = "Index";
+                        redirectController = "Factures";
+                        break;
+                    case RespServiceQualite _:
+                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceQualite"));
+                        redirectAction = "Index";
+                        redirectController = "RapportTestQualites";
+                        break;
+                    case var _ when registeredUser.IsAdmin:
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                        redirectAction = "Index";
+                        redirectController = "Home";
+                        break;
+                    default:
+                        // User type not recognized
+                        ModelState.AddModelError("", "Invalid user type.");
+                        return RedirectToAction("Login", "Users");
                 }
-                else if (registeredUser is ReceptServiceAchat)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "ReceptServiceAchat"));
-                    return await SignInAndRedirectToAction(claims, "Index", "RapportReceptions");
-                }
-                else if (registeredUser is RespServiceAchat)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceAchat"));
-                    return await SignInAndRedirectToAction(claims, "Index", "DemandeAchats");
-                }
-                else if (registeredUser is RespServiceFinance)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceFinance"));
-                    return await SignInAndRedirectToAction(claims, "Index", "Factures");
-                }
-                else if (registeredUser is RespServiceQualite)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, "RespServiceQualite"));
-                    return await SignInAndRedirectToAction(claims, "Index", "RapportTestQualites");
-                }
-                else
-                {
-                    // User type not recognized
-                    ModelState.AddModelError("", "Invalid user type.");
-                    return RedirectToAction("Login", "Users");
-                }
+
+                return await SignInAndRedirectToAction(claims, redirectAction, redirectController);
             }
             else
             {
@@ -269,33 +275,30 @@ namespace GAP.Controllers
 
                 if (newregisteredUser != null)
                 {
-                    if (newregisteredUser.IsValid)
+                    if (newregisteredUser.IsValid == true)
                     {
                         var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString())
-                        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString()),
+                    new Claim(ClaimTypes.Role, "Fournisseur")
+                };
 
-                        claims.Add(new Claim(ClaimTypes.Role, "Fournisseur"));
                         return await SignInAndRedirectToAction(claims, "IndexFour", "DemandeAchats");
                     }
                     else
                     {
                         // Account is not valid yet
-                        ModelState.AddModelError("", "Your account is not valid yet. Please wait for approval");
-                        return RedirectToAction("Login", "Users"); // Redirect to an appropriate action
+                        ModelState.AddModelError("Email", "Your account is not valid yet. Please wait for approval");
                     }
-
                 }
                 else
                 {
                     ModelState.AddModelError("", "Invalid email or password.");
-
-                    return RedirectToAction("Login", "Users");
                 }
+
+                return RedirectToAction("Login", "Users");
             }
         }
-
 
         private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)
         {
