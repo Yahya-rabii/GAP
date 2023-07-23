@@ -36,24 +36,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Validite)
             </td>
-
-                @if (!item.Validite) // Only show buttons if the element is not validated
-                {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.OffreVenteID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.OffreVenteID">Delete</a>
-                    </td>
-
-                }
-                else
-                {
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">Details</a>
-                    </td>
-                }
-
-          
+            <td>
+                    <a asp-action="ValidateOffre" asp-route-id="@item.OffreVenteID">Validate Offre</a> |
+                    <a asp-action="UnValidateOffre" asp-route-id="@item.OffreVenteID">UnValidate Offre</a> |
+      
+            </td>
         </tr>
 }
     </tbody>

@@ -4,33 +4,101 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+
+
+<h1>DemandeAchat Details</h1>
+
 
 <div>
-    <h4>OffreVente</h4>
+
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>DemandeAchat ID</th>
+                    <th>Description</th>
+                    <th>Budget</th>
+                    <!-- Add other properties of the "DemandeAchat" model to display as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.DisplayFor(model => model.DemandeAchatId)</td> @*get the demande achat from table demande achat using this id*@
+                    <td>@Html.DisplayFor(model => model.DemandeAchat.Description)</td>
+                    <td>@Html.DisplayFor(model => model.DemandeAchat.Budget)</td>
+                    <!-- Add other properties of the "DemandeAchat" model to display as needed -->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h1>OffreVente Details</h1>
+
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Fournisseur)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Fournisseur.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PrixTTL)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PrixTTL)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Validite)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Validite)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.OffreVenteID">Edit</a> |
+
+
+
+
+
+@if (Model.Produits != null && Model.Produits.Count > 0)
+{
+    <div>
+        <h4>Produits</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prix Unitaire</th>
+                    <th>Nombre de Pièces</th>
+                    <!-- Add other properties of the "Produit" model to display as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var produit in Model.Produits)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => produit.Nom)</td>
+                        <td>@Html.DisplayFor(modelItem => produit.PrixUnitaire)</td>
+                        <td>@Html.DisplayFor(modelItem => produit.NombrePiece)</td>
+                        <!-- Add other properties of the "Produit" model to display as needed -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+@if (Model.Validite)
+{
     <a asp-action="Index">Back to List</a>
-</div>
+}
+else
+{
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.OffreVenteID">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+}

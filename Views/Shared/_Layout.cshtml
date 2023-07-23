@@ -50,8 +50,10 @@
                 <div class=" col-md-2 col-sm-3 col logo_section">
                     <div class="full">
                         <div class="center-desk">
+                            <div class="logo-container">
                             <div class="logo">
                                 <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                            </div>
                             </div>
                         </div>
                     </div>
@@ -104,14 +106,15 @@
                 @if (User.IsInRole("Fournisseur"))
                 {
 
-                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offre Ventes</a>//+add 
-                    <a class="link" onclick="location.href='@Url.Action("Indexfour", "DemandeAchats")'">Add RespServiceFinances</a>
+                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offres Ventes</a>//+add
+                    <a class="link" onclick="location.href='@Url.Action("Indexfour", "DemandeAchats")'">Demandes Achats</a>
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>
                     <a class="link" onclick="location.href='@Url.Action("Details", "Fournisseurs")'">Account</a>
 
                 } @if (User.IsInRole("RespServiceAchat"))
                 {
 
-                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offre Ventes</a>
+                    <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "OffreVentes")'">Offre Ventes</a>
                     <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>//+add
                     <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>//+add
                 
@@ -135,7 +138,7 @@
                     <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
                 
                 }
-            }
+            
            
         </div>
     </div>

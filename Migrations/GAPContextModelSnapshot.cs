@@ -165,6 +165,9 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OffreVenteID"));
 
+                    b.Property<int>("DemandeAchatId")
+                        .HasColumnType("int");
+
                     b.Property<int>("FournisseurId")
                         .HasColumnType("int");
 
@@ -175,6 +178,8 @@ namespace GAP.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("OffreVenteID");
+
+                    b.HasIndex("DemandeAchatId");
 
                     b.HasIndex("FournisseurId");
 
@@ -378,11 +383,19 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.OffreVente", b =>
                 {
+                    b.HasOne("GAP.Models.DemandeAchat", "DemandeAchat")
+                        .WithMany()
+                        .HasForeignKey("DemandeAchatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GAP.Models.Fournisseur", "Fournisseur")
                         .WithMany()
                         .HasForeignKey("FournisseurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DemandeAchat");
 
                     b.Navigation("Fournisseur");
                 });

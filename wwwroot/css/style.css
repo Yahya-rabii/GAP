@@ -524,29 +524,31 @@ ul.conta {
 
 .sidenav {
     overflow: hidden;
-    position: fixed;
+    position: absolute;
     transform: translateX(-100px);
-    height: 70%;
+    height: 300px;
     width: 300px;
     transition: all 800ms cubic-bezier(.8, 0, .33, 1);
-    border-radius: 0% 0% 100% 150%;
+    border-radius: 0% 0% 0% 0%;
 }
 
     .sidenav.nav-open {
+        position: absolute;
         transform: translateX(0px);
         border-radius: 0% 0% 0% 0%;
-        background: rgba(255, 255, 255, 0.6);
+        background: rgba(46, 66, 139); /* 0.5 is the alpha value for transparency */
     }
 
     .sidenav .menu-btn {
         position: fixed;
-        top: 6%;
+        top: 10%;
         right:1px;
-        color: rgb(67, 238, 228);
-        padding: 10;
+        color: white;
         width: 30px;
         z-index: 2;
-    }
+
+    }   
+   
 
         .sidenav .menu-btn .line {
             padding: 0;
@@ -589,17 +591,14 @@ ul.conta {
                     transform: rotate(-45deg) translateY(-10px);
                     background: rgba(0,0,0,0.6);
                 }
-
     .sidenav .nav-links {
-        margin-top: 50px;
+        margin-top: 60px;
         position: absolute;
-        left: 0;
-        top: 10;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        width: fit-content;
+        height: fit-content;
+        align-items: initial;
+        display: inline-flex;
+        flex-direction: column; /* Display links vertically */
         justify-content: center;
         transform: translateX(-100px);
         opacity: 0;
@@ -607,19 +606,20 @@ ul.conta {
         transition: all 900ms cubic-bezier(.9, 0, .33, 1);
     }
 
+
         .sidenav .nav-links.fade-in {
-            opacity: 1;
+            opacity: 100;
             transform: translateX(0px);
         }
 
         .sidenav .nav-links .link {
-            margin: 20px 0;
-            text-decoration: none;
+            margin: 5px;
+            text-decoration: solid;
             font-family: sans-serif;
-            color: black;
-            font-weight: 700;
+            color: white;
+            font-weight: 70;
             text-transform: uppercase;
-            font-size: 1.2rem;
+            font-size: 1.0rem;
             transition: all 300ms cubic-bezier(.9, 0, .33, 1);
         }
 
@@ -655,10 +655,16 @@ ul.conta {
         color: rgb(46, 66, 139);
         background: rgb(67, 238, 228);
     }
-.logo {
-    position: fixed;
-    top: 10px;
-    left: 50px;
-    width: 120px; /* Adjust the width to your desired size */
-    height: auto; /* Maintain aspect ratio */
+.logo-container {
+  position: absolute; /* Ensure the container is positioned */
 }
+
+.logo {
+  position: fixed;
+  top: 11px;
+  left: 50px; /* Adjust the left position as needed */
+  width: 120px; /* Adjust the width to your desired size */
+  height: auto; /* Maintain aspect ratio */
+}
+
+

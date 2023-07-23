@@ -76,10 +76,11 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "RespServiceAchat")]
 
-        public async Task<IActionResult> Create([Bind("DemandeAchatID,CreationDate,Description,Budget")] DemandeAchat demandeAchat)
+        public async Task<IActionResult> Create([Bind("DemandeAchatID,Description,Budget")] DemandeAchat demandeAchat)
         {
             if (ModelState.IsValid)
             {
+                demandeAchat.CreationDate = DateTime.Now;
                 _context.Add(demandeAchat);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

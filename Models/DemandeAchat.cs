@@ -12,7 +12,7 @@ namespace GAP.Models
         [StringLength(255)]
         public string? Description { get; set; }
         public double Budget { get; set; }
-
+        bool IsValid{ get; set; }
    
     }
 
