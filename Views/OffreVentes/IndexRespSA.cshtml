@@ -6,9 +6,7 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -36,11 +34,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Validite)
             </td>
-            <td>
-                    <a asp-action="ValidateOffre" asp-route-id="@item.OffreVenteID">Validate Offre</a> |
-                    <a asp-action="UnValidateOffre" asp-route-id="@item.OffreVenteID">UnValidate Offre</a> |
+
+                @if (!item.Validite) // Only show buttons if the element is not validated
+                {
+                    <td>
+                        <a asp-controller="Devis" asp-action="Create" asp-route-OffreVenteID="@item.OffreVenteID">Reply</a>
+
+                    </td>
+
+                }
       
-            </td>
         </tr>
 }
     </tbody>

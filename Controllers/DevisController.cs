@@ -27,7 +27,7 @@ namespace GAP.Controllers
         // GET: Devis
         public async Task<IActionResult> Index()
         {
-            var gAPContext = _context.Devis.Include(d => d.Fournisseur).Include(d => d.Produit);
+            var gAPContext = _context.Devis.Include(d => d.Fournisseur);
             return View(await gAPContext.ToListAsync());
         }
 
@@ -41,46 +41,90 @@ namespace GAP.Controllers
 
             var devis = await _context.Devis
                 .Include(d => d.Fournisseur)
-                .Include(d => d.Produit)
+                .Include(d=>d.OffreVente)
+                .ThenInclude(o=>o.DemandeAchat)
+                .Include(d=>d.Produits)
                 .FirstOrDefaultAsync(m => m.DevisID == id);
+
             if (devis == null)
             {
                 return NotFound();
             }
 
+          
+
             return View(devis);
         }
 
+
+
+
         // GET: Devis/Create
-        public IActionResult Create()
+
+        public IActionResult Create(int OffreVenteID)
         {
-            ViewData["FournisseurID"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email");
-            ViewData["ProduitID"] = new SelectList(_context.Produit, "ProduitID", "Nom");
+            // Retrieve the OffreVente object based on the received OffreVenteID
+            var OffreVente = _context.OffreVente.Find(OffreVenteID);
+
+            if (OffreVente == null)
+            {
+                // Handle the case when the OffreVente is not found
+                return NotFound();
+            }           
+            
+            OffreVente.Validite = true;
+            _context.Update(OffreVente);
+            _context.SaveChangesAsync();
+
+            ViewBag.OffreVenteID = OffreVenteID;
+
             return View();
         }
 
+
+
         // POST: Devis/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DevisID,DateReception,ProduitID,PrixTTL,NombrePiece,FournisseurID,RespServiceAchatId")] Devis devis)
+        public async Task<IActionResult> Create(int OffreVenteID, [Bind("DevisID,DateReception")] Devis devis)
         {
-
             if (ModelState.IsValid)
             {
                 // Get the ID of the currently logged-in user
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                devis.RespServiceAchatId = userId;
-                devis.DateCreation = DateTime.Now;
+                var OffreVente = await _context.OffreVente.FindAsync(OffreVenteID);
+                if (OffreVente != null)
+                {
+                    devis.RespServiceAchatId = userId;
+                    devis.OffreVente = OffreVente;
+                    devis.OffreVenteID = OffreVenteID;
+                    devis.DateCreation = DateTime.Now;
+
+                    // Use ExecuteSqlRawAsync with a parameter to fetch related Produit entities
+                    var list = await _context.Produit
+                        .FromSqlRaw("SELECT * FROM Produit WHERE OffreVenteId = {0}", OffreVenteID)
+                        .ToListAsync();
+
+                    devis.Produits = list;
+                    devis.PrixTTL = OffreVente.PrixTTL;
+
+                    foreach(var p in OffreVente.Produits)
+                    {
+                        devis.NombrePiece += p.NombrePiece;
+                    }
+                    devis.NombrePiece = OffreVente.Produits.Count();
+                    devis.FournisseurID = OffreVente.FournisseurId;
+                }
+
                 _context.Add(devis);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["FournisseurID"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", devis.FournisseurID);
-            ViewData["ProduitID"] = new SelectList(_context.Produit, "ProduitID", "Nom", devis.ProduitID);
             return View(devis);
         }
+
+
 
         // GET: Devis/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -96,7 +140,6 @@ namespace GAP.Controllers
                 return NotFound();
             }
             ViewData["FournisseurID"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", devis.FournisseurID);
-            ViewData["ProduitID"] = new SelectList(_context.Produit, "ProduitID", "ProduitID", devis.ProduitID);
             return View(devis);
         }
 
@@ -133,7 +176,6 @@ namespace GAP.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["FournisseurID"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", devis.FournisseurID);
-            ViewData["ProduitID"] = new SelectList(_context.Produit, "ProduitID", "ProduitID", devis.ProduitID);
             return View(devis);
         }
 
@@ -147,7 +189,6 @@ namespace GAP.Controllers
 
             var devis = await _context.Devis
                 .Include(d => d.Fournisseur)
-                .Include(d => d.Produit)
                 .FirstOrDefaultAsync(m => m.DevisID == id);
             if (devis == null)
             {

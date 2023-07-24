@@ -138,28 +138,6 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Produit",
-                columns: table => new
-                {
-                    ProduitID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PrixUnitaire = table.Column<float>(type: "real", nullable: false),
-                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NombrePiece = table.Column<int>(type: "int", nullable: true),
-                    Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OffreVenteID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Produit", x => x.ProduitID);
-                    table.ForeignKey(
-                        name: "FK_Produit_OffreVente_OffreVenteID",
-                        column: x => x.OffreVenteID,
-                        principalTable: "OffreVente",
-                        principalColumn: "OffreVenteID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Devis",
                 columns: table => new
                 {
@@ -167,11 +145,11 @@ namespace GAP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateReception = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProduitID = table.Column<int>(type: "int", nullable: true),
                     PrixTTL = table.Column<double>(type: "float", nullable: true),
                     NombrePiece = table.Column<int>(type: "int", nullable: false),
                     FournisseurID = table.Column<int>(type: "int", nullable: true),
-                    RespServiceAchatId = table.Column<int>(type: "int", nullable: true)
+                    RespServiceAchatId = table.Column<int>(type: "int", nullable: true),
+                    OffreVenteID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,15 +160,43 @@ namespace GAP.Migrations
                         principalTable: "Fournisseur",
                         principalColumn: "FournisseurID");
                     table.ForeignKey(
-                        name: "FK_Devis_Produit_ProduitID",
-                        column: x => x.ProduitID,
-                        principalTable: "Produit",
-                        principalColumn: "ProduitID");
+                        name: "FK_Devis_OffreVente_OffreVenteID",
+                        column: x => x.OffreVenteID,
+                        principalTable: "OffreVente",
+                        principalColumn: "OffreVenteID");
                     table.ForeignKey(
                         name: "FK_Devis_User_RespServiceAchatId",
                         column: x => x.RespServiceAchatId,
                         principalTable: "User",
                         principalColumn: "UserID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Produit",
+                columns: table => new
+                {
+                    ProduitID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PrixUnitaire = table.Column<float>(type: "real", nullable: false),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NombrePiece = table.Column<int>(type: "int", nullable: true),
+                    Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DevisID = table.Column<int>(type: "int", nullable: true),
+                    OffreVenteID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Produit", x => x.ProduitID);
+                    table.ForeignKey(
+                        name: "FK_Produit_Devis_DevisID",
+                        column: x => x.DevisID,
+                        principalTable: "Devis",
+                        principalColumn: "DevisID");
+                    table.ForeignKey(
+                        name: "FK_Produit_OffreVente_OffreVenteID",
+                        column: x => x.OffreVenteID,
+                        principalTable: "OffreVente",
+                        principalColumn: "OffreVenteID");
                 });
 
             migrationBuilder.CreateTable(
@@ -232,9 +238,9 @@ namespace GAP.Migrations
                 column: "FournisseurID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Devis_ProduitID",
+                name: "IX_Devis_OffreVenteID",
                 table: "Devis",
-                column: "ProduitID");
+                column: "OffreVenteID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Devis_RespServiceAchatId",
@@ -262,6 +268,11 @@ namespace GAP.Migrations
                 column: "FournisseurId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Produit_DevisID",
+                table: "Produit",
+                column: "DevisID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Produit_OffreVenteID",
                 table: "Produit",
                 column: "OffreVenteID");
@@ -281,9 +292,6 @@ namespace GAP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Devis");
-
-            migrationBuilder.DropTable(
                 name: "Facture");
 
             migrationBuilder.DropTable(
@@ -294,6 +302,9 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Produit");
+
+            migrationBuilder.DropTable(
+                name: "Devis");
 
             migrationBuilder.DropTable(
                 name: "OffreVente");

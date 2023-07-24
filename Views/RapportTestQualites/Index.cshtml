@@ -51,9 +51,37 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RapportTestQualite.DevisId)
                 </td>
-                <td>
-                    @item.Devis?.Produit.Nom <!-- Using the null conditional operator to handle null cases -->
-                </td>
+
+                @*
+                @if (item.Devis.Produits.Count() > 0)
+                {
+                    <div>
+                        <h4>Produits</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Prix Unitaire</th>
+                                    <th>Nombre de Pièces</th>
+                                    <!-- Add other properties of the "Produit" model to display as needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var produit in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => produit.Nom)</td>
+                                        <td>@Html.DisplayFor(modelItem => produit.PrixUnitaire)</td>
+                                        <td>@Html.DisplayFor(modelItem => produit.NombrePiece)</td>
+                                        <!-- Add other properties of the "Produit" model to display as needed -->
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            *@
                 <td>
                     @item.Devis?.Fournisseur.Email <!-- Using the null conditional operator to handle null cases -->
                 </td>

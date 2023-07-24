@@ -25,9 +25,6 @@
                 @Html.DisplayNameFor(model => model.NombrePiece)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Produit)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Fournisseur)
             </th>
             <th></th>
@@ -48,9 +45,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NombrePiece)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Produit.ProduitID)
-            </td>
+    
             <td>
                 @Html.DisplayFor(modelItem => item.Fournisseur.Email)
             </td>

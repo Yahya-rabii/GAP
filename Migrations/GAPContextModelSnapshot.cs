@@ -71,11 +71,11 @@ namespace GAP.Migrations
                     b.Property<int>("NombrePiece")
                         .HasColumnType("int");
 
+                    b.Property<int?>("OffreVenteID")
+                        .HasColumnType("int");
+
                     b.Property<double?>("PrixTTL")
                         .HasColumnType("float");
-
-                    b.Property<int?>("ProduitID")
-                        .HasColumnType("int");
 
                     b.Property<int?>("RespServiceAchatId")
                         .HasColumnType("int");
@@ -84,7 +84,7 @@ namespace GAP.Migrations
 
                     b.HasIndex("FournisseurID");
 
-                    b.HasIndex("ProduitID");
+                    b.HasIndex("OffreVenteID");
 
                     b.HasIndex("RespServiceAchatId");
 
@@ -197,6 +197,9 @@ namespace GAP.Migrations
                     b.Property<string>("Desc")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nom")
                         .HasColumnType("nvarchar(max)");
 
@@ -210,6 +213,8 @@ namespace GAP.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("ProduitID");
+
+                    b.HasIndex("DevisID");
 
                     b.HasIndex("OffreVenteID");
 
@@ -353,9 +358,9 @@ namespace GAP.Migrations
                         .WithMany()
                         .HasForeignKey("FournisseurID");
 
-                    b.HasOne("GAP.Models.Produit", "Produit")
+                    b.HasOne("GAP.Models.OffreVente", "OffreVente")
                         .WithMany()
-                        .HasForeignKey("ProduitID");
+                        .HasForeignKey("OffreVenteID");
 
                     b.HasOne("GAP.Models.RespServiceAchat", null)
                         .WithMany("Devis")
@@ -363,7 +368,7 @@ namespace GAP.Migrations
 
                     b.Navigation("Fournisseur");
 
-                    b.Navigation("Produit");
+                    b.Navigation("OffreVente");
                 });
 
             modelBuilder.Entity("GAP.Models.Facture", b =>
@@ -402,6 +407,10 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.Produit", b =>
                 {
+                    b.HasOne("GAP.Models.Devis", null)
+                        .WithMany("Produits")
+                        .HasForeignKey("DevisID");
+
                     b.HasOne("GAP.Models.OffreVente", null)
                         .WithMany("Produits")
                         .HasForeignKey("OffreVenteID");
@@ -421,6 +430,11 @@ namespace GAP.Migrations
                     b.HasOne("GAP.Models.RespServiceQualite", null)
                         .WithMany("HistoriqueRapportQualite")
                         .HasForeignKey("RespServiceQualiteId");
+                });
+
+            modelBuilder.Entity("GAP.Models.Devis", b =>
+                {
+                    b.Navigation("Produits");
                 });
 
             modelBuilder.Entity("GAP.Models.OffreVente", b =>

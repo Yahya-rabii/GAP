@@ -7,47 +7,95 @@
 <h1>Details</h1>
 
 <div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Offrevente ID</th>
+                <th>DemandeAchat ID</th>
+                <!-- Add other properties of the "DemandeAchat" model to display as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.OffreVenteID)</td>
+                <td>@Html.DisplayFor(model => model.OffreVente.DemandeAchatId)</td>
+                <!-- Add other properties of the "DemandeAchat" model to display as needed -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
     <h4>Devis</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateCreation)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateCreation)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateReception)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateReception)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PrixTTL)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PrixTTL)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NombrePiece)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NombrePiece)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Produit)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Produit.ProduitID)
-        </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Fournisseur)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Fournisseur.Email)
         </dd>
     </dl>
 </div>
+
+@if (Model.Produits != null && Model.Produits.Count > 0)
+{
+    <div>
+        <h4>Produits</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ProduitID</th>
+                    <th>PrixUnitaire</th>
+                    <th>Nom</th>
+                    <th>NombrePiece</th>
+                    <th>Desc</th>
+                    <!-- Add other properties of the "Produit" model to display as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var produit in Model.Produits)
+                {
+                    <tr>
+                        <td>@produit.ProduitID</td>
+                        <td>@produit.PrixUnitaire</td>
+                        <td>@produit.Nom</td>
+                        <td>@produit.NombrePiece</td>
+                        <td>@produit.Desc</td>
+                        <!-- Add other properties of the "Produit" model to display as needed -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.DevisID">Edit</a> |
     <a asp-action="Index">Back to List</a>

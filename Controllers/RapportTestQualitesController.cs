@@ -25,7 +25,7 @@ namespace GAP.Controllers
 
             // Load the related Devis data (Produit and Fournisseur)
             var devisList = await _context.Devis
-                .Include(d => d.Produit)
+                .Include(d => d.Produits)
                 .Include(d => d.Fournisseur)
                 .ToListAsync();
 
@@ -68,12 +68,12 @@ namespace GAP.Controllers
         {
             // Fetch the list of all devis with corresponding product and supplier names
             var devisList = _context.Devis
-               .Include(d => d.Produit)
+               .Include(d => d.Produits)
                .Include(d => d.Fournisseur)
                .Select(d => new SelectListItem
                {
                    Value = d.DevisID.ToString(),
-                   Text = $"devis: {d.DevisID } | produit id : {d.Produit.Nom} | provider id : {d.Fournisseur.Email}" // Combine product name and supplier email
+                   Text = $"devis: {d.DevisID } | produit id : {d.Produits} | provider id : {d.Fournisseur.Email}" // Combine product name and supplier email
                })
                .ToList();
 
@@ -101,20 +101,20 @@ namespace GAP.Controllers
 
             // If the model state is not valid, refill the dropdown list and return the view with validation errors.
             var devisList = _context.Devis
-                .Include(d => d.Produit)
+                .Include(d => d.Produits)
                 .ThenInclude(p=>p.Nom)
                 .Include(d => d.Fournisseur)
                 .ThenInclude(d=>d.Email)
                 .Select(d => new
                 {
                     DevisID = d.DevisID,
-                    DevisProductName = d.Produit.Nom,
+                    DevisProduct= d.Produits,
                     DevisFournisseurName = d.Fournisseur.Email
                 })
                 .ToList();
 
             // Create the select list for dropdown menu
-            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DevisProductName", "DevisFournisseurName");
+            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DevisProduct", "DevisFournisseurName");
 
             return View(rapportTestQualite);
         }
