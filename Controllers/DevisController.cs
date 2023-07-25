@@ -10,6 +10,7 @@ using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -25,10 +26,22 @@ namespace GAP.Controllers
         }
 
         // GET: Devis
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, string SearchString)
         {
-            var gAPContext = _context.Devis.Include(d => d.Fournisseur);
-            return View(await gAPContext.ToListAsync());
+
+
+            IQueryable<Devis> Devisiq = from o in _context.Devis.Include(o => o.Fournisseur) select o;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                Devisiq = _context.Devis.Include(o => o.Fournisseur).Where(o => o.Fournisseur.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await Devisiq.ToPagedListAsync(pageNumber, pageSize));
+
+
         }
 
         // GET: Devis/Details/5

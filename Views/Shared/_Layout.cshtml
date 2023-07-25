@@ -13,10 +13,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/GAP.styles.css" asp-append-version="true" />
 
+
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/cards.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
+
+
+
     <link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -83,65 +88,75 @@
     </div>
     <!-- end header inner -->
 
-    <div class="sidenav">
-        <div class="menu-btn">
-            <div class="line line--1"></div>
-            <div class="line line--2"></div>
-            <div class="line line--3"></div>
-        </div>
-
-        <div class="nav-links">
+   
             @if (User.Identity.IsAuthenticated)
-            {
+    {
+        <div class="sidenav">
+            <div class="menu-btn">
+                <div class="line line--1"></div>
+                <div class="line line--2"></div>
+                <div class="line line--3"></div>
+            </div>
+
+            <div class="sidenav-links">
                 @if (User.IsInRole("Admin"))
                 {
-                     <a class="link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                    <a class="link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
 
-                    <a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a>
+                    <a class="link" style="color:white" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a>
                     <a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add Resp Service qualite</a>
                     <a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add Resp Service Finances</a>
                     <a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add Recep Service Achats</a>
                     <a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a>
                 }
-                @if (User.IsInRole("Fournisseur"))
+                else  if (User.IsInRole("Fournisseur"))
                 {
 
-                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offres Ventes</a>//+add
+                    <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offres Ventes</a>
+                    //+add
                     <a class="link" onclick="location.href='@Url.Action("Indexfour", "DemandeAchats")'">Demandes Achats</a>
                     <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>
                     <a class="link" onclick="location.href='@Url.Action("Details", "Fournisseurs")'">Account</a>
 
-                } @if (User.IsInRole("RespServiceAchat"))
+                }
+                else if (User.IsInRole("RespServiceAchat"))
                 {
 
                     <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "OffreVentes")'">Offre Ventes</a>
-                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>//+add
-                    <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>//+add
-                
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
+                    //+add
+                    <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>
+                    //+add
+
                 }
-            }@if (User.IsInRole("RespServiceFinance"))
+                else if (User.IsInRole("RespServiceFinance"))
                 {
-                     
+
                     <a class="link" onclick="location.href='@Url.Action("Index", "Factures")'">Factures</a>
 
 
-            }@if (User.IsInRole("ReceptServiceAchat"))
-                {
-
-
-                <a class="link" onclick="location.href='@Url.Action("Index", "RapportReceptions")'">RapportReceptions</a>//+add
-
-            }@if (User.IsInRole("RespServiceQualite"))
-                {
-
-                <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>//+add
-                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
-                
                 }
-            
-           
+                else if (User.IsInRole("ReceptServiceAchat"))
+                {
+
+
+                    <a class="link" onclick="location.href='@Url.Action("Index", "RapportReceptions")'">RapportReceptions</a>
+                    //+add
+
+                }
+                else if (User.IsInRole("RespServiceQualite"))
+                {
+
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>
+                    //+add
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
+
+                }
+
+
+            </div>
         </div>
-    </div>
+    }
     <!-- top -->
     <div class="full_bg">
         <div class="slider_main">
@@ -256,23 +271,9 @@
         </footer>
         <!-- end footer -->
         <!-- Javascript files-->
-        <script>
-            var menuBtn = document.querySelector('.menu-btn');
-            var nav = document.querySelector('.sidenav');
-            var lineOne = document.querySelector('.sidenav .menu-btn .line--1');
-            var lineTwo = document.querySelector('.sidenav .menu-btn .line--2');
-            var lineThree = document.querySelector('.sidenav .menu-btn .line--3');
-            var link = document.querySelector('.sidenav .nav-links');
-            menuBtn.addEventListener('click', () => {
-                nav.classList.toggle('nav-open');
-                lineOne.classList.toggle('line-cross');
-                lineTwo.classList.toggle('line-fade-out');
-                lineThree.classList.toggle('line-cross');
-                link.classList.toggle('fade-in');
-            })
-        </script>
         <script src="~/js/jquery.min.js"></script>
         <script src="~/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js"></script>
         <!-- sidebar -->
         <script src="~/js/custom.js"></script>
 

@@ -35,7 +35,7 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs/Details/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Fournisseur")]
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -81,7 +81,7 @@ namespace GAP.Controllers
         }
 
         // GET: Fournisseurs/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Fournisseur")]
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -103,7 +103,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Fournisseur")]
 
         public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {

@@ -1,60 +1,119 @@
-﻿@model IEnumerable<GAP.Models.OffreVente>
+﻿@model X.PagedList.IPagedList<GAP.Models.OffreVente>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<main>
+    <article>
+        <div class="datatable-container" style="width:100%">
+            <h1 class="form-header">Offre Vente</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Fournisseur)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrixTTL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Validite)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fournisseur.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrixTTL)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Validite)
-            </td>
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
 
-                @if (!item.Validite) // Only show buttons if the element is not validated
-                {
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.OffreVenteID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.OffreVenteID">Delete</a>
-                    </td>
 
-                }
-                else
-                {
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">Details</a>
-                    </td>
-                }
 
-          
-        </tr>
-}
-    </tbody>
-</table>
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="IndexRespSA">
+                        <input type="search" id="form1" class="search-input" placeholder="demande achat desc..." name="SearchString" style="color:white;" />
+                    </form>
+                </div>
+            </div>
+
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>
+                            Fournisseur
+                        </th>
+                        <th>
+                            PrixTTL
+                        </th>
+                        <th>
+                            Validite
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fournisseur.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PrixTTL)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Validite)
+                            </td>
+                            @if (!item.Validite)
+                            {
+                                <td>
+                                  
+
+
+                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                        <a asp-action="Edit" asp-route-id="@item.OffreVenteID">
+                                            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">
+                                            <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.OffreVenteID">
+                                            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                        </a>
+                                    </div>
+
+
+
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+
+                                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">
+                                            <input type="button" class="form-button DET-button" value="Details">
+                                        </a>
+                                    </div>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            
+            </table>    <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+        </div>
+    </article>
+</main>

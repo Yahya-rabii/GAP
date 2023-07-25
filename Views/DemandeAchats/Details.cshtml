@@ -1,41 +1,56 @@
 ﻿@model GAP.Models.DemandeAchat
 
+
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<main>
+    <article>
 
-<div>
-    <h4>DemandeAchat</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Budget)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Budget)
-        </dd>
-    </dl>
-</div>
-<div>
-     @if (Model.IsValid) 
-    {
-        <a asp-action="Edit" asp-route-id="@Model.DemandeAchatID">Edit</a>
 
-    }
+            <div class="cardinfo">
+                <div class="form-items">
+                    <hr />
 
-    <a asp-action="Index">Back to List</a>
-</div>
+
+                    <h4>Demande Achat Details</h4>
+                    <hr />
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.CreationDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.CreationDate)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Budget)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Budget)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div>
+                    @if (Model.IsValid)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.DemandeAchatID">Edit</a>
+
+                    }
+
+                    <a asp-action="Index">Back to List</a>
+                </div>
+
+
+            </div>
+
+
+    </article>
+</main>

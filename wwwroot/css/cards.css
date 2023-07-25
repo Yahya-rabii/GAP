@@ -1,0 +1,24 @@
+
+
+    .cardinfo {
+
+
+
+   font-family: sans-serif;
+    border-bottom-style: double;
+    position: relative;
+    color: black;
+    font-size: 12px;
+    padding:10px;
+    background: rgba(255, 255, 255, 0.068);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.048);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
+    border-radius: 10px;
+
+
+}
+
+
+

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Security.Claims;
 using Microsoft.Data.SqlClient;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -26,22 +27,48 @@ namespace GAP.Controllers
         [Authorize(Roles = "Fournisseur")]
 
         // GET: OffreVentes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, string SearchString)
         {
-            var gAPContext = _context.OffreVente.Include(o => o.Fournisseur);
-            return View(await gAPContext.ToListAsync());
+
+
+            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur) select o;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                OffreVenteiq = _context.OffreVente
+                    .Include(o => o.Fournisseur)
+                    .Where(o => o.Fournisseur.Nom.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await OffreVenteiq.ToPagedListAsync(pageNumber, pageSize));
+
         }
         
         [Authorize(Roles = "RespServiceAchat")]
 
         // GET: OffreVentes
-        public async Task<IActionResult> IndexRespSA()
+        public async Task<IActionResult> IndexRespSA(int? page, string SearchString)
         {
-            var gAPContext = _context.OffreVente.Include(o => o.Fournisseur);
-            return View(await gAPContext.ToListAsync());
+
+
+            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur) select o;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                OffreVenteiq = _context.OffreVente.Include(o=>o.DemandeAchat).Where(o => o.DemandeAchat.Description.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await OffreVenteiq.ToPagedListAsync(pageNumber, pageSize));
+
+           
+
         }
 
-        [Authorize(Roles = "Fournisseur")]
+        [Authorize(Roles = "Fournisseur,RespServiceAchat")]
 
         // GET: OffreVentes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -63,7 +90,9 @@ namespace GAP.Controllers
             }
 
             return View(offreVente);
-        }
+        }     
+        
+
 
 
 

@@ -9,6 +9,7 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -25,19 +26,41 @@ namespace GAP.Controllers
         // GET: DemandeAchats
         [Authorize(Roles = "RespServiceAchat")]
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page ,string SearchString)
         {
-            return _context.DemandeAchat != null ?
-                        View(await _context.DemandeAchat.ToListAsync()) :
-                        Problem("Entity set 'GAPContext.DemandeAchat'  is null.");
+           
+
+            IQueryable<DemandeAchat> DemandeAchatiq = from s in _context.DemandeAchat
+                                      select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                DemandeAchatiq = _context.DemandeAchat.Where(d => d.Description.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await DemandeAchatiq.ToPagedListAsync(pageNumber, pageSize));
+
+
         }
         // GET: DemandeAchats for fournisseur, this method will be allowed for the fournisseur role
         [Authorize(Roles = "Fournisseur")]
-        public async Task<IActionResult> IndexFour()
+        public async Task<IActionResult> IndexFour(int? page, string SearchString)
         {
-            return _context.DemandeAchat != null ?
-                        View(await _context.DemandeAchat.ToListAsync()) :
-                        Problem("Entity set 'GAPContext.DemandeAchat'  is null.");
+
+
+            IQueryable<DemandeAchat> DemandeAchatiq = from s in _context.DemandeAchat
+                                                      select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                DemandeAchatiq = _context.DemandeAchat.Where(d => d.Description.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await DemandeAchatiq.ToPagedListAsync(pageNumber, pageSize));
         }
 
 
