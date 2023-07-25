@@ -31,6 +31,11 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.DemandeAchatID">Edit</a> |
+     @if (Model.IsValid) 
+    {
+        <a asp-action="Edit" asp-route-id="@Model.DemandeAchatID">Edit</a>
+
+    }
+
     <a asp-action="Index">Back to List</a>
 </div>

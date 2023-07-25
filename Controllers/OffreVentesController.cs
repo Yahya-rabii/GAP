@@ -73,12 +73,16 @@ namespace GAP.Controllers
         {
             // Retrieve the DemandeAchat object based on the received demandeAchatId
             var demandeAchat = _context.DemandeAchat.Find(demandeAchatId);
-
+           
             if (demandeAchat == null)
             {
                 // Handle the case when the DemandeAchat is not found
                 return NotFound();
             }
+
+            demandeAchat.IsValid = false;
+            _context.Update(demandeAchat);
+             _context.SaveChanges();
 
             var produitsList = _context.Produit
                 .Select(p => new SelectListItem
@@ -161,31 +165,7 @@ namespace GAP.Controllers
 
             return RedirectToAction("IndexRespSA", "OffreVentes");
         }     
-        [Authorize(Roles = "RespServiceAchat")]
-        public async Task<IActionResult> UnValidateOffre(int? id)
-        {
-            if (id == null || _context.OffreVente == null)
-            {
-                return NotFound();
-            }
-
-            var offreVente = await _context.OffreVente.FindAsync(id);
-            if (offreVente == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                // Update the Validite property to false
-                offreVente.Validite = false;
-
-                // Mark the entity as modified and save changes
-                _context.Update(offreVente);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction("IndexRespSA", "OffreVentes");
-        }
+ 
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////

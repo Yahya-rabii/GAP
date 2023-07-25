@@ -41,6 +41,9 @@ namespace GAP.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("RespServiceAchatUserID")
                         .HasColumnType("int");
 
@@ -68,7 +71,7 @@ namespace GAP.Migrations
                     b.Property<int?>("FournisseurID")
                         .HasColumnType("int");
 
-                    b.Property<int>("NombrePiece")
+                    b.Property<int?>("NombrePiece")
                         .HasColumnType("int");
 
                     b.Property<int?>("OffreVenteID")

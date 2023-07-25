@@ -55,6 +55,7 @@ namespace GAP.Migrations
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Budget = table.Column<double>(type: "float", nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
                     RespServiceAchatUserID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -146,7 +147,7 @@ namespace GAP.Migrations
                     DateCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateReception = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PrixTTL = table.Column<double>(type: "float", nullable: true),
-                    NombrePiece = table.Column<int>(type: "int", nullable: false),
+                    NombrePiece = table.Column<int>(type: "int", nullable: true),
                     FournisseurID = table.Column<int>(type: "int", nullable: true),
                     RespServiceAchatId = table.Column<int>(type: "int", nullable: true),
                     OffreVenteID = table.Column<int>(type: "int", nullable: true)

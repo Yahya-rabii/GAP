@@ -36,10 +36,28 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Budget)
             </td>
+
+
+                @if (item.IsValid) 
+                {
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.DemandeAchatID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.DemandeAchatID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.DemandeAchatID">Delete</a>
+                    </td>
+
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.DemandeAchatID">Details</a>
+                    </td>
+                }
+
+
+
             <td>
-                <a asp-action="Edit" asp-route-id="@item.DemandeAchatID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DemandeAchatID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DemandeAchatID">Delete</a>
+             
             </td>
         </tr>
 }
