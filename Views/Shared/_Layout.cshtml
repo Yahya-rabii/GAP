@@ -71,8 +71,49 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                             <ul class="navbar-nav mr-auto">
+
+                             
+
+
                                 @if (User.Identity.IsAuthenticated)
                                 {
+
+                                         // Cast the data from ViewData to the appropriate type
+                                    var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
+                                    var notifications = Context.Items["Notifications"] as List<Notification> ?? new List<Notification>();
+                                
+
+                                <ul class="notification-drop">
+                                    <li class="item">
+                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
+                                        @if (totalNotifications > 0)
+                                        {
+                                            <span class="btn__badge pulse-button">@totalNotifications</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="btn__badge pulse-button">0</span>
+                                        }
+                                        <ul>
+                                            @if (totalNotifications > 0)
+                                            {
+                                                @foreach (var notification in notifications)
+                                                {
+                                                    <li>@notification.NotificationTitle</li>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <li>No Notif</li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
+                              
+
+
+
+
                                     <li class="nav-item">
                                         <a class="logout" onclick="location.href='@Url.Action("Logout", "Users")'">
                                             <span>Logout</span>
@@ -141,6 +182,7 @@
 
 
                     <a class="link" onclick="location.href='@Url.Action("Index", "RapportReceptions")'">RapportReceptions</a>
+                    <a class="link" onclick="location.href='@Url.Action("IndexDevis", "ReceptServiceAchats")'">Current Arrivals</a>
                     //+add
 
                 }
@@ -271,10 +313,13 @@
         </footer>
         <!-- end footer -->
         <!-- Javascript files-->
+        
         <script src="~/js/jquery.min.js"></script>
         <script src="~/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js"></script>
+        <script src="~/js/Notifications.js"></script>
         <!-- sidebar -->
+
         <script src="~/js/custom.js"></script>
 
         @await RenderSectionAsync("Scripts", required: false)

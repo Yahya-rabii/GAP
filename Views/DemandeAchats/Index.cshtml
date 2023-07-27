@@ -67,13 +67,7 @@
                                 @Html.DisplayFor(modelItem => item.Budget)
                             </td>
                             <td>
-                                @if (item.IsValid)
-                                {
-                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
-                                        <a asp-controller="OffreVentes" asp-action="Create" asp-route-demandeAchatId="@item.DemandeAchatID">Reply</a>
-                                    </div>
-                                }
-
+                          
 
                                 @if (item.IsValid)
                                 {
@@ -114,13 +108,18 @@
 
                                 }
 
+                                
 
-
-                            </td>
+                     
                         </tr>
                     }
                 </tbody>
-            </table>
+            </table>      
+            <p>
+
+                <a asp-action="Create">Create New</a>
+
+            </p>
         </div>
     </article>
 </main>

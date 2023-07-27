@@ -7,106 +7,90 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using System.Security.Claims;
 
 namespace GAP.Controllers
 {
-    [Authorize]
-    [Authorize(Roles = "Fournisseur")]
-    public class ProduitsController : Controller
+    public class NotificationsController : Controller
     {
         private readonly GAPContext _context;
 
-        public ProduitsController(GAPContext context)
+        public NotificationsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: Produits
+        // GET: Notifications
         public async Task<IActionResult> Index()
         {
-
-
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
-
-
-            return _context.Produit != null ? 
-                          View(await _context.Produit.Where(p => p.FournisseurId == userId).ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Produit'  is null.");
+              return _context.Notification != null ? 
+                          View(await _context.Notification.ToListAsync()) :
+                          Problem("Entity set 'GAPContext.Notification'  is null.");
         }
 
-        // GET: Produits/Details/5
+        // GET: Notifications/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Notification == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.ProduitID == id);
-            if (produit == null)
+            var notification = await _context.Notification
+                .FirstOrDefaultAsync(m => m.NotificationID == id);
+            if (notification == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(notification);
         }
 
-        // GET: Produits/Create
+        // GET: Notifications/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Produits/Create
+        // POST: Notifications/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProduitID,PrixUnitaire,Nom,NombrePiece,Desc")] Produit produit)
+        public async Task<IActionResult> Create([Bind("NotificationID,NotificationTitle,UserID")] Notification notification)
         {
-
-
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-
             if (ModelState.IsValid)
             {
-                produit.FournisseurId = userId;
-                _context.Add(produit);
+                _context.Add(notification);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(notification);
         }
 
-        // GET: Produits/Edit/5
+        // GET: Notifications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Notification == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit == null)
+            var notification = await _context.Notification.FindAsync(id);
+            if (notification == null)
             {
                 return NotFound();
             }
-            return View(produit);
+            return View(notification);
         }
 
-        // POST: Produits/Edit/5
+        // POST: Notifications/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProduitID,PrixUnitaire,Nom,NombrePiece,Desc")] Produit produit)
+        public async Task<IActionResult> Edit(int id, [Bind("NotificationID,NotificationTitle,UserID")] Notification notification)
         {
-            if (id != produit.ProduitID)
+            if (id != notification.NotificationID)
             {
                 return NotFound();
             }
@@ -115,12 +99,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(produit);
+                    _context.Update(notification);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProduitExists(produit.ProduitID))
+                    if (!NotificationExists(notification.NotificationID))
                     {
                         return NotFound();
                     }
@@ -131,49 +115,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(produit);
+            return View(notification);
         }
 
-        // GET: Produits/Delete/5
+        // GET: Notifications/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Produit == null)
+            if (id == null || _context.Notification == null)
             {
                 return NotFound();
             }
 
-            var produit = await _context.Produit
-                .FirstOrDefaultAsync(m => m.ProduitID == id);
-            if (produit == null)
+            var notification = await _context.Notification
+                .FirstOrDefaultAsync(m => m.NotificationID == id);
+            if (notification == null)
             {
                 return NotFound();
             }
 
-            return View(produit);
+            return View(notification);
         }
 
-        // POST: Produits/Delete/5
+        // POST: Notifications/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Produit == null)
+            if (_context.Notification == null)
             {
-                return Problem("Entity set 'GAPContext.Produit'  is null.");
+                return Problem("Entity set 'GAPContext.Notification'  is null.");
             }
-            var produit = await _context.Produit.FindAsync(id);
-            if (produit != null)
+            var notification = await _context.Notification.FindAsync(id);
+            if (notification != null)
             {
-                _context.Produit.Remove(produit);
+                _context.Notification.Remove(notification);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProduitExists(int id)
+        private bool NotificationExists(int id)
         {
-          return (_context.Produit?.Any(e => e.ProduitID == id)).GetValueOrDefault();
+          return (_context.Notification?.Any(e => e.NotificationID == id)).GetValueOrDefault();
         }
     }
 }

@@ -127,6 +127,17 @@ namespace GAP.Controllers
                     }
                     devis.NombrePiece = OffreVente.Produits.Count();
                     devis.FournisseurID = OffreVente.FournisseurId;
+
+
+
+                    var  demandeAchat = await _context.DemandeAchat.FindAsync(OffreVente.DemandeAchatId);
+
+                    if (demandeAchat != null)
+                    {
+                        demandeAchat.IsValid = false;
+                    }
+                    _context.Update(demandeAchat);
+
                 }
 
                 _context.Add(devis);

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Humanizer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using X.PagedList;
+using Microsoft.AspNetCore.Identity;
 
 namespace GAP.Controllers
 {
@@ -30,6 +32,67 @@ namespace GAP.Controllers
                           View(await _context.ReceptServiceAchat.ToListAsync()) :
                           Problem("Entity set 'GAPContext.ReceptServiceAchat'  is null.");
         }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        public async Task<IActionResult> IndexDevis(int? page, string SearchString)
+        {
+            IQueryable<Devis> Devisiq = from o in _context.Devis.Include(o => o.Fournisseur).Include(o => o.Produits) select o;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                Devisiq = _context.Devis.Include(o => o.Fournisseur).Where(o => o.Fournisseur.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+
+            // Load RespServiceFinnance and RespServiceQalite users and store them in ViewBag
+            ViewBag.RespServiceFinnanceUsers = await _context.RespServiceFinance.ToListAsync();
+            ViewBag.RespServiceQaliteUsers = await _context.RespServiceQualite.ToListAsync();
+
+            return View(await Devisiq.ToPagedListAsync(pageNumber, pageSize));
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateNotification(int devisId, string respFinnanceEmail, string respQaliteEmail)
+        {
+            // Find the user IDs based on the selected emails
+            var respFinnanceUser = _context.User.FirstOrDefault(u => u.Email == respFinnanceEmail);
+            var respQaliteUser = _context.User.FirstOrDefault(u => u.Email == respQaliteEmail);
+
+            if (respFinnanceUser != null && respQaliteUser != null)
+            {
+                // Create and save notification for RespServiceFinnance
+                var notificationFinnance = new Notification
+                {
+                    DevisID = devisId,
+                    UserID = respFinnanceUser.UserID,
+                    NotificationTitle = "Reclamation Notification Finnanciere"
+                };
+                _context.Notification.Add(notificationFinnance);
+
+                // Create and save notification for RespServiceQalite
+                var notificationQalite = new Notification
+                {
+                    DevisID = devisId,
+                    UserID = respQaliteUser.UserID,
+                    NotificationTitle = "Reclamation Notification Qalite"
+                };
+                _context.Notification.Add(notificationQalite);
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction(nameof(IndexDevis));
+        }
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////
+
 
         // GET: ReceptServiceAchats/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -160,6 +160,29 @@ namespace GAP.Migrations
                     b.ToTable("Fournisseur");
                 });
 
+            modelBuilder.Entity("GAP.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
+
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NotificationTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("NotificationID");
+
+                    b.ToTable("Notification");
+                });
+
             modelBuilder.Entity("GAP.Models.OffreVente", b =>
                 {
                     b.Property<int>("OffreVenteID")
@@ -189,6 +212,48 @@ namespace GAP.Migrations
                     b.ToTable("OffreVente");
                 });
 
+            modelBuilder.Entity("GAP.Models.OrdreCreationFacture", b =>
+                {
+                    b.Property<int>("OrdreCreationFactureID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrdreCreationFactureID"));
+
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RespServiceFinanceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdreCreationFactureID");
+
+                    b.HasIndex("DevisID");
+
+                    b.ToTable("OrdreCreationFacture");
+                });
+
+            modelBuilder.Entity("GAP.Models.OrdreCreationRTQ", b =>
+                {
+                    b.Property<int>("OrdreCreationRTQID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrdreCreationRTQID"));
+
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RespServiceQualiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrdreCreationRTQID");
+
+                    b.HasIndex("DevisID");
+
+                    b.ToTable("OrdreCreationRTQ");
+                });
+
             modelBuilder.Entity("GAP.Models.Produit", b =>
                 {
                     b.Property<int>("ProduitID")
@@ -201,6 +266,9 @@ namespace GAP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FournisseurId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nom")
@@ -406,6 +474,24 @@ namespace GAP.Migrations
                     b.Navigation("DemandeAchat");
 
                     b.Navigation("Fournisseur");
+                });
+
+            modelBuilder.Entity("GAP.Models.OrdreCreationFacture", b =>
+                {
+                    b.HasOne("GAP.Models.Devis", "Devis")
+                        .WithMany()
+                        .HasForeignKey("DevisID");
+
+                    b.Navigation("Devis");
+                });
+
+            modelBuilder.Entity("GAP.Models.OrdreCreationRTQ", b =>
+                {
+                    b.HasOne("GAP.Models.Devis", "Devis")
+                        .WithMany()
+                        .HasForeignKey("DevisID");
+
+                    b.Navigation("Devis");
                 });
 
             modelBuilder.Entity("GAP.Models.Produit", b =>

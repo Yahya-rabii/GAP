@@ -29,9 +29,10 @@ namespace GAP.Controllers
         // GET: OffreVentes
         public async Task<IActionResult> Index(int? page, string SearchString)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+       
 
-
-            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur) select o;
+            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur).Where(o => o.FournisseurId == userId) select o;
 
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -40,6 +41,7 @@ namespace GAP.Controllers
                     .Where(o => o.Fournisseur.Nom.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
+           
             int pageSize = 2;
             int pageNumber = (page ?? 1);
             return View(await OffreVenteiq.ToPagedListAsync(pageNumber, pageSize));
@@ -98,76 +100,64 @@ namespace GAP.Controllers
 
         // GET: OffreVentes/Create
         [Authorize(Roles = "Fournisseur")]
-        public IActionResult Create(int demandeAchatId)
+        // GET: OffreVentes/Create
+        public async Task<IActionResult> Create(int demandeAchatId)
         {
-            // Retrieve the DemandeAchat object based on the received demandeAchatId
-            var demandeAchat = _context.DemandeAchat.Find(demandeAchatId);
-           
-            if (demandeAchat == null)
-            {
-                // Handle the case when the DemandeAchat is not found
-                return NotFound();
-            }
-
-            demandeAchat.IsValid = false;
-            _context.Update(demandeAchat);
-             _context.SaveChanges();
-
-            var produitsList = _context.Produit
-                .Select(p => new SelectListItem
-                {
-                    Value = p.ProduitID.ToString(),
-                    Text = $"P Name: {p.Nom} | NbrPiece : {p.NombrePiece} | Prix Unitaire: {p.PrixUnitaire}"
-                })
-                .ToList();
-
-            // Create the select list for dropdown menu
-            ViewBag.ProduitsList = new SelectList(produitsList, "Value", "Text");
-
-            // Pass the DemandeAchatID to the view model, so it can be submitted back when creating the OffreVente
+            // Store the demandeAchatId in ViewBag or ViewData so that it can be used in the view.
             ViewBag.DemandeAchatId = demandeAchatId;
 
-            return View();
-        }
+ 
 
+
+        var produitsWithoutOffreVente = await GetProductsWithoutOffreVente();
+            ViewData["ProduitsWithoutOffreVente"] = new SelectList(produitsWithoutOffreVente, "ProduitID", "Nom");
+
+            return View();
+
+        }
 
         // POST: OffreVentes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(OffreVente offreVente, int selectedProduitId)
+        public async Task<IActionResult> Create(int demandeAchatId, OffreVente offreVente, int selectedProduitId)
         {
+            if (demandeAchatId == 0)
+            {
+                return NotFound();
+            }
+
+            var demandeAchat = _context.DemandeAchat.Find(demandeAchatId);
+
+            if (demandeAchat == null)
+            {
+                return NotFound();
+            }
+
+
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var user = _context.Fournisseur.FirstOrDefault(u => u.FournisseurID == userId);
             offreVente.FournisseurId = userId;
             offreVente.Fournisseur = user;
+            offreVente.DemandeAchatId = demandeAchatId;
+            offreVente.DemandeAchat = demandeAchat;
 
-            // Check if the selected product already exists in any existing "OffreVente"
-            var existingOffre = _context.OffreVente.Include(o => o.Produits).FirstOrDefault(o => o.Produits.Any(p => p.ProduitID == selectedProduitId));
-
-            if (existingOffre != null)
+            // The product is not found in any existing "OffreVente," so add it to the current one.
+            var selectedProduit = _context.Produit.Find(selectedProduitId);
+            if (offreVente.Produits == null)
             {
-                // If the product is found in an existing "OffreVente," display an error message to the user.
-                ModelState.AddModelError("Produit", "This product is already used in another 'offre de ventes'.");
-                return RedirectToAction(nameof(Index));
+                offreVente.Produits = new List<Produit>();
             }
-            else
-            {
-                // The product is not found in any existing "OffreVente," so add it to the current one.
-                var selectedProduit = _context.Produit.Find(selectedProduitId);
-                if (offreVente.Produits == null)
-                {
-                    offreVente.Produits = new List<Produit>();
-                }
-                offreVente.Produits.Add(selectedProduit);
+            offreVente.Produits.Add(selectedProduit);
 
-                _context.Add(offreVente);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            _context.Update(demandeAchat);
+            _context.Add(offreVente);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
-        
 
-     
+
+
+
 
         [Authorize(Roles = "RespServiceAchat")]
         public async Task<IActionResult> ValidateOffre(int? id)
@@ -224,7 +214,19 @@ namespace GAP.Controllers
             ViewData["FournisseurId"] = new SelectList(_context.Fournisseur, "FournisseurID", "Email", offreVente.FournisseurId);
 
             var produitsWithoutOffreVente = await GetProductsWithoutOffreVente();
-            ViewData["ProduitsWithoutOffreVente"] = new SelectList(produitsWithoutOffreVente, "ProduitID", "Nom");
+            if (produitsWithoutOffreVente.Count() > 0)
+            {
+                ViewData["ProduitsWithoutOffreVente"] = new SelectList(produitsWithoutOffreVente, "ProduitID", "Nom");
+            }
+            else
+            {
+                // Add the message "No products in your stock" to the list
+                var emptyList = new List<Produit>
+    {
+        new Produit { ProduitID = 0, Nom = "No products in your stock" }
+    };
+                ViewData["ProduitsWithoutOffreVente"] = new SelectList(emptyList, "ProduitID", "Nom");
+            }
 
             return View(offreVente);
         }

@@ -136,7 +136,7 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "RespServiceAchat")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("DemandeAchatID,CreationDate,Description,Budget")] DemandeAchat demandeAchat)
+        public async Task<IActionResult> Edit(int id, [Bind("DemandeAchatID,Description,Budget")] DemandeAchat demandeAchat)
         {
             if (id != demandeAchat.DemandeAchatID)
             {
@@ -147,6 +147,7 @@ namespace GAP.Controllers
             {
                 try
                 {
+                    demandeAchat.CreationDate = DateTime.Now;
                     _context.Update(demandeAchat);
                     await _context.SaveChangesAsync();
                 }

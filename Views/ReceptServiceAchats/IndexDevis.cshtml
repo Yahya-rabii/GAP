@@ -1,0 +1,102 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.Devis>
+
+@{
+    ViewData["Title"] = "IndexDevis";
+}
+
+<main>
+    <article>
+        <div class="datatable-container" style="width: 100%;">
+            <h1 class="form-header">Devis</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <!-- ... (unchanged code) ... -->
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="Fournisseur..." name="SearchString" style="color:white;" />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>
+                            DateReception
+                        </th>
+                        <th>
+                            PrixTTL
+                        </th>
+                        <th>
+                            Fournisseur
+                        </th>
+                        <th>
+                            produit
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateReception)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PrixTTL)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fournisseur.Email)
+                            </td>
+
+                            @foreach (var p in item.Produits)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => p.Desc)
+                                </td>
+                            }
+
+                            <td>
+                                <div>
+                                    <form method="post" asp-action="CreateNotification">
+                                        <input type="hidden" name="devisId" value="@item.DevisID" />
+
+                                        <label for="respFinnance">RespServiceFinnance:</label>
+                                        <select id="respFinnance" name="respFinnanceEmail">
+                                            @foreach (var user in ViewBag.RespServiceFinnanceUsers)
+                                            {
+                                                <option value="@user.Email">@user.Email</option>
+                                            }
+                                        </select>
+
+                                        <label for="respQalite">RespServiceQalite:</label>
+                                        <select id="respQalite" name="respQaliteEmail">
+                                            @foreach (var user in ViewBag.RespServiceQaliteUsers)
+                                            {
+                                                <option value="@user.Email">@user.Email</option>
+                                            }
+                                        </select>
+
+                                        <input type="submit" value="Reclamation" class="form-button RECL-button" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+        </div>
+    </article>
+</main>

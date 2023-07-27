@@ -70,15 +70,18 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Validite)
                             </td>
-                        
-                                <td>
-                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
 
-                                        <a asp-action="Details" asp-route-id="@item.OffreVenteID">
-                                            <input type="button" class="form-button DET-button" value="Details">
-                                        </a>
-                                    </div>
+
+
+                            @if (!item.Validite) // Only show buttons if the element is not validated
+                            {
+                                <td>
+                                    <a asp-controller="Devis" asp-action="Create" asp-route-OffreVenteID="@item.OffreVenteID">Reply</a>
+
                                 </td>
+
+                            }
+                          
                             
                         </tr>
                     }
