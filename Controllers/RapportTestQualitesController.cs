@@ -64,21 +64,21 @@ namespace GAP.Controllers
         }
 
         // GET: RapportTestQualite/Create
-        public IActionResult Create()
+        public IActionResult Create(int devisId)
         {
             // Fetch the list of all devis with corresponding product and supplier names
-            var devisList = _context.Devis
-               .Include(d => d.Produits)
+            var devisList = _context.Devis.Where(d => d.DevisID == devisId)
                .Include(d => d.Fournisseur)
                .Select(d => new SelectListItem
                {
                    Value = d.DevisID.ToString(),
-                   Text = $"devis: {d.DevisID } | produit id : {d.Produits} | provider id : {d.Fournisseur.Email}" // Combine product name and supplier email
+                   Text = $"devis: {d.DevisID} | provider id : {d.Fournisseur.Email}" // Combine product name and supplier email
                })
                .ToList();
 
             // Create the select list for dropdown menu
             ViewBag.DevisList = new SelectList(devisList, "Value", "Text");
+            ViewBag.devisId = devisId;
 
             return View();
         }
@@ -86,13 +86,53 @@ namespace GAP.Controllers
         // POST: RapportTestQualite/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(RapportTestQualite rapportTestQualite)
+        public IActionResult Create(int devisId,  RapportTestQualite rapportTestQualite)
         {
             if (ModelState.IsValid)
             {
 
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                rapportTestQualite.DevisId = devisId;
                 rapportTestQualite.RespServiceQualiteId = userId;
+
+
+                if (rapportTestQualite.ValiditeNbrPiece && rapportTestQualite.ValiditeEtat && rapportTestQualite.ValiditeFonctionnement)
+                {
+                    var facture  = _context.Facture.Where(f=>f.DevisID ==  devisId).FirstOrDefault();
+                    if (facture != null)
+                    {
+                        facture.Validite =  true;
+                        _context.Update(facture);
+
+                    }
+
+                }
+                else
+                {
+                    var devis = _context.Devis.Include(d=>d.Fournisseur).Where(d=>d.DevisID==devisId).FirstOrDefault();
+                    Sanction sanction = new Sanction();
+
+                    sanction.SanctionTitle = "Unvalalid Rapport Test Qualite";
+                    sanction.SanctionDescription = "un des normes de qualites de produit est invalid";
+                    sanction.FournisseurId = devis.FournisseurID;
+                    _context.Sanction.Add(sanction);
+
+
+
+
+
+                }
+
+
+
+                var notification = _context.Notification.FirstOrDefault(d => d.UserID == userId);
+                if (notification != null)
+                {
+                    _context.Notification.Remove(notification);
+                }
+
+
                 // Save the RapportTestQualite object to the database
                 _context.RapportTestQualite.Add(rapportTestQualite);
                 _context.SaveChanges();
@@ -101,20 +141,16 @@ namespace GAP.Controllers
 
             // If the model state is not valid, refill the dropdown list and return the view with validation errors.
             var devisList = _context.Devis
-                .Include(d => d.Produits)
-                .ThenInclude(p=>p.Nom)
                 .Include(d => d.Fournisseur)
-                .ThenInclude(d=>d.Email)
                 .Select(d => new
                 {
                     DevisID = d.DevisID,
-                    DevisProduct= d.Produits,
                     DevisFournisseurName = d.Fournisseur.Email
                 })
                 .ToList();
 
             // Create the select list for dropdown menu
-            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DevisProduct", "DevisFournisseurName");
+            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DevisFournisseurName");
 
             return View(rapportTestQualite);
         }

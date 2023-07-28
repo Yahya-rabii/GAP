@@ -10,7 +10,10 @@ namespace GAP.Models
         public String? FournisseurEmail { get; set; }
         public bool Validite { get; set; }
 
-        public int RespServiceFinanceId { get; set; } 
+        public int RespServiceFinanceId { get; set; }
 
+        [ForeignKey("DevisID")]
+
+        public int? DevisID { get; set; }
     }
 }

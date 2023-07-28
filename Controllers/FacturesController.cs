@@ -9,9 +9,11 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.Security.Claims;
 
 namespace GAP.Controllers
 {
+
     [Authorize]
     [Authorize(Roles = "RespServiceFinance")]
     public class FacturesController : Controller
@@ -50,8 +52,15 @@ namespace GAP.Controllers
         }
 
         // GET: Factures/Create
-        public IActionResult Create()
+        public IActionResult Create(int devisId)
         {
+            // Store the demandeAchatId in ViewBag or ViewData so that it can be used in the view.
+            ViewBag.devisId = devisId;
+
+ 
+
+
+       
             return View();
         }
 
@@ -60,10 +69,38 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FactureID,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
+        public async Task<IActionResult> Create(int devisId, [Bind("FactureID")] Facture facture)
         {
-            if (ModelState.IsValid)
+
+            if (devisId == 0)
             {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+
+            {
+                
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var devis = _context.Devis.Include(d=>d.Fournisseur).FirstOrDefault(d => d.DevisID == devisId) ;
+
+
+                facture.DevisID = devisId;
+                facture.FournisseurEmail = devis.Fournisseur.Email;
+                facture.RespServiceFinanceId = userId;
+                facture.Validite = false;
+                facture.Prix = (double)devis.PrixTTL;
+
+
+
+
+                var notification = _context.Notification.FirstOrDefault(d => d.UserID == userId);
+                if (notification != null)
+                {
+                    _context.Notification.Remove(notification);
+                }
+
+
                 _context.Add(facture);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -92,7 +129,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FactureID,Prix,FournisseurEmail,Validite,RespServiceFinanceId")] Facture facture)
+        public async Task<IActionResult> Edit(int id, [Bind("FactureID,Prix,FournisseurEmail,Validite,RespServiceFinanceId,DevisID")] Facture facture)
         {
             if (id != facture.FactureID)
             {

@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Validite)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DevisID)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Validite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DevisID)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.FactureID">Edit</a> |

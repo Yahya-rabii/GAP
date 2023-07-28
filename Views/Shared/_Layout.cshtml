@@ -78,37 +78,37 @@
                                 @if (User.Identity.IsAuthenticated)
                                 {
 
-                                         // Cast the data from ViewData to the appropriate type
+
                                     var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
                                     var notifications = Context.Items["Notifications"] as List<Notification> ?? new List<Notification>();
-                                
 
-                                <ul class="notification-drop">
-                                    <li class="item">
-                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
-                                        @if (totalNotifications > 0)
-                                        {
+
+                                    <ul class="notification-drop">
+                                        <li class="item">
+                                            <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
                                             <span class="btn__badge pulse-button">@totalNotifications</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="btn__badge pulse-button">0</span>
-                                        }
-                                        <ul>
-                                            @if (totalNotifications > 0)
-                                            {
-                                                @foreach (var notification in notifications)
+                                            <ul>
+                                                @if (totalNotifications > 0)
                                                 {
-                                                    <li>@notification.NotificationTitle</li>
+                                                    @foreach (var notification in notifications)
+                                                    {
+                                                        <li>
+                                                            @notification.NotificationTitle
+                                                            @if (notification.DevisID.HasValue)
+                                                            {
+                                                                <a href="@Url.Action("HandleNotification", "Home", new { devisId = notification.DevisID })" class="btn btn-primary btn-sm">Reply</a>
+                                                            }
+                                                        </li>
+                                                    }
                                                 }
-                                            }
-                                            else
-                                            {
-                                                <li>No Notif</li>
-                                            }
-                                        </ul>
-                                    </li>
-                                </ul>
+                                                else
+                                                {
+                                                    <li>No Notif</li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    </ul>
+
                               
 
 

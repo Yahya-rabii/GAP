@@ -102,6 +102,9 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FactureID"));
 
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
+
                     b.Property<string>("FournisseurEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -341,6 +344,30 @@ namespace GAP.Migrations
                     b.HasIndex("RespServiceQualiteId");
 
                     b.ToTable("RapportTestQualite");
+                });
+
+            modelBuilder.Entity("GAP.Models.Sanction", b =>
+                {
+                    b.Property<int>("SanctionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SanctionID"));
+
+                    b.Property<int>("FournisseurId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SanctionDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SanctionTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SanctionID");
+
+                    b.ToTable("Sanction");
                 });
 
             modelBuilder.Entity("GAP.Models.User", b =>

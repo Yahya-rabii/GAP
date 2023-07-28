@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230727144438_Init")]
+    [Migration("20230728144738_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -104,6 +104,9 @@ namespace GAP.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FactureID"));
+
+                    b.Property<int?>("DevisID")
+                        .HasColumnType("int");
 
                     b.Property<string>("FournisseurEmail")
                         .HasColumnType("nvarchar(max)");
@@ -344,6 +347,30 @@ namespace GAP.Migrations
                     b.HasIndex("RespServiceQualiteId");
 
                     b.ToTable("RapportTestQualite");
+                });
+
+            modelBuilder.Entity("GAP.Models.Sanction", b =>
+                {
+                    b.Property<int>("SanctionID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SanctionID"));
+
+                    b.Property<int>("FournisseurId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SanctionDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SanctionTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SanctionID");
+
+                    b.ToTable("Sanction");
                 });
 
             modelBuilder.Entity("GAP.Models.User", b =>

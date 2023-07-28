@@ -44,6 +44,21 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Sanction",
+                columns: table => new
+                {
+                    SanctionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SanctionTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SanctionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FournisseurId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sanction", x => x.SanctionID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -264,7 +279,8 @@ namespace GAP.Migrations
                     Prix = table.Column<double>(type: "float", nullable: false),
                     FournisseurEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Validite = table.Column<bool>(type: "bit", nullable: false),
-                    RespServiceFinanceId = table.Column<int>(type: "int", nullable: false)
+                    RespServiceFinanceId = table.Column<int>(type: "int", nullable: false),
+                    DevisID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -373,6 +389,9 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "RapportTestQualite");
+
+            migrationBuilder.DropTable(
+                name: "Sanction");
 
             migrationBuilder.DropTable(
                 name: "Produit");

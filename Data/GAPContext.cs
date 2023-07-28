@@ -53,6 +53,8 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.Notification> Notification { get; set; } = default!;
 
+        public DbSet<GAP.Models.Sanction> Sanction { get; set; } = default!;
+
 
     }
 }
