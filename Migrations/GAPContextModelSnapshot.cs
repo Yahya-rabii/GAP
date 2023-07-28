@@ -354,7 +354,7 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SanctionID"));
 
-                    b.Property<int>("FournisseurId")
+                    b.Property<int?>("FournisseurId")
                         .HasColumnType("int");
 
                     b.Property<string>("SanctionDescription")

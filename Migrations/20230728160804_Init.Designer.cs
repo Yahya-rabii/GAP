@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230728144738_Init")]
+    [Migration("20230728160804_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -357,7 +357,7 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SanctionID"));
 
-                    b.Property<int>("FournisseurId")
+                    b.Property<int?>("FournisseurId")
                         .HasColumnType("int");
 
                     b.Property<string>("SanctionDescription")

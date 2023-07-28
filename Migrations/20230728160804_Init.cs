@@ -51,7 +51,7 @@ namespace GAP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SanctionTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SanctionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FournisseurId = table.Column<int>(type: "int", nullable: false)
+                    FournisseurId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
