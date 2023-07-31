@@ -1,4 +1,4 @@
-﻿@model IEnumerable<GAP.Models.Notification>
+﻿@model IEnumerable<GAP.Models.NotificationAdmin>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.FournisseurID)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.NotificationTitle)
             </th>
             <th></th>
@@ -21,6 +24,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FournisseurID)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NotificationTitle)
             </td>

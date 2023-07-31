@@ -10,87 +10,87 @@ using GAP.Models;
 
 namespace GAP.Controllers
 {
-    public class NotificationsController : Controller
+    public class NotificationReclamationsController : Controller
     {
         private readonly GAPContext _context;
 
-        public NotificationsController(GAPContext context)
+        public NotificationReclamationsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: Notifications
+        // GET: NotificationReclamations
         public async Task<IActionResult> Index()
         {
-              return _context.Notification != null ? 
-                          View(await _context.Notification.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Notification'  is null.");
+              return _context.NotificationReclamation != null ? 
+                          View(await _context.NotificationReclamation.ToListAsync()) :
+                          Problem("Entity set 'GAPContext.NotificationReclamation'  is null.");
         }
 
-        // GET: Notifications/Details/5
+        // GET: NotificationReclamations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationReclamation == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification
+            var notificationReclamation = await _context.NotificationReclamation
                 .FirstOrDefaultAsync(m => m.NotificationID == id);
-            if (notification == null)
+            if (notificationReclamation == null)
             {
                 return NotFound();
             }
 
-            return View(notification);
+            return View(notificationReclamation);
         }
 
-        // GET: Notifications/Create
+        // GET: NotificationReclamations/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Notifications/Create
+        // POST: NotificationReclamations/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NotificationID,NotificationTitle")] Notification notification)
+        public async Task<IActionResult> Create([Bind("UserID,DevisID,NotificationID,NotificationTitle")] NotificationReclamation notificationReclamation)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(notification);
+                _context.Add(notificationReclamation);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(notification);
+            return View(notificationReclamation);
         }
 
-        // GET: Notifications/Edit/5
+        // GET: NotificationReclamations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationReclamation == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification.FindAsync(id);
-            if (notification == null)
+            var notificationReclamation = await _context.NotificationReclamation.FindAsync(id);
+            if (notificationReclamation == null)
             {
                 return NotFound();
             }
-            return View(notification);
+            return View(notificationReclamation);
         }
 
-        // POST: Notifications/Edit/5
+        // POST: NotificationReclamations/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NotificationID,NotificationTitle")] Notification notification)
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,DevisID,NotificationID,NotificationTitle")] NotificationReclamation notificationReclamation)
         {
-            if (id != notification.NotificationID)
+            if (id != notificationReclamation.NotificationID)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(notification);
+                    _context.Update(notificationReclamation);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NotificationExists(notification.NotificationID))
+                    if (!NotificationReclamationExists(notificationReclamation.NotificationID))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(notification);
+            return View(notificationReclamation);
         }
 
-        // GET: Notifications/Delete/5
+        // GET: NotificationReclamations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationReclamation == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification
+            var notificationReclamation = await _context.NotificationReclamation
                 .FirstOrDefaultAsync(m => m.NotificationID == id);
-            if (notification == null)
+            if (notificationReclamation == null)
             {
                 return NotFound();
             }
 
-            return View(notification);
+            return View(notificationReclamation);
         }
 
-        // POST: Notifications/Delete/5
+        // POST: NotificationReclamations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Notification == null)
+            if (_context.NotificationReclamation == null)
             {
-                return Problem("Entity set 'GAPContext.Notification'  is null.");
+                return Problem("Entity set 'GAPContext.NotificationReclamation'  is null.");
             }
-            var notification = await _context.Notification.FindAsync(id);
-            if (notification != null)
+            var notificationReclamation = await _context.NotificationReclamation.FindAsync(id);
+            if (notificationReclamation != null)
             {
-                _context.Notification.Remove(notification);
+                _context.NotificationReclamation.Remove(notificationReclamation);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NotificationExists(int id)
+        private bool NotificationReclamationExists(int id)
         {
-          return (_context.Notification?.Any(e => e.NotificationID == id)).GetValueOrDefault();
+          return (_context.NotificationReclamation?.Any(e => e.NotificationID == id)).GetValueOrDefault();
         }
     }
 }

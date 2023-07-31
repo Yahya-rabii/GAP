@@ -29,7 +29,7 @@ namespace GAP.Controllers
         }
 
         // Action method to handle the "Reply" button click
-        public IActionResult HandleNotification(int devisId)
+        public IActionResult HandleNotification(int devisId , int FournisseurID)
         {
 
             // Get the user's role and handle the redirection accordingly
@@ -42,6 +42,12 @@ namespace GAP.Controllers
             {
                 // Redirect to the Create action in Facture controller with the devisId parameter
                 return RedirectToAction("Create", "Factures", new { devisId });
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                var ID = FournisseurID;
+                // Redirect to the Create action in Facture controller with the devisId parameter
+                return RedirectToAction("Validate", "Fournisseurs", new { ID });
             }
 
             // Default behavior if user is not in the specified roles

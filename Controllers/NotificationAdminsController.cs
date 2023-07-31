@@ -10,87 +10,87 @@ using GAP.Models;
 
 namespace GAP.Controllers
 {
-    public class NotificationsController : Controller
+    public class NotificationAdminsController : Controller
     {
         private readonly GAPContext _context;
 
-        public NotificationsController(GAPContext context)
+        public NotificationAdminsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: Notifications
+        // GET: NotificationAdmins
         public async Task<IActionResult> Index()
         {
-              return _context.Notification != null ? 
-                          View(await _context.Notification.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Notification'  is null.");
+              return _context.NotificationAdmin != null ? 
+                          View(await _context.NotificationAdmin.ToListAsync()) :
+                          Problem("Entity set 'GAPContext.NotificationAdmin'  is null.");
         }
 
-        // GET: Notifications/Details/5
+        // GET: NotificationAdmins/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationAdmin == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification
+            var notificationAdmin = await _context.NotificationAdmin
                 .FirstOrDefaultAsync(m => m.NotificationID == id);
-            if (notification == null)
+            if (notificationAdmin == null)
             {
                 return NotFound();
             }
 
-            return View(notification);
+            return View(notificationAdmin);
         }
 
-        // GET: Notifications/Create
+        // GET: NotificationAdmins/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Notifications/Create
+        // POST: NotificationAdmins/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NotificationID,NotificationTitle")] Notification notification)
+        public async Task<IActionResult> Create([Bind("FournisseurID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(notification);
+                _context.Add(notificationAdmin);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(notification);
+            return View(notificationAdmin);
         }
 
-        // GET: Notifications/Edit/5
+        // GET: NotificationAdmins/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationAdmin == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification.FindAsync(id);
-            if (notification == null)
+            var notificationAdmin = await _context.NotificationAdmin.FindAsync(id);
+            if (notificationAdmin == null)
             {
                 return NotFound();
             }
-            return View(notification);
+            return View(notificationAdmin);
         }
 
-        // POST: Notifications/Edit/5
+        // POST: NotificationAdmins/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NotificationID,NotificationTitle")] Notification notification)
+        public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
         {
-            if (id != notification.NotificationID)
+            if (id != notificationAdmin.NotificationID)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(notification);
+                    _context.Update(notificationAdmin);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NotificationExists(notification.NotificationID))
+                    if (!NotificationAdminExists(notificationAdmin.NotificationID))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(notification);
+            return View(notificationAdmin);
         }
 
-        // GET: Notifications/Delete/5
+        // GET: NotificationAdmins/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Notification == null)
+            if (id == null || _context.NotificationAdmin == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notification
+            var notificationAdmin = await _context.NotificationAdmin
                 .FirstOrDefaultAsync(m => m.NotificationID == id);
-            if (notification == null)
+            if (notificationAdmin == null)
             {
                 return NotFound();
             }
 
-            return View(notification);
+            return View(notificationAdmin);
         }
 
-        // POST: Notifications/Delete/5
+        // POST: NotificationAdmins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Notification == null)
+            if (_context.NotificationAdmin == null)
             {
-                return Problem("Entity set 'GAPContext.Notification'  is null.");
+                return Problem("Entity set 'GAPContext.NotificationAdmin'  is null.");
             }
-            var notification = await _context.Notification.FindAsync(id);
-            if (notification != null)
+            var notificationAdmin = await _context.NotificationAdmin.FindAsync(id);
+            if (notificationAdmin != null)
             {
-                _context.Notification.Remove(notification);
+                _context.NotificationAdmin.Remove(notificationAdmin);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NotificationExists(int id)
+        private bool NotificationAdminExists(int id)
         {
-          return (_context.Notification?.Any(e => e.NotificationID == id)).GetValueOrDefault();
+          return (_context.NotificationAdmin?.Any(e => e.NotificationID == id)).GetValueOrDefault();
         }
     }
 }

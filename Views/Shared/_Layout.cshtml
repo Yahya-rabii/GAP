@@ -72,54 +72,88 @@
                         <div class="collapse navbar-collapse" id="navbarsExample04">
                             <ul class="navbar-nav mr-auto">
 
-                             
+
 
 
                                 @if (User.Identity.IsAuthenticated)
                                 {
+                                    @if (!User.IsInRole("Admin"))
+                                    {
+                                        var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
+                                        var notifications = Context.Items["Notifications"] as List<NotificationReclamation> ?? new List<NotificationReclamation>();
 
-
-                                    var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
-                                    var notifications = Context.Items["Notifications"] as List<Notification> ?? new List<Notification>();
-
-
-                                    <ul class="notification-drop">
-                                        <li class="item">
-                                            <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
-                                            <span class="btn__badge pulse-button">@totalNotifications</span>
-                                            <ul>
-                                                @if (totalNotifications > 0)
-                                                {
-                                                    @foreach (var notification in notifications)
+                                        <ul class="notification-drop">
+                                            <li class="item">
+                                                <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
+                                                <span class="btn__badge pulse-button">@totalNotifications</span>
+                                                <ul>
+                                                    @if (totalNotifications > 0)
                                                     {
-                                                        <li>
-                                                            @notification.NotificationTitle
-                                                            @if (notification.DevisID.HasValue)
-                                                            {
-                                                                <a href="@Url.Action("HandleNotification", "Home", new { devisId = notification.DevisID })" class="btn btn-primary btn-sm">Reply</a>
-                                                            }
-                                                        </li>
+                                                        @foreach (var notification in notifications)
+                                                        {
+                                                            <li>
+                                                                @notification.NotificationTitle
+                                                                @if (notification.DevisID.HasValue)
+                                                                {
+                                                                    <a href="@Url.Action("HandleNotification", "Home", new { devisId = notification.DevisID })">
+                                                                        <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                                    </a>
+                                                                }
+                                                            </li>
+                                                        }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    <li>No Notif</li>
-                                                }
-                                            </ul>
-                                        </li>
-                                    </ul>
+                                                    else
+                                                    {
+                                                        <li>No Notif</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        var totalNotificationsAdmin = Context.Items["TotalNotificationsAdmin"] as int? ?? 0;
+                                        var notificationsAdmin = Context.Items["NotificationsAdmin"] as List<NotificationAdmin> ?? new List<NotificationAdmin>();
 
-                              
+                                        <ul class="notification-drop">
+                                            <li class="item">
+                                                <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
+                                                <span class="btn__badge pulse-button">@totalNotificationsAdmin</span>
+                                                <ul>
+                                                    @if (totalNotificationsAdmin > 0)
+                                                    {
+                                                        @foreach (var notification in notificationsAdmin)
+                                                        {
+                                                            <li>
+                                                                @notification.NotificationTitle
+                                                                @if (notification.FournisseurID.HasValue)
+                                                                {
+                                                                    <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
+                                                                        <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                                    </a>
+                                                                }
+                                                            </li>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li>No Notif</li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    }    
+                                    
+                                    
+                                <li class="nav-item">
+                                    <a class="logout" onclick="location.href='@Url.Action("Logout", "Users")'">
+                                        <span>Logout</span>
+                                    </a>
+                                </li>
 
-
-
-
-                                    <li class="nav-item">
-                                        <a class="logout" onclick="location.href='@Url.Action("Logout", "Users")'">
-                                            <span>Logout</span>
-                                        </a>
-                                    </li>
                                 }
+
+                           
                             </ul>
                         </div>
                     </nav>
@@ -167,6 +201,7 @@
                     <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
                     //+add
                     <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>
+                    <a class="link" onclick="location.href='@Url.Action("Index", "Sanctions")'">Sanctions</a>
                     //+add
 
                 }

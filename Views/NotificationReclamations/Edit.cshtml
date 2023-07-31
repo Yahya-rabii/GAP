@@ -1,4 +1,4 @@
-﻿@model GAP.Models.Notification
+﻿@model GAP.Models.NotificationReclamation
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,12 +6,22 @@
 
 <h1>Edit</h1>
 
-<h4>Notification</h4>
+<h4>NotificationReclamation</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserID" class="control-label"></label>
+                <input asp-for="UserID" class="form-control" />
+                <span asp-validation-for="UserID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DevisID" class="control-label"></label>
+                <input asp-for="DevisID" class="form-control" />
+                <span asp-validation-for="DevisID" class="text-danger"></span>
+            </div>
             <input type="hidden" asp-for="NotificationID" />
             <div class="form-group">
                 <label asp-for="NotificationTitle" class="control-label"></label>

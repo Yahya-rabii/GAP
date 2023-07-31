@@ -47,13 +47,14 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.Produit> Produit { get; set; } = default!;
 
-        public DbSet<GAP.Models.OrdreCreationFacture> OrdreCreationFacture { get; set; } = default!;
-
-        public DbSet<GAP.Models.OrdreCreationRTQ> OrdreCreationRTQ { get; set; } = default!;
 
         public DbSet<GAP.Models.Notification> Notification { get; set; } = default!;
 
         public DbSet<GAP.Models.Sanction> Sanction { get; set; } = default!;
+
+        public DbSet<GAP.Models.NotificationAdmin> NotificationAdmin { get; set; } = default!;
+
+        public DbSet<GAP.Models.NotificationReclamation> NotificationReclamation { get; set; } = default!;
 
 
     }

@@ -66,7 +66,7 @@ namespace GAP.Controllers
             if (respFinnanceUser != null && respQaliteUser != null)
             {
                 // Create and save notification for RespServiceFinnance
-                var notificationFinnance = new Notification
+                var notificationFinnance = new NotificationReclamation
                 {
                     DevisID = devisId,
                     UserID = respFinnanceUser.UserID,
@@ -75,7 +75,7 @@ namespace GAP.Controllers
                 _context.Notification.Add(notificationFinnance);
 
                 // Create and save notification for RespServiceQalite
-                var notificationQalite = new Notification
+                var notificationQalite = new NotificationReclamation
                 {
                     DevisID = devisId,
                     UserID = respQaliteUser.UserID,

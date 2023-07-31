@@ -35,6 +35,8 @@ namespace GAP.Migrations
                     NotificationID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NotificationTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    FournisseurID = table.Column<int>(type: "int", nullable: true),
                     UserID = table.Column<int>(type: "int", nullable: true),
                     DevisID = table.Column<int>(type: "int", nullable: true)
                 },
@@ -203,44 +205,6 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrdreCreationFacture",
-                columns: table => new
-                {
-                    OrdreCreationFactureID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DevisID = table.Column<int>(type: "int", nullable: true),
-                    RespServiceFinanceId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrdreCreationFacture", x => x.OrdreCreationFactureID);
-                    table.ForeignKey(
-                        name: "FK_OrdreCreationFacture_Devis_DevisID",
-                        column: x => x.DevisID,
-                        principalTable: "Devis",
-                        principalColumn: "DevisID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrdreCreationRTQ",
-                columns: table => new
-                {
-                    OrdreCreationRTQID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DevisID = table.Column<int>(type: "int", nullable: true),
-                    RespServiceQualiteId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrdreCreationRTQ", x => x.OrdreCreationRTQID);
-                    table.ForeignKey(
-                        name: "FK_OrdreCreationRTQ_Devis_DevisID",
-                        column: x => x.DevisID,
-                        principalTable: "Devis",
-                        principalColumn: "DevisID");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Produit",
                 columns: table => new
                 {
@@ -339,16 +303,6 @@ namespace GAP.Migrations
                 column: "FournisseurId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrdreCreationFacture_DevisID",
-                table: "OrdreCreationFacture",
-                column: "DevisID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrdreCreationRTQ_DevisID",
-                table: "OrdreCreationRTQ",
-                column: "DevisID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produit_DevisID",
                 table: "Produit",
                 column: "DevisID");
@@ -377,12 +331,6 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notification");
-
-            migrationBuilder.DropTable(
-                name: "OrdreCreationFacture");
-
-            migrationBuilder.DropTable(
-                name: "OrdreCreationRTQ");
 
             migrationBuilder.DropTable(
                 name: "RapportReception");

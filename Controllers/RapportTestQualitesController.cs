@@ -126,7 +126,7 @@ namespace GAP.Controllers
 
 
 
-                var notification = _context.Notification.FirstOrDefault(d => d.UserID == userId);
+                var notification = _context.NotificationReclamation.FirstOrDefault(d => d.UserID == userId);
                 if (notification != null)
                 {
                     _context.Notification.Remove(notification);
