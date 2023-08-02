@@ -49,8 +49,23 @@
                             Fournisseur
                         </th>
                         <th>
-                            PrixTTL
+                            Profit Par Unite
                         </th>
+                           <th>
+                            Nom Produit
+                        </th>
+                           <th>
+                            Prix Unitaire
+                        </th>
+                           <th>
+                            Nombre Pieces
+                        </th>
+                           <th>
+                            prix total Produits
+                        </th>
+
+
+
                         <th>
                             Validite
                         </th>
@@ -65,8 +80,30 @@
                                 @Html.DisplayFor(modelItem => item.Fournisseur.Email)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.PrixTTL)
+                                @Html.DisplayFor(modelItem => item.unit_profit)
                             </td>
+
+                            @foreach (var item2 in item.Produits)
+                            {
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Nom)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.PrixUnitaire)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.NombrePiece)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Prixtotal)
+                                </td>
+
+                            }
+
+
+
                             <td>
                                 @Html.DisplayFor(modelItem => item.Validite)
                             </td>

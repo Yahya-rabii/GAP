@@ -12,12 +12,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Prix)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FournisseurEmail)
-            </th>
+          
             <th>
                 @Html.DisplayNameFor(model => model.Validite)
             </th>
@@ -30,12 +25,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prix)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FournisseurEmail)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Validite)
             </td>

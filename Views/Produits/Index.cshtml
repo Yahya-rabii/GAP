@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.PrixUnitaire)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Prixtotal)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Nom)
             </th>
             <th>
@@ -23,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Desc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FournisseurId)
             </th>
             <th></th>
         </tr>
@@ -34,6 +40,9 @@
                 @Html.DisplayFor(modelItem => item.PrixUnitaire)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Prixtotal)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Nom)
             </td>
             <td>
@@ -41,6 +50,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Desc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FournisseurId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProduitID">Edit</a> |

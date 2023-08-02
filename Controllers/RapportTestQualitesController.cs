@@ -99,11 +99,17 @@ namespace GAP.Controllers
 
                 if (rapportTestQualite.ValiditeNbrPiece && rapportTestQualite.ValiditeEtat && rapportTestQualite.ValiditeFonctionnement)
                 {
+
+                    var devis = _context.Devis.Where(f=>f.DevisID ==  devisId).FirstOrDefault();
                     var facture  = _context.Facture.Where(f=>f.DevisID ==  devisId).FirstOrDefault();
-                    if (facture != null)
+                    var fournisseur  = _context.Fournisseur.Where(f=>f.FournisseurID==devis.FournisseurID).FirstOrDefault();
+                    
+                    if (facture != null && fournisseur !=null)
                     {
                         facture.Validite =  true;
+                        fournisseur.NombreTransaction++;
                         _context.Update(facture);
+                        _context.Update(fournisseur);
 
                     }
 

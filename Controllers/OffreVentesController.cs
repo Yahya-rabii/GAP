@@ -32,7 +32,7 @@ namespace GAP.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
        
 
-            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur).Where(o => o.FournisseurId == userId) select o;
+            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Produits).Include(o => o.Fournisseur).Where(o => o.FournisseurId == userId) select o;
 
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -55,7 +55,7 @@ namespace GAP.Controllers
         {
 
 
-            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur) select o;
+            IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Fournisseur).Include(o=>o.Produits) select o;
 
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -141,13 +141,25 @@ namespace GAP.Controllers
             offreVente.DemandeAchatId = demandeAchatId;
             offreVente.DemandeAchat = demandeAchat;
 
+
+            int? prds = 0;
             // The product is not found in any existing "OffreVente," so add it to the current one.
             var selectedProduit = _context.Produit.Find(selectedProduitId);
             if (offreVente.Produits == null)
             {
                 offreVente.Produits = new List<Produit>();
+
+
             }
+      
+
             offreVente.Produits.Add(selectedProduit);
+              foreach(var p  in offreVente.Produits)
+                {
+                    prds += p.NombrePiece;
+                }
+
+            offreVente.profitTTL = (double)(offreVente.unit_profit * prds);
 
             _context.Update(demandeAchat);
             _context.Add(offreVente);
@@ -234,7 +246,7 @@ namespace GAP.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Fournisseur")]
-        public async Task<IActionResult> Edit(int id, [Bind("OffreVenteID, PrixTTL, SelectedProduitId")] OffreVente updatedOffreVente)
+        public async Task<IActionResult> Edit(int id, [Bind("OffreVenteID, unit_profit, SelectedProduitId")] OffreVente updatedOffreVente)
         {
             // Remove the ModelState check, as it might be causing issues
 
@@ -249,7 +261,7 @@ namespace GAP.Controllers
             }
 
             // Update the existing "OffreVente" with the new data
-            existingOffreVente.PrixTTL = updatedOffreVente.PrixTTL;
+            existingOffreVente.unit_profit = updatedOffreVente.unit_profit;
 
             // Find the selected product and add it to the "OffreVente.Produits" list if not already present
             var selectedProduit = await _context.Produit.FindAsync(updatedOffreVente.SelectedProduitId);

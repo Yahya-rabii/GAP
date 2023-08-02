@@ -119,13 +119,17 @@ namespace GAP.Controllers
                         .ToListAsync();
 
                     devis.Produits = list;
-                    devis.PrixTTL = OffreVente.PrixTTL;
+                    float ?prixTTLpiece=0;
+                    int ?Nbrpiece=0;
 
                     foreach(var p in OffreVente.Produits)
                     {
-                        devis.NombrePiece += p.NombrePiece;
-                    }
-                    devis.NombrePiece = OffreVente.Produits.Count();
+                        prixTTLpiece += p.NombrePiece * p.PrixUnitaire;
+                        Nbrpiece += p.NombrePiece;
+                    } 
+                    
+                    devis.PrixTTL = prixTTLpiece +   OffreVente.unit_profit * Nbrpiece;
+                    devis.Ntypeproduits = OffreVente.Produits.Count();
                     devis.FournisseurID = OffreVente.FournisseurId;
 
 
@@ -172,7 +176,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DevisID,DateCreation,DateReception,ProduitID,PrixTTL,NombrePiece,FournisseurID,RespServiceAchatId")] Devis devis)
+        public async Task<IActionResult> Edit(int id, [Bind("DevisID,DateCreation,DateReception,ProduitID,unit_profit,Ntypeproduits,FournisseurID,RespServiceAchatId")] Devis devis)
         {
             if (id != devis.DevisID)
             {

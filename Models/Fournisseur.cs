@@ -19,6 +19,13 @@ namespace GAP.Models
         [StringLength(255)]
         public string? Password { get; set; }
 
+ 
+        [Required]
+        [StringLength(255)]
+        public string? Adresse { get; set; }[Required]
+        public int? CodePostal { get; set; }[Required]
+        public int? Numtele { get; set; }
+
 
         [DefaultValue(0)]
         public int NombreTransaction { get; set; } = 0;

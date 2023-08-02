@@ -7,14 +7,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace GAP.Controllers
 {
-    
     public class FournisseursController : Controller
     {
         private readonly GAPContext _context;
@@ -24,9 +23,9 @@ namespace GAP.Controllers
             _context = context;
         }
 
-        // GET: Fournisseurs
-        
         [Authorize(Roles = "Admin")]
+
+        // GET: Fournisseurs1
         public async Task<IActionResult> Index()
         {
               return _context.Fournisseur != null ? 
@@ -34,9 +33,10 @@ namespace GAP.Controllers
                           Problem("Entity set 'GAPContext.Fournisseur'  is null.");
         }
 
-        // GET: Fournisseurs/Details/5
+
         [Authorize(Roles = "Admin,Fournisseur")]
 
+        // GET: Fournisseurs1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Fournisseur == null)
@@ -53,23 +53,22 @@ namespace GAP.Controllers
 
             return View(fournisseur);
         }
-
-        // GET: Fournisseurs/Create
         [Authorize(Roles = "Admin")]
 
+        // GET: Fournisseurs1/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Fournisseurs/Create
+        // POST: Fournisseurs1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Create([Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
+        public async Task<IActionResult> Create([Bind("FournisseurID,Nom,Email,Password,Adresse,CodePostal,Numtele,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
             if (ModelState.IsValid)
             {
@@ -80,9 +79,10 @@ namespace GAP.Controllers
             return View(fournisseur);
         }
 
-        // GET: Fournisseurs/Edit/5
+
         [Authorize(Roles = "Fournisseur")]
 
+        // GET: Fournisseurs1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Fournisseur == null)
@@ -96,9 +96,11 @@ namespace GAP.Controllers
                 return NotFound();
             }
             return View(fournisseur);
-        }    
-        
-        // GET: Fournisseurs/Edit/5
+        }
+
+
+
+
         [Authorize(Roles = "Admin")]
 
         public async Task<IActionResult> Validate(int? id)
@@ -116,9 +118,7 @@ namespace GAP.Controllers
             return View(fournisseur);
         }
 
-        // POST: Fournisseurs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -165,14 +165,17 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Fournisseurs/Edit/5
+
+
+
+        // POST: Fournisseurs1/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Fournisseur")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,Nom,Email,Password,NombreTransaction,IsValid")] Fournisseur fournisseur)
+        public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,Nom,Email,Password,Adresse,CodePostal,Numtele,NombreTransaction,IsValid")] Fournisseur fournisseur)
         {
             if (id != fournisseur.FournisseurID)
             {
@@ -202,7 +205,9 @@ namespace GAP.Controllers
             return View(fournisseur);
         }
 
-        // GET: Fournisseurs/Delete/5
+        // GET: Fournisseurs1/Delete/5
+        [Authorize(Roles = "Admin,Fournisseur")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Fournisseur == null)
@@ -220,10 +225,10 @@ namespace GAP.Controllers
             return View(fournisseur);
         }
 
-        // POST: Fournisseurs/Delete/5
+        // POST: Fournisseurs1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Fournisseur")]
 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -245,8 +250,6 @@ namespace GAP.Controllers
         {
           return (_context.Fournisseur?.Any(e => e.FournisseurID == id)).GetValueOrDefault();
         }
-
-
 
 
 
@@ -324,8 +327,6 @@ namespace GAP.Controllers
             return RedirectToAction("Login", "Users");
 
         }
-
-
 
 
 

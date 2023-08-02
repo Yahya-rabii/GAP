@@ -20,6 +20,12 @@ namespace GAP.Models
         get { return date; }
         set { date = value; }
     }
-}
+
+        public RapportReception()
+        {
+            date = DateTime.Now.Date;
+
+        }
+    }
 
 }

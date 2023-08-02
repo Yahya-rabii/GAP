@@ -42,7 +42,7 @@ namespace GAP.Controllers
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                Devisiq = _context.Devis.Include(o => o.Fournisseur).Where(o => o.Fournisseur.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+                Devisiq = Devisiq.Where(o => o.Fournisseur.Email.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
             int pageSize = 2;
@@ -52,8 +52,36 @@ namespace GAP.Controllers
             ViewBag.RespServiceFinnanceUsers = await _context.RespServiceFinance.ToListAsync();
             ViewBag.RespServiceQaliteUsers = await _context.RespServiceQualite.ToListAsync();
 
+            // Materialize the factiq query into a list to avoid the DataReader conflict
+            List<Facture> facturesList = await _context.Facture.ToListAsync();
+            List<Sanction> sanctions =  await _context.Sanction.ToListAsync();
+
+            // Iterate through the Devis items and check if a corresponding Facture exists
+            foreach (var devisItem in Devisiq)
+            {
+                // Check if a Facture exists for the current Devis item and if the DateReception is less than the current date
+                if (!facturesList.Any(f => f.DevisID == devisItem.DevisID) && devisItem.DateReception.Date < DateTime.Now.Date && !sanctions.Any(f => f.DevisID == devisItem.DevisID))
+                {
+                    // A Facture does not exist, and DateReception is less than the current date, so create a new Sanction
+                    Sanction s = new Sanction();
+
+                    s.SanctionTitle = "Delay Report";
+                    s.SanctionDescription = "L'arrivage de produit est en retard";
+                    s.FournisseurId = devisItem.FournisseurID;
+                    s.DevisID = devisItem.DevisID;
+                    _context.Sanction.Add(s);
+                }
+            }
+
+            ViewBag.Factures = facturesList;
+
+           // Save the changes to the database
+           await _context.SaveChangesAsync();
+
             return View(await Devisiq.ToPagedListAsync(pageNumber, pageSize));
         }
+
+
 
 
         [HttpPost]

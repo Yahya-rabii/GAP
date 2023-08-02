@@ -13,7 +13,13 @@ namespace GAP.Models
         public string? Description { get; set; }
         public double Budget { get; set; }
         public bool IsValid { get; set; } = true;
-   
+
+
+        public DemandeAchat()
+        {
+            CreationDate = DateTime.Now.Date; 
+        }
+
     }
 
 }

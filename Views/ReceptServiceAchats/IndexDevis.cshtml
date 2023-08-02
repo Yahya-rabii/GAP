@@ -43,8 +43,26 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach (var item in Model)
                     {
+                        var x = 0;
+                        @foreach (var item2 in ViewBag.Factures)
+                        {
+
+                            @if (item.DevisID == item2.DevisID)
+                            {
+                                x = 1;
+                            }
+
+                        }
+
+
+
+                        @if (item.DateReception.Date.Equals(DateTime.Now.Date) && x==0)
+                        {//current
+                            
+                       
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DateReception)
@@ -89,14 +107,48 @@
                                     </form>
                                 </div>
                             </td>
-                        </tr>
+                            </tr>
+                        }
+                        else if (item.DateReception.Date < DateTime.Now.Date && x == 0)
+                        {
+                            // sanction a cause de retard
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.DateReception)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PrixTTL)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Fournisseur.Email)
+                                </td>
+
+                                @foreach (var p in item.Produits)
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => p.Desc)
+                                    </td>
+                                }
+
+                                <td>
+                                    <p> 
+                                        Une Sanction est envoyee
+                                    </p>
+                                </td>
+
+                            </tr>
+
+
+                        }
+
+
                     }
                 </tbody>
             </table>
 
-            <p>
-                <a asp-action="Create">Create New</a>
-            </p>
+      
         </div>
     </article>
 </main>

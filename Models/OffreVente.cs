@@ -6,7 +6,8 @@ namespace GAP.Models
     {
         public int OffreVenteID { get; set; }
         public Fournisseur? Fournisseur { get; set; }
-        public double PrixTTL { get; set; }
+        public double unit_profit { get; set; }
+        public double profitTTL { get; set; }
         public List<Produit> Produits { get; set; }
         public bool Validite { get; set; }
 

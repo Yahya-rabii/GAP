@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using JetBrains.Annotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GAP.Models
 {
@@ -8,6 +9,9 @@ namespace GAP.Models
         public int SanctionID { get; set; }
         public string SanctionTitle { get; set;}
         public string SanctionDescription { get;set;}
+        [ForeignKey("DevisID")]
+
+        public int DevisID { get; set; }
 
         [ForeignKey("Fournisseur")]
         public int? FournisseurId { get; set; } // Foreign key property
@@ -18,6 +22,13 @@ namespace GAP.Models
             SanctionTitle = sanctionTitle;
             SanctionDescription = sanctionDescription;
             FournisseurId = fournisseurId;
+        }     public Sanction(int sanctionID, string sanctionTitle, string sanctionDescription, int fournisseurId,int devisID)
+        {
+            SanctionID = sanctionID;
+            SanctionTitle = sanctionTitle;
+            SanctionDescription = sanctionDescription;
+            FournisseurId = fournisseurId;
+            DevisID = devisID;
         }
         public Sanction() {
             SanctionID = 0;

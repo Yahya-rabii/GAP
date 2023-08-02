@@ -5,15 +5,9 @@ namespace GAP.Models
     public class Facture
     {
         public int FactureID { get; set; }
-        public Produit? Produit { get; set; }
-        public double Prix { get; set; }
-        public String? FournisseurEmail { get; set; }
         public bool Validite { get; set; }
-
         public int RespServiceFinanceId { get; set; }
-
         [ForeignKey("DevisID")]
-
         public int? DevisID { get; set; }
     }
 }

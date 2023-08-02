@@ -6,6 +6,7 @@ namespace GAP.Models
     {
         public int ProduitID { get; set; }
         public float PrixUnitaire { get; set; }
+        public float Prixtotal { get; set; }
 
         public string? Nom { get; set; }
         public int? NombrePiece { get; set; }
@@ -20,22 +21,24 @@ namespace GAP.Models
             NombrePiece = 0;
             Nom = string.Empty;
             Desc = string.Empty;
-         FournisseurId = 0;
+            FournisseurId = 0;
+            Prixtotal= 0;
 
 
         }
-        public Produit(int ID , float prixUnitaire , string nom , int nbrpiece ,string desc , int fournisseurId)
+        public Produit(int ID , float prixUnitaire, string nom, int nbrpiece, string desc, int fournisseurId, float prixtotal)
         {
             ProduitID = ID;
-            PrixUnitaire = prixUnitaire; 
+            PrixUnitaire = prixUnitaire;
             Nom = nom;
             Desc = desc;
-            NombrePiece= nbrpiece;
+            NombrePiece = nbrpiece;
             FournisseurId = fournisseurId;
+            Prixtotal = prixtotal;
         }
 
 
-   
+
     }
 
 }

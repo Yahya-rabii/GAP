@@ -8,7 +8,7 @@ namespace GAP.Models
         public DateTime DateCreation { get; set; }
         public DateTime DateReception { get; set; }
         public double? PrixTTL { get; set; }
-        public int? NombrePiece { get; set; }
+        public int? Ntypeproduits { get; set; }
         public int? FournisseurID { get; set; } // Foreign key for Fournisseur
         public int? RespServiceAchatId { get; set; }
 
@@ -25,8 +25,13 @@ namespace GAP.Models
         public OffreVente? OffreVente { get; set; }
 
 
+        public Devis()
+        {
+            DateCreation = DateTime.Now.Date;
+            DateReception = DateTime.Now.Date; 
+
+        }
 
 
-        
     }
 }
