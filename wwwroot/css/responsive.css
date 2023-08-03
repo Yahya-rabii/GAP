@@ -1,78 +1,90 @@
-/*--------------------------------------------------------------------- 
-File Name: responsive.css 
----------------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------------- File Name: responsive.css ---------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------- 991px x 768px ---------------------------------------------------------------------*/
 
 @media (min-width: 1200px) and (max-width: 1500px) {
-    .full_bg {
-        padding-top: 100px;
-        height: 100%;
-        background-size: 100% 100%;
-        background: #2e3192;
+    .projects::after {
+        width: 262px;
     }
 }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-    .full_bg {
-        padding-top: 100px;
-        height: 100%;
-        background-size: 100% 100%;
-        background: #2e3192;
+    .testimonial_Carousel .test_box p {
+        font-size: 16px;
+        padding: 29px;
+    }
+    .text-bg h1 {
+        font-size: 36px;
+        line-height: 59px;
+    }
+    .projects::after {
+        background: transparent;
+    }
+    .copyright::after {
+        background: transparent;
     }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    .full_bg {
-        padding-top: 100px;
-        height: 100%;
-        background-size: 100% 100%;
-        background: #2e3192;
+    .projects::after {
+        background: transparent;
+    }
+    .copyright::after {
+        background: transparent;
     }
     .navigation.navbar-dark .navbar-nav .nav-link {
-        padding: 0px 13px;
+        padding: 0 14px;
     }
-    ul.email li {
-        padding-right: 13px;
+    .text-bg h1 {
+        padding-top: 0px;
+        font-size: 28px;
+        line-height: 38px;
     }
-    #banner1 .carousel-control-next {
-        left: 10%;
+    .text-bg {
+        padding-right: 108px;
     }
-    .titlepage h2 {
-        font-size: 32px;
-    }
-    .domain-price strong {
-        font-size: 14px;
-    }
-    .order-box p {
-        font-size: 15px;
-    }
-    .order-box p span {
-        font-size: 24px;
-        padding: 0 9px;
-        line-height: 30px;
+    .banner_main {
+        padding: 30px 0 190px 0;
     }
 }
 
 @media (min-width: 576px) and (max-width: 767px) {
-    .full_bg {
-        padding-top: 100px;
-        height: 100%;
-        background-size: 100% 100%;
-        background: #2e3192;
+    .head_top {
+        background: #0891f8;
     }
-    #banner1 .carousel-control-next {
-        left: 13%;
+    .mean-container .mean-bar {
+        margin-top: 0px;
     }
-    .dream_img {
+    .text-bg h1 {
+        font-size: 50px;
+    }
+    .text-bg {
+        padding-right: 0;
+    }
+    .text-img {
         padding-top: 30px;
     }
-    .titlepage h2 {
-        font-size: 36px;
+    .main_form {
+        margin: 0;
     }
-    .domain-price span {
-        font-size: 12px;
+    .Testimonial {
+        background: #0891f8;
     }
-    .domain-price strong {
-        font-size: 12px;
+    .Testimonial_box {
+        padding: 20px;
+    }
+    .Testimonial_box p {
+        padding-right: 0px;
+    }
+    .Testimonial_box i::after {
+        border: inherit;
+    }
+    .cont h3 {
+        font-size: 34px;
+        line-height: 52px;
     }
     .navigation.navbar {
         float: right;
@@ -81,106 +93,128 @@ File Name: responsive.css
         width: 100%;
     }
     .navigation .navbar-collapse {
-        background: #2e3192;
+        background: #fff;
         padding: 20px;
-        margin-top: 24px;
+        margin-top: 46px;
         position: absolute;
         width: 100%;
+        margin-right: 20px;
         z-index: 999;
-        box-shadow: 0 0 59px rgba(30, 30, 29, 0.25);
     }
     .navigation.navbar-dark .navbar-nav .nav-link {
         padding: 10px 0;
-        color: #fff;
+        color: #000;
     }
     .navigation.navbar-dark .navbar-toggler {
         border: inherit;
         float: right;
-        padding: 0;
-        width: 100%;
-        outline: inherit;
-        margin-top: -49px;
+        padding-top: 6px;
     }
     .navigation.navbar-dark .navbar-toggler-icon {
         background: url(../images/menu_icon.png);
         background-repeat: no-repeat;
-        width: 48px;
-        float: right;
     }
-    .d_none {
-        display: none;
+    .projects::after {
+        background: transparent;
+    }
+    .copyright::after {
+        background: transparent;
     }
 }
 
 @media (max-width: 575px) {
-    .full_bg {
-        padding-top: 100px;
-        height: 100%;
-        background-size: 100% 100%;
-        background: #2e3192;
+    .head_top {
+        background: #0891f8;
     }
-    .dream h1 {
-        font-size: 44px;
-        line-height: 55px;
-    }
-    .dream .read_more {
-        margin-bottom: 10px;
-    }
-    .slider_main {
-        padding-top: 20%;
-        height: 100%;
-        width: 100%;
-        background-size: 100% 100%;
-    }
-    .dream_img {
-        padding-top: 20px;
+    .header {
+        padding: 12px 0px 0px 0px;
     }
     .logo {
+        text-align: center !important;
+        padding-bottom: 6px;
         float: left;
     }
-    #banner1 .carousel-control-next {
-        left: 24%;
+    .text-bg h1 {
+        font-size: 33px;
+        line-height: 51px;
+    }
+    .text-bg {
+        padding-right: 0;
+    }
+    .text-img {
+        padding-top: 30px;
     }
     .titlepage h2 {
-        line-height: 35px;
-        font-size: 32px;
+        font-size: 35px;
+        line-height: 50px;
     }
-    .domain-price {
-        padding-bottom: 10px;
+    .business .titlepage span {
+        font-size: 23px;
+        line-height: 28px;
+    }
+    .banner_main {
+        padding: 50px 0;
+    }
+    .projects::after {
+        background: transparent;
+    }
+    .Testimonial {
+        background: #0891f8;
+    }
+    .Testimonial_box {
+        padding: 20px;
+    }
+    .Testimonial_box p {
+        padding-right: 0px;
+    }
+    .Testimonial_box i::after {
+        border: inherit;
+    }
+    .cont h3 {
+        font-size: 30px;
+        line-height: 45px;
+    }
+    .multi {
+        font-size: 33px;
+    }
+    .main_form {
+        padding: 25px;
+        margin: 0px 0px;
+    }
+    .copyright::after {
+        background: transparent;
     }
     .navigation.navbar {
         float: right;
         display: inherit !important;
         padding: 0;
         width: 100%;
-        margin-top: -49px;
+        margin-top: -45px;
     }
     .navigation .navbar-collapse {
-        background: #2e3192;
+        background: #fff;
         padding: 20px;
-        margin-top: 70px;
+        margin-top: 46px;
         position: absolute;
         width: 100%;
+        margin-right: 20px;
         z-index: 999;
-        box-shadow: 0 0 59px rgba(30, 30, 29, 0.25);
     }
     .navigation.navbar-dark .navbar-nav .nav-link {
         padding: 10px 0;
-        color: #fff;
+        color: #000;
     }
     .navigation.navbar-dark .navbar-toggler {
         float: right;
+        margin-right: 2px;
         border: inherit;
-        margin-top: 1px;
-        padding: 0;
-        outline: inherit;
+    }
+    .testimonial_box {
+        padding: 0px 19px 40px 20px;
     }
     .navigation.navbar-dark .navbar-toggler-icon {
         background: url(../images/menu_icon.png);
         background-repeat: no-repeat;
-        width: 48px;
-    }
-    .d_none {
-        display: none;
     }
 }
+

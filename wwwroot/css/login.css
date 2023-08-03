@@ -5,19 +5,20 @@
     padding: 20px;
     box-shadow: 5px 5px 10px black;
     animation: fadeIn 0.5s ease-in-out;
-    width:100%;
-    position:relative;
-    bottom:200px;
+    width: 100%;
+    position: absolute;
+    margin-top: -400px;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .form-container {
     padding: 20px;
     border-radius: 10px;
     animation: blurIn 0.5s ease-in-out;
-    text-align: center; /* this centers the elements inside the form */
-
-    background-color: transparent; /* this makes the background transparent */
-    color: white; /* this sets the text color to white */
+    text-align: center;
+    background-color: transparent;
+    color: white;
     align-items: center;
     transition: all 0.3s ease-in-out;
 }

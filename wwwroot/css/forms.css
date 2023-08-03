@@ -10,22 +10,24 @@
 /*=============== BASE ===============*/
 
 .frmcontainer {
-    max-width: 650px;
-    max-height: auto;
+    font-family: sans-serif;
+    border-bottom-style: double;
     position: relative;
-    top: 200px;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.068);
-    backdrop-filter: blur(20px);
+    color: var(--dt-text-color);
+    font-size: 12px;
+    overflow: auto;
+    width: fit-content;
+    left: 150px;
+    margin-top: -650px;
+    margin-bottom: 450px;
+    padding: 10px;
+    background: rgb(30, 30, 30, 0.068);
+    backdrop-filter: blur(50px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.048);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
     border-radius: 10px;
-    color: white;
-    padding: 20px;
-    text-align: center;
-
+    table-layout: auto;
 }
 
 .frminput-box {
@@ -84,20 +86,19 @@ textarea::placeholder {
 /*=============== BUTTON ===============*/
 
 .BTNS {
-    display: flex;
+    display: inline-block;
     justify-content: space-between;
-    margin-top: 20px;
 }
 
 .SUB-button {
     flex: 1;
     padding: 10px;
     justify-content: center;
-    align-content:center;
+    align-content: center;
     border-radius: 10px;
-    color: white;
+    color: #05355b;
     height: 40px;
-    background: rgb(46, 66, 139);
+    background: rgb(107, 196, 190);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.048);
@@ -109,13 +110,14 @@ textarea::placeholder {
 .EDI-button,
 .BTL-button {
     padding: 10px;
-    position:relative;
-    display:inline-block;
+    position: relative;
+    display: inline-block;
     flex: 1;
     border-radius: 10px;
-    color: rgb(46, 66, 139);
+    color: white;
     height: 40px;
-    background: rgb(255, 255, 255) backdrop-filter: blur(20px);
+    background: #05355b;
+    backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.048);
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.192);
@@ -149,10 +151,9 @@ textarea::placeholder {
     }
 
 .BTL-button:hover {
-    background: rgb(67, 238, 228);
+    background: #ec7b4e;
     transition-duration: 0.5s;
-    color: color: rgb(46, 66, 139);
-    
+    color: rgb(46, 66, 139);
 }
 
 /*=============== MEDIA QUERY ===============*/

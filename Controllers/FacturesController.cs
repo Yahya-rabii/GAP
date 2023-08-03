@@ -12,6 +12,7 @@ using System.Data;
 using System.Security.Claims;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -28,11 +29,17 @@ namespace GAP.Controllers
         }
 
         // GET: Factures
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.Facture != null ? 
-                          View(await _context.Facture.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Facture'  is null.");
+            IQueryable<Facture> iseriq = from f in _context.Facture
+                                      select f;
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
+        
+           
         }
 
         public async Task<IActionResult> Details(int? id)
