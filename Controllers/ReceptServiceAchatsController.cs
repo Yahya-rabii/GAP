@@ -13,6 +13,7 @@ using Humanizer;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using X.PagedList;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace GAP.Controllers
 {
@@ -26,11 +27,19 @@ namespace GAP.Controllers
         }
 
         // GET: ReceptServiceAchats
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
-              return _context.ReceptServiceAchat != null ? 
-                          View(await _context.ReceptServiceAchat.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.ReceptServiceAchat'  is null.");
+            IQueryable<ReceptServiceAchat> iseriq = from s in _context.ReceptServiceAchat
+                                                    select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.ReceptServiceAchat.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
 
@@ -110,6 +119,20 @@ namespace GAP.Controllers
                     NotificationTitle = "Reclamation Notification Qalite"
                 };
                 _context.Notification.Add(notificationQalite);
+
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                var rapportReception = new RapportReception
+                {
+                    DateCreation = DateTime.Now,
+                    ReceptServiceAchatId = userId,
+                    DevisId = devisId,
+                    
+
+                };
+                _context.RapportReception.Add(rapportReception);
+
+
 
                 _context.SaveChanges();
             }

@@ -4,12 +4,16 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); width:500px; margin-top:250px;" id="features" aria-label="featured game">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Produit</h4>
-    <hr />
+            <div class="frmcontainer">
+
+
+
+                <h1 style="text-align:center; color:white">Are you sure you want to delete this ?</h1>
+                <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.PrixUnitaire)
@@ -49,9 +53,21 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ProduitID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+                <form asp-action="Delete">
+
+                    <div class="BTNS">
+
+                        <a asp-for="ProduitID"><input type="submit" class="DEL-button" value="Delete"> </a>
+
+                        <a asp-controller="Produits" asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </section>
+
+    </article>
+</main>
+

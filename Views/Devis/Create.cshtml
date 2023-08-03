@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Create";
 }
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
 
-<h1>Create</h1>
+            <div class="frmcontainer" style="width:550px;">
 
-<h4>Devis</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+                <h1 class="form-header">ADD Devis</h1>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @* Add the hidden field for OffreVenteID *@
@@ -21,16 +21,23 @@
                 <span asp-validation-for="DateReception" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                    <div class="BTNS">
+
+                        <a asp-for="DevisID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
 
 @section Scripts {
     @{

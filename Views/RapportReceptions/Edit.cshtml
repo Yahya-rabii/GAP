@@ -4,35 +4,47 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); margin-top:250px;" id="features" aria-label="featured game">
 
-<h4>RapportReception</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">EDIT Rapport Reception</h1>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RapportReceptionID" />
+            <div class="form-group">
+                <label asp-for="DateCreation" class="control-label"></label>
+                <input asp-for="DateCreation" class="form-control" />
+                <span asp-validation-for="DateCreation" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="ReceptServiceAchatId" class="control-label"></label>
                 <select asp-for="ReceptServiceAchatId" class="form-control" asp-items="ViewBag.ReceptServiceAchatId"></select>
                 <span asp-validation-for="ReceptServiceAchatId" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Date" class="control-label"></label>
-                <input asp-for="Date" class="form-control" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <label asp-for="DevisId" class="control-label"></label>
+                <input asp-for="DevisId" class="form-control" />
+                <span asp-validation-for="DevisId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+                    <div class="BTNS">
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                        <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                        <a asp-action="Delete" asp-route-id="@Model.RapportReceptionID"><input type="button" class="DEL-button" value="Delete"> </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

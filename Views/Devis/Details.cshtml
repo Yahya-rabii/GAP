@@ -96,7 +96,19 @@
 }
 
 
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.DevisID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+    <div class="BTNS">
+        <a asp-action="Edit" asp-route-id="@Model?.DevisID">
+            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+        </a>
+
+        <a asp-action="Delete" asp-route-id="@Model?.DevisID">
+            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+        </a>
+    
+        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+    </div>
 </div>

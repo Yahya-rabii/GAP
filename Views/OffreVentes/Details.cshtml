@@ -102,20 +102,27 @@
                         }
                     </tbody>
                 </table>
-
+                <div class="BTNS">
                 @if (!Model.Validite && User.IsInRole("Fournisseur"))
                 {
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@Model.OffreVenteID">Edit</a> |
-                        <a asp-action="Index">Back to List</a>
+                   
+                        <a asp-action="Edit" asp-route-id="@Model?.OffreVenteID">
+                            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                        </a>
 
-                    </div>
+                        <a asp-action="Delete" asp-route-id="@Model?.OffreVenteID">
+                            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                        </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                   
                 }
                 @if (!User.IsInRole("Fournisseur"))
                 {
-                    <a asp-action="IndexRespSA">Back to List</a>
-                }
+                        <a asp-action="IndexRespSA"> <input type="button" class="BTL-button" value="Back to List" /></a>
 
+                }
+                </div>
             </div>
         }
 

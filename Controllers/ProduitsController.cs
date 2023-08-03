@@ -10,6 +10,7 @@ using GAP.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -26,17 +27,17 @@ namespace GAP.Controllers
         }
 
         // GET: Produits1
-        public async Task<IActionResult> Index()
-        {
-
-
+        public async Task<IActionResult> Index(int? page)
+        {            
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
+            IQueryable<Produit> iseriq = from p in _context.Produit.Where(p => p.FournisseurId == userId)
+                                             select p;
 
 
-            return _context.Produit != null ?
-                          View(await _context.Produit.Where(p => p.FournisseurId == userId).ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Produit'  is null.");
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
 
 
         }

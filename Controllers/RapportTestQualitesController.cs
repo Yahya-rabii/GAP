@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -19,29 +20,30 @@ namespace GAP.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            var rapportTestQualites = await _context.RapportTestQualite.ToListAsync();
+            IQueryable<RapportTestQualite> rapportTestQualites = from rq in _context.RapportTestQualite
+                                                                 select rq;
 
-            // Load the related Devis data (Produit and Fournisseur)
-            var devisList = await _context.Devis
-                .Include(d => d.Produits)
-                .Include(d => d.Fournisseur)
+            var data = await _context.Devis
+                .Where(d => rapportTestQualites.Any(rq => d.DevisID == rq.DevisId))
+                .Select(devis => new
+                {
+                    FournisseurEmail = devis.Fournisseur.Email,
+                    Produits = devis.Produits,
+                    // Add other properties you need
+                })
                 .ToListAsync();
 
-            // Create a ViewModel list by combining RapportTestQualite and Devis information
-            var viewModelList = rapportTestQualites.Select(rtq => new RapportTestQualiteViewModel
-            {
-                RapportTestQualite = rtq,
-                Devis = devisList.FirstOrDefault(d => d.DevisID == rtq.DevisId)
-            }).ToList();
+            ViewBag.RapportData = data;
 
-            // Create the select list for dropdown menu
-            // Assuming DevisID is an int property in the Devis model
-            ViewBag.DevisList = new SelectList(devisList, "DevisID", "DisplayText");
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
 
-            return View(viewModelList);
+            return View(await rapportTestQualites.ToPagedListAsync(pageNumber, pageSize));
         }
+
+
 
 
 
@@ -54,7 +56,7 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RapportTestQualiteID == id);
             if (rapportTestQualite == null)
             {
                 return NotFound();
@@ -182,9 +184,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId,DevisId")] RapportTestQualite rapportTestQualite)
+        public async Task<IActionResult> Edit(int id, [Bind("RapportTestQualiteID,ValiditeEtat,ValiditeNbrPiece,ValiditeFonctionnement,RespServiceQualiteId,DevisId")] RapportTestQualite rapportTestQualite)
         {
-            if (id != rapportTestQualite.Id)
+            if (id != rapportTestQualite.RapportTestQualiteID)
             {
                 return NotFound();
             }
@@ -198,7 +200,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RapportTestQualiteExists(rapportTestQualite.Id))
+                    if (!RapportTestQualiteExists(rapportTestQualite.RapportTestQualiteID))
                     {
                         return NotFound();
                     }
@@ -221,7 +223,7 @@ namespace GAP.Controllers
             }
 
             var rapportTestQualite = await _context.RapportTestQualite
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RapportTestQualiteID == id);
             if (rapportTestQualite == null)
             {
                 return NotFound();
@@ -251,7 +253,7 @@ namespace GAP.Controllers
 
         private bool RapportTestQualiteExists(int id)
         {
-          return (_context.RapportTestQualite?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.RapportTestQualite?.Any(e => e.RapportTestQualiteID == id)).GetValueOrDefault();
         }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -26,11 +27,15 @@ namespace GAP.Controllers
         [Authorize(Roles = "Admin")]
 
         // GET: Fournisseurs1
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.Fournisseur != null ? 
-                          View(await _context.Fournisseur.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Fournisseur'  is null.");
+            IQueryable<Fournisseur> iseriq = from f in _context.Fournisseur
+                                             select f;
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
 

@@ -7,13 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
+using X.PagedList;
+
 namespace GAP.Controllers
 {
-
-    [Authorize]
-    [Authorize(Roles = "ReceptServiceAchat")]
     public class RapportReceptionsController : Controller
     {
         private readonly GAPContext _context;
@@ -24,11 +21,18 @@ namespace GAP.Controllers
         }
 
         // GET: RapportReceptions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.RapportReception != null ? 
-                          View(await _context.RapportReception.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.RapportReception'  is null.");
+            IQueryable<RapportReception> iseriq = from rc in _context.RapportReception
+                                                  select rc;
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
+
+
+            
         }
 
         // GET: RapportReceptions/Details/5
@@ -40,7 +44,7 @@ namespace GAP.Controllers
             }
 
             var rapportReception = await _context.RapportReception
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RapportReceptionID == id);
             if (rapportReception == null)
             {
                 return NotFound();
@@ -60,7 +64,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReceptServiceAchatId,Id,Date")] RapportReception rapportReception)
+        public async Task<IActionResult> Create([Bind("RapportReceptionID,DateCreation,ReceptServiceAchatId,DevisId")] RapportReception rapportReception)
         {
             if (ModelState.IsValid)
             {
@@ -92,9 +96,9 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReceptServiceAchatId,Id,Date")] RapportReception rapportReception)
+        public async Task<IActionResult> Edit(int id, [Bind("RapportReceptionID,DateCreation,ReceptServiceAchatId,DevisId")] RapportReception rapportReception)
         {
-            if (id != rapportReception.Id)
+            if (id != rapportReception.RapportReceptionID)
             {
                 return NotFound();
             }
@@ -108,7 +112,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RapportReceptionExists(rapportReception.Id))
+                    if (!RapportReceptionExists(rapportReception.RapportReceptionID))
                     {
                         return NotFound();
                     }
@@ -131,7 +135,7 @@ namespace GAP.Controllers
             }
 
             var rapportReception = await _context.RapportReception
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.RapportReceptionID == id);
             if (rapportReception == null)
             {
                 return NotFound();
@@ -161,7 +165,7 @@ namespace GAP.Controllers
 
         private bool RapportReceptionExists(int id)
         {
-          return (_context.RapportReception?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.RapportReception?.Any(e => e.RapportReceptionID == id)).GetValueOrDefault();
         }
     }
 }

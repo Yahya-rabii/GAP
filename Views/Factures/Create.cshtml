@@ -4,12 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
 
-<h4>Facture</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">ADD Facture</h1>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="devisId" value="@ViewBag.devisId" />
@@ -19,16 +20,23 @@
                 create a facture for the devis N° = @ViewBag.devisId
 
             </p>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+   
+                    <div class="BTNS">
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+                        <a asp-for="FactureID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

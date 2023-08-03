@@ -1,40 +1,72 @@
-﻿@model IEnumerable<GAP.Models.Fournisseur>
+﻿@model X.PagedList.IPagedList<GAP.Models.Fournisseur>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<main>
+    <article>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+        <div class="datatable-container">
+
+            <h1 class="form-header">Fournisseurs</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+
+
+
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nom)
+                Nom
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Email
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Password)
+                Password
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Adresse)
+               Adresse
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CodePostal)
+                CodePostal
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Numtele)
+                Numtele
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreTransaction)
+               NombreTransaction
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsValid)
+                IsValid
             </th>
             <th></th>
         </tr>
@@ -75,3 +107,7 @@
 }
     </tbody>
 </table>
+
+        </div>
+    </article>
+</main>

@@ -266,19 +266,22 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.RapportReception", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RapportReceptionID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RapportReceptionID"));
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DevisId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ReceptServiceAchatId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("RapportReceptionID");
 
                     b.HasIndex("ReceptServiceAchatId");
 
@@ -287,11 +290,11 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.RapportTestQualite", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("RapportTestQualiteID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RapportTestQualiteID"));
 
                     b.Property<int>("DevisId")
                         .HasColumnType("int");
@@ -308,7 +311,7 @@ namespace GAP.Migrations
                     b.Property<bool>("ValiditeNbrPiece")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("RapportTestQualiteID");
 
                     b.HasIndex("RespServiceQualiteId");
 

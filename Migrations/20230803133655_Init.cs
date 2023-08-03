@@ -129,14 +129,15 @@ namespace GAP.Migrations
                 name: "RapportReception",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    RapportReceptionID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreation = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReceptServiceAchatId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DevisId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RapportReception", x => x.Id);
+                    table.PrimaryKey("PK_RapportReception", x => x.RapportReceptionID);
                     table.ForeignKey(
                         name: "FK_RapportReception_User_ReceptServiceAchatId",
                         column: x => x.ReceptServiceAchatId,
@@ -149,7 +150,7 @@ namespace GAP.Migrations
                 name: "RapportTestQualite",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    RapportTestQualiteID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ValiditeEtat = table.Column<bool>(type: "bit", nullable: false),
                     ValiditeNbrPiece = table.Column<bool>(type: "bit", nullable: false),
@@ -159,7 +160,7 @@ namespace GAP.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RapportTestQualite", x => x.Id);
+                    table.PrimaryKey("PK_RapportTestQualite", x => x.RapportTestQualiteID);
                     table.ForeignKey(
                         name: "FK_RapportTestQualite_User_RespServiceQualiteId",
                         column: x => x.RespServiceQualiteId,

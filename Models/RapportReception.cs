@@ -4,26 +4,27 @@ namespace GAP.Models
 {
    public class RapportReception
 {
-    private int id;
-    private DateTime date;
+
+
+        public int RapportReceptionID { get; set; }
+        public DateTime DateCreation { get; set; }
+
+
 
         [ForeignKey("ReceptServiceAchat")]
         public int ReceptServiceAchatId { get; set; } // Foreign key property
-        public int Id
-    {
-        get { return id; }
-        set { id = value; }
-    }
 
-    public DateTime Date
-    {
-        get { return date; }
-        set { date = value; }
-    }
+        
+        [ForeignKey("Devis")]
+        public int DevisId { get; set; } // Foreign key property
+     
+
 
         public RapportReception()
         {
-            date = DateTime.Now.Date;
+            DateCreation = DateTime.Now.Date;
+            ReceptServiceAchatId = 0;
+            DevisId = 0;
 
         }
     }

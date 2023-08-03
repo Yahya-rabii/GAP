@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -20,11 +21,15 @@ namespace GAP.Controllers
         }
 
         // GET: Sanctions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-              return _context.Sanction != null ? 
-                          View(await _context.Sanction.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Sanction'  is null.");
+            IQueryable<Sanction> iseriq = from rc in _context.Sanction
+                                          select rc;
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
         // GET: Sanctions/Details/5

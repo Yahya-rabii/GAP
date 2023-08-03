@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -20,11 +21,19 @@ namespace GAP.Controllers
         }
 
         // GET: RespServiceFinances
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
-              return _context.RespServiceFinance != null ? 
-                          View(await _context.RespServiceFinance.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.RespServiceFinance'  is null.");
+            IQueryable<RespServiceFinance> iseriq = from s in _context.RespServiceFinance
+                                                    select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.RespServiceFinance.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
         // GET: RespServiceFinances/Details/5
