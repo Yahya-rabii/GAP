@@ -1,5 +1,12 @@
-﻿ @if (!User.IsInRole("Admin"))
+﻿
+ 
+@if (!User.IsInRole("Admin"))
     {
+
+
+
+
+
 <div class="main-content ">
 
     <div class="col-md-6">
@@ -33,9 +40,16 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="business_box ">
-                                <figure><img src="~/images/business_img.jpg" alt="#" /></figure>
-                                <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believableThere are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable</p>
-                                <a class="read_more" href="#">Read more</a>
+                                    <div class="gridd">
+
+                                        <div class="gridcontainer">
+                                            <div class="griditem gridheader" >More than @ViewBag.TotalFournisseurs Supplier</div> 
+                                            <div class="griditem gridsidebar" >Gap - Tech</div>
+                                            <div class="griditem gridcontent-1" >Manage @ViewBag.TotalProducts Product</div>
+                                            <div class="griditem gridfooter" >Used by @ViewBag.TotalUsers User</div>
+                                        </div>
+                                    </div>
+
                             </div>
                         </div>
                     </div>
@@ -90,7 +104,9 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="Testimonial_box">
-                            <i><a href="https://yahya.rabii.me/"><img src="~/images/profile.png" alt="#" class="icon-profile" /></a></i>
+                            <i><a href="https://yahya.rabii.me/">
+
+                               <img src="~/images/profile.png" alt="#" class="icon-profile" /></a> </i>
                         </div>
                     </div>
                     <div class="col-md-9">

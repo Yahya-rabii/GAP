@@ -77,6 +77,9 @@ namespace GAP.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    ProfilePictureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasCustomProfilePicture = table.Column<bool>(type: "bit", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false)
                 },
                 constraints: table =>

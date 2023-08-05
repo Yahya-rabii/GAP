@@ -855,7 +855,7 @@ ul.social_icon {
     border-radius: 0% 0% 0% 0%;
     color: azure;
     background-color: rgb(8, 145, 248);
-    top: -111px;
+    top: -92px;
     z-index: 0;
     margin-bottom: -390px;
 }
@@ -970,35 +970,6 @@ ul.social_icon {
 
 
 
-
-.logout {
-    top: 0%;
-    position: relative;
-    display: inline;
-    padding: 10px;
-    border-radius: 20px;
-    height: 30px;
-    background: rgb(8, 145, 248);
-    border: none;
-    cursor: pointer;
-    transition-duration: 0.5s;
-    overflow: hidden;
-}
- 
-     .logout span {
-         font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-         font-size: 25px;
-         font-weight: bold;
-         color: white;
-         white-space: nowrap;
-     }
-        .logout span:hover {
-            color: rgb(10, 98, 168);
-        }
-
-    .logout:hover {
-        background: rgb(14, 142, 244);
-    }
  .logo-container {
    position: fixed; /* Ensure the container is positioned */
  }
@@ -1045,9 +1016,9 @@ ul.social_icon {
             display: none;
             width: fit-content;
             position: absolute;
-            top: 39px;
+            top: 45px;
             background: rgb(8, 145, 248);
-            left: -250px;
+            left: -300px;
             right: 0;
             z-index: 1;
             border: 1px solid #ddd;
@@ -1158,3 +1129,179 @@ ul.social_icon {
     object-fit: cover;
     border-radius: 100px;
 }
+
+
+
+
+
+
+
+.gridd {
+    display: flex;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    padding-top: 10px;
+}
+
+.gridcontainer {
+    display: grid;
+    width: 850px;
+    height: 350px;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: 80px 1fr 100px;
+    grid-gap: 10px;
+    grid-template-areas:
+        "header header"
+        "sidebar content-1"
+        "footer footer";
+}
+
+.griditem {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    color: #ffffff;
+    border-radius: 10px;
+    border: 5px solid #171717;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .griditem:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+    }
+
+.gridheader {
+    grid-area: header;
+    background-color: #1EAAFC;
+    background-image: linear-gradient(160deg, #0e90f4 0%, #05355b 127%);
+}
+
+.gridsidebar {
+    grid-area: sidebar;
+    background-image: linear-gradient(203deg, #05355b 0%, #0961a7 90%);
+}
+
+.gridcontent-1 {
+    grid-area: content-1;
+    background-image: linear-gradient(130deg, #0961a7 0%, #04345a 85%, #04345a 100%);
+}
+
+.gridfooter {
+    grid-area: footer;
+    background-color: #04345a;
+    background-image: linear-gradient(160deg, #04345a 0%, #0e86ff 107%);
+}
+
+
+
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+
+
+.action {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+}
+
+    .action .profile {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+        .action .profile img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .action .menu {
+        position: absolute;
+        border: 1px dashed #0891f8;
+        top: 50px;
+        right: -100px;
+        padding: 10px 20px;
+        background: #fff;
+        width: fit-content;
+        border-radius: 15px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 300ms linear, opacity 300ms linear;
+    }
+
+        .action .menu.active {
+            visibility: visible;
+            background-color: #fff;
+            opacity: 1;
+            z-index: 0;
+        }
+
+
+
+        .action .menu h3 {
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px 0;
+            font-weight: 500;
+            font-size: 18px;
+            color: #555;
+            line-height: 1.2em;
+        }
+
+            .action .menu h3 span {
+                font-size: 14px;
+                color: gray;
+                font-weight: 400;
+            }
+
+        .action .menu ul li {
+            list-style: none;
+            padding: 10px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+
+            .action .menu ul li i {
+                width: 20px;
+                max-width: 20px;
+                margin-right: 10px;
+                color: #0891f8;
+                transition: opacity 300ms linear;
+            }
+
+            .action .menu ul li:hover {
+                background-color: #ededed;
+            } 
+            .action .menu ul li:hover i {
+                color: #0962a8;
+
+            }
+
+            .action .menu ul li a {
+                cursor:pointer;
+                display: block;
+                text-decoration: none;
+                color: #0891f8;
+                font-weight: 500;
+                transition: color 300ms linear;
+            }
+
+            .action .menu ul li:hover a {
+                color: #0a62a6;
+            }

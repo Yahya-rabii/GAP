@@ -21,8 +21,8 @@
     left: 50px;
     margin-left: 50px;
     margin-right: 50px;
-    margin-top: 200px;
     padding: 10px;
+    margin-top:100px;
     background-color: rgb(31, 31, 31, 0.068);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -30,6 +30,7 @@
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
     border-radius: 10px;
     table-layout: auto;
+    display:inline-block;
 
 }
 
@@ -53,6 +54,16 @@
 
 
     .adfrmcontainer .form-header {
+        color: #0a2558;
+    }
+
+    .adfrmcontainer dt {
+        color: #0a2558;
+    }
+    .adfrmcontainer dd {
+        color: #0a2558;
+    }
+    .adfrmcontainer h1 {
         color: #0a2558;
     }
     .adfrmcontainer .form-group input {

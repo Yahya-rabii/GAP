@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230804174009_Init")]
+    [Migration("20230805141619_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -371,6 +371,9 @@ namespace GAP.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("HasCustomProfilePicture")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -383,6 +386,12 @@ namespace GAP.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ProfilePictureFileName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
 

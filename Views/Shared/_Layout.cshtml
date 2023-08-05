@@ -1,6 +1,4 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- basic -->
@@ -103,12 +101,12 @@
                     </a>
                     <ul>
                         <ul class="dropdownad-menu">
-                            
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add Resp Service qualite</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add Resp Service Finances</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add Recep Service Achats</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a></li>
+
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'"> <i class="bx bx-message-square-add"></i> Resp Service Achat</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'"> <i class="bx bx-message-square-add"></i> Resp Service qualite</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'"> <i class="bx bx-message-square-add"></i> Resp Service Finances</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">  <i class="bx bx-message-square-add"></i>Recep Service Achats</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'"> <i class="bx bx-message-square-add"></i> Fournisseur</a></li>
                         </ul>
                     </ul>
                 </li>
@@ -132,49 +130,126 @@
         var totalNotificationsAdmin = Context.Items["TotalNotificationsAdmin"] as int? ?? 0;
         var notificationsAdmin = Context.Items["NotificationsAdmin"] as List<NotificationAdmin>?? new List<NotificationAdmin>();
 
+
+        var userProfilePicture = Context.Items["UserProfilePicture"] as byte[];
+        var UserEmail = Context.Items["UserEmail"] as string;
+        var UserID = Context.Items["UserID"] as int? ?? 0;
+
+@*   <section class="home-section">
+        @if (userProfilePicture != null)
+        {
+            <img src="data:image/jpeg;base64,@Convert.ToBase64String(userProfilePicture)" alt="Profile Picture" class="icon-profile" />
+        }
+        else
+        {
+            <img src="~/images/image-prof.png" alt="Default Profile Picture" class="icon-profile" />
+        }
+    </section>*@
+ 
+
         <section class="home-section">
 
             <nav>
+
+
+
+
+
+
+
+
                 <div class="sidebar-button">
                     <i class="bx bx-menu sidebarBtn"></i>
                     <span class="dashboard">Admin Dashboard</span>
 
                 </div>
+
+
+
+                <ul class="adnotification-drop">
+                    <li class="aditem">
+                        <i class="fa fa-bell-o adnotification-bell" aria-hidden="true"></i>
+                        <span class="adbtn__badge adpulse-button">@totalNotificationsAdmin</span>
+                        <ul>
+                            @if (totalNotificationsAdmin > 0)
+                            {
+                                @foreach (var notification in notificationsAdmin)
+                                {
+                                    <li>
+                                        @notification.NotificationTitle
+                                        @if (notification.FournisseurID.HasValue)
+                                        {
+                                            <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
+                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                            }
+                            else
+                            {
+                                <li>No Notif</li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+
+
                 <div class="profile-details">
-                    <img src="~/images/profile.png" alt="" />
+
+
+
+
+
+
+                    <div class="adaction">
+                        <div class="adprofile">
+
+
+                            @if (userProfilePicture != null)
+                            {
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(userProfilePicture)" alt="Profile Picture" />
+                            }
+                            else
+                            {
+                                <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                            }
+
+
+                        </div>
+
+                        <div class="admenu">
+                            <h3>
+                                Welcome
+                                <br />
+                                <span>  @UserEmail  </span>
+                            </h3>
+
+                            <ul>
+                                <li>
+                                    <i class="bx bx-user"></i>
+                                    <a href="@Url.Action("Details", "Users", new { ID = UserID })">My Profile</a>
+                                </li>
+                                <li>
+                                    <i class="bx bx-edit"></i>
+                                    <a href="@Url.Action("Edit", "Users", new { ID = UserID })">Edit Profile</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <i class="bx bx-chevron-down iopen" onclick="menuToggle();"></i>
+
+                    </div>
+
+
+              
+
                     <span class="admin_name">Admin</span>
-                    <i class="bx bx-chevron-down"></i>
                 </div>
 
                
 
-                        <ul class="adnotification-drop">
-                            <li class="aditem">
-                                <i class="fa fa-bell-o adnotification-bell" aria-hidden="true"></i>
-                                <span class="adbtn__badge adpulse-button">@totalNotificationsAdmin</span>
-                                <ul>
-                                    @if (totalNotificationsAdmin > 0)
-                                    {
-                                        @foreach (var notification in notificationsAdmin)
-                                        {
-                                            <li>
-                                                @notification.NotificationTitle
-                                                @if (notification.FournisseurID.HasValue)
-                                                {
-                                                    <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
-                                                        <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
-                                                    </a>
-                                                }
-                                            </li>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <li>No Notif</li>
-                                    }
-                                </ul>
-                            </li>
-                        </ul>
+                   
 
             </nav>
 
@@ -283,6 +358,7 @@
       
         <script src="~/js/admin.js"></script>
         <script src="~/js/adminNotification.js"></script>
+        <script src="~/js/adprofile.js"></script>
 
         @await RenderSectionAsync("Scripts", required: false)
 
@@ -321,8 +397,10 @@ else{
 
                                         @if (User.Identity.IsAuthenticated)
                                         {
+                                                var userProfilePicture = Context.Items["UserProfilePicture"] as byte[];
+                                                var UserEmail = Context.Items["UserEmail"] as string;
+                                                var UserID = Context.Items["UserID"] as int? ?? 0;
 
-                                       
                                             @if (User.IsInRole("Fournisseur"))
                                             {
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
@@ -360,6 +438,7 @@ else{
                                             {
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
                                                 var notifications = Context.Items["Notifications"] as List<NotificationReclamation> ?? new List<NotificationReclamation>();
+                                              
 
                                                 <ul class="notification-drop">
                                                     <li class="item">
@@ -391,11 +470,54 @@ else{
                                             }
 
 
-                                            <li class="nav-item">
-                                                <a class="logout" onclick="location.href='@Url.Action("Logout", "Users")'">
-                                                    <span>Logout</span>
-                                                </a>
-                                            </li>
+
+                                                <div class="action">
+                                                    <div class="profile" onclick="menuToggle();">
+
+
+                                                        @if (userProfilePicture != null)
+                                                        {
+                                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(userProfilePicture)" alt="Profile Picture" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                        }
+
+
+                                                    </div>
+
+                                                    <div class="menu">
+                                                        <h3>
+                                                           Welcome
+                                                            <br />
+                                                            <span>  @UserEmail  </span>
+                                                        </h3>
+
+                                                        <ul>
+                                                            <li>
+                                                                <i class="bx bx-user"></i>
+                                                                <a href="@Url.Action("Details", "Users", new { ID = UserID })">My Profile</a>
+                                                            </li>
+                                                            <li>
+                                                                <i class="bx bx-edit"></i>
+                                                                <a href="@Url.Action("Edit", "Users", new { ID = UserID })">Edit Profile</a>
+                                                            </li>
+
+                                                            <li>
+                                                                <i class="bx bx-log-out"></i>
+
+                                                                <a  onclick="location.href='@Url.Action("Logout", "Users")'">
+                                                                    <span>Logout</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+
+                                           
 
                                         }
 
@@ -554,6 +676,7 @@ else{
     <script src="~/js/Notifications.js"></script>
     <script src="~/js/loader.js"></script>
     <script src="~/js/customs.js"></script>
+    <script src="~/js/profile.js"></script>
 
     <!-- sidebar -->
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>

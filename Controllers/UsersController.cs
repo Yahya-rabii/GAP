@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
 using X.PagedList;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace GAP.Controllers
 {
@@ -22,10 +22,6 @@ namespace GAP.Controllers
         {
             _context = context;
         }
-
-
-
-
 
 
         // GET: Users
@@ -45,9 +41,7 @@ namespace GAP.Controllers
         }
 
 
-
-
-        // GET: Users/Details/5
+        // GET: Users1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.User == null)
@@ -65,13 +59,13 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
+        // GET: Users1/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Users1/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -96,7 +90,7 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        // GET: Users/Edit/5
+        // GET: Users1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.User == null)
@@ -112,39 +106,47 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        // POST: Users/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
+        public async Task<IActionResult> Edit(int id,User updatedUser, IFormFile profilePicture)
         {
-            if (id != user.UserID)
+            if (id != updatedUser.UserID)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
-
-
-                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email && u.UserID != id);
-                if (existingUser != null)
-                {
-
-                    // If user with the same email exists (and has a different ID), inform the user with a message
-                    ModelState.AddModelError("Email", "Another user with this email already exists.");
-                    return View(user);
-                }
-
+        
                 try
                 {
-                    _context.Update(user);
+                    var existingUser = await _context.User.FirstOrDefaultAsync(u => u.UserID == id);
+
+                    if (existingUser == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingUser.Email = updatedUser.Email;
+                    existingUser.Password = updatedUser.Password;
+                    existingUser.FirstName = updatedUser.FirstName;
+                    existingUser.LastName = updatedUser.LastName;
+
+                    if (profilePicture != null)
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await profilePicture.CopyToAsync(memoryStream);
+                            existingUser.ProfilePicture = memoryStream.ToArray();
+                            existingUser.ProfilePictureFileName = profilePicture.FileName;
+                            existingUser.HasCustomProfilePicture = true;
+                        }
+                    }
+
+                    _context.Update(existingUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserID))
+                    if (!UserExists(updatedUser.UserID))
                     {
                         return NotFound();
                     }
@@ -154,11 +156,12 @@ namespace GAP.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(user);
+            
         }
 
-        // GET: Users/Delete/5
+
+
+        // GET: Users1/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.User == null)
@@ -176,7 +179,7 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        // POST: Users/Delete/5
+        // POST: Users1/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -199,6 +202,8 @@ namespace GAP.Controllers
         {
           return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
+
+
 
 
 
@@ -338,7 +343,6 @@ namespace GAP.Controllers
 
 
         /////////////////////////////////////////////////////////////////////
-
 
 
 

@@ -125,7 +125,8 @@ nav .sidebar-button i{
   border: 2px solid #EFEEF1;
   border-radius: 6px;
   height: 50px;
-  min-width: 190px;
+  width: 150px;
+  margin-right:20px;
   padding: 0 15px 0 2px;
 }
 nav .profile-details img{
@@ -424,13 +425,14 @@ nav .profile-details i{
 
 /* Hide the dropdown menu by default */
 .dropdownad-menu {
-  display: none;
-  padding: 4px 12px;
-  font-size: 15px;
-  font-weight: 400;
-  border-radius: 4px;
-  text-decoration: none;
-  transition: all 0.3s ease;
+    display: none;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 /* Show the dropdown menu when the parent element is clicked */
@@ -448,6 +450,7 @@ nav .profile-details i{
 
 /* Style for the links within the dropdown */
 .dropdownad-menu a {
+
     text-decoration: none;
     background-color: #0A2558;
     color: #fff;
@@ -488,16 +491,17 @@ nav .profile-details i{
 
 
 .adnotification-drop {
-    top: 30px;
-    right: 300px;
-    position: absolute;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     height: 30px;
     padding: 0 15px;
     cursor: pointer;
     transition-duration: 0.5s;
     color: white;
+    left: 300px;
+    margin-top:8px;
+    margin-left: 600px;
+    padding-right: 60px;
 }
 
     .adnotification-drop .aditem {
@@ -520,12 +524,12 @@ nav .profile-details i{
             display: none;
             width: fit-content;
             position: absolute;
-            top: 39px;
+            top: 50px;
             background: #0a2558;
-            left: -250px;
+            left: -300px;
             right: 0;
             z-index: 1;
-            border: 1px solid #ddd;
+            border: 1px dashed #ddd;
             border-radius: 8px;
         }
 
@@ -615,3 +619,116 @@ nav .profile-details i{
     .adnotification-text span {
         float: right;
     }
+
+
+.adaction .iopen{
+    position: absolute;
+    cursor: pointer;
+    left: 110px;
+    top: 10px;
+}
+
+
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+
+
+.adaction {
+    position: relative;
+}
+
+    .adaction .adprofile {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+        .adaction .adprofile img {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .adaction .admenu {
+        position: absolute;
+        border: 1px dashed #0a2558;
+        top: 50px;
+        right: -120px;
+        padding: 10px 20px;
+        background: #fff;
+        width: fit-content;
+        border-radius: 15px;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 300ms linear, opacity 300ms linear;
+    }
+
+        .adaction .admenu.active {
+            visibility: visible;
+            background-color: #fff;
+            opacity: 1;
+            z-index: 0;
+        }
+
+
+
+        .adaction .admenu h3 {
+            width: 100%;
+            text-align: center;
+            font-size: 18px;
+            padding: 20px 0;
+            font-weight: 500;
+            font-size: 18px;
+            color: #555;
+            line-height: 1.2em;
+        }
+
+            .adaction .admenu h3 span {
+                font-size: 14px;
+                color: gray;
+                font-weight: 400;
+            }
+
+        .adaction .admenu ul li {
+            list-style: none;
+            padding: 10px 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+
+            .adaction .admenu ul li i {
+                width: 20px;
+                max-width: 20px;
+                margin-right: 10px;
+                color: #0a2558;
+                transition: opacity 300ms linear;
+            }
+
+            .adaction .admenu ul li:hover {
+                background-color: #ededed;
+            }
+
+                .adaction .admenu ul li:hover i {
+                    color: #0962a8;
+                }
+
+            .adaction .admenu ul li a {
+                cursor: pointer;
+                display: block;
+                text-decoration: none;
+                color: #0a2558;
+                font-weight: 500;
+                transition: color 300ms linear;
+            }
+
+            .adaction .admenu ul li:hover a {
+                color: #0a62a6;
+            }

@@ -368,6 +368,9 @@ namespace GAP.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("HasCustomProfilePicture")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
 
@@ -380,6 +383,12 @@ namespace GAP.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("ProfilePictureFileName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserID");
 

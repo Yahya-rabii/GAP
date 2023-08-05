@@ -27,6 +27,9 @@ namespace GAP.Models
         [DefaultValue(false)]
         public bool IsAdmin { get; set; } = false;
 
+        public byte[]? ProfilePicture { get; set; }
+        public string? ProfilePictureFileName { get; set; }
+        public bool HasCustomProfilePicture { get; set; } = false;
 
         public User()
         {
