@@ -40,6 +40,8 @@ namespace GAP.Migrations
                     NotificationTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
                     FournisseurID = table.Column<int>(type: "int", nullable: true),
+                    NotificationFournisseur_FournisseurID = table.Column<int>(type: "int", nullable: true),
+                    OffreVenteID = table.Column<int>(type: "int", nullable: true),
                     UserID = table.Column<int>(type: "int", nullable: true),
                     DevisID = table.Column<int>(type: "int", nullable: true)
                 },

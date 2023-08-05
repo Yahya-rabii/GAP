@@ -127,12 +127,9 @@ namespace GAP.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Validate(int id, Fournisseur fournisseur)
+        public async Task<IActionResult> Validate(int id)
         {
-            if (id != fournisseur.FournisseurID)
-            {
-                return BadRequest(); // Return 400 Bad Request if the ID in the URL doesn't match the ID in the model
-            }
+         
 
             try
             {
@@ -147,7 +144,7 @@ namespace GAP.Controllers
                 // Set the IsValid property to true and update the fournisseur
                 existingFournisseur.IsValid = true;
                 _context.Update(existingFournisseur);
-                var notification = _context.NotificationAdmin.FirstOrDefault(d => d.FournisseurID == fournisseur.FournisseurID);
+                var notification = _context.NotificationAdmin.FirstOrDefault(d => d.FournisseurID == existingFournisseur.FournisseurID);
                 if (notification != null)
                 {
                     _context.Notification.Remove(notification);
@@ -167,7 +164,8 @@ namespace GAP.Controllers
                 }
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Fournisseurs");
+
         }
 
 

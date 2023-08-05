@@ -10,12 +10,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
-    <title>diigo</title>
+    <title>Gap - Tech</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/GAP.styles.css" asp-append-version="true" />
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
 
@@ -24,7 +25,11 @@
     <link rel="stylesheet" href="~/css/cards.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/tables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/forms.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/adminforms.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admintables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true" />
+    <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" asp-append-version="true" />
 
     <link rel="icon" href="~/images/fevicon.png" type="image/gif" />
     <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.min.css">
@@ -32,12 +37,259 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
 
 </head>
+
+
+
+
+
+
 <!-- body -->
 <body class="main-layout">
-    <!-- loader  -->
+    <!-- loader  
     <div class="loader_bg">
         <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
     </div>
+    -->
+
+ @if (User.IsInRole("Admin"))
+    {
+
+
+        <div class="sidebar">
+            <div class="logo-details">
+                <i class="bx bxs-network-chart"></i>
+                <span class="logo_name">GAP - Tech</span>
+            </div>
+            <ul class="nav-links">
+
+
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index">
+                        <i class="bx bx-grid-alt"></i>
+                        <span class="links_name">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Produits" asp-action="Index">
+                        <i class="bx bx-box"></i>
+                        <span class="links_name">Products</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Fournisseurs" asp-action="Index">
+                        <i class="bx bx-support"></i>
+                        <span class="links_name">Suppliers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bx bx-coin-stack"></i>
+                        <span class="links_name">Stock</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="" asp-controller="Users" asp-action="Index">
+                        <i class="bx bx-user"></i>
+                        <span class="links_name">Users</span>
+                    </a>
+                </li>
+                  
+                <li class="dropdownad">
+
+                    <a href="#">
+                        <i class="bx bx-plus"></i>
+                        <span class="links_name">Add Users</span>
+                    </a>
+                    <ul>
+                        <ul class="dropdownad-menu">
+                            
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add Resp Service qualite</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add Resp Service Finances</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add Recep Service Achats</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a></li>
+                        </ul>
+                    </ul>
+                </li>
+
+            
+
+
+                <li class="log_out">
+                    <a onclick="location.href='@Url.Action("Logout", "Users")'">
+                        <i class="bx bx-log-out"></i>
+                        <span class="links_name">Log out</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+
+
+        var currentPageUrl = Context.Request.Path;
+        var totalNotificationsAdmin = Context.Items["TotalNotificationsAdmin"] as int? ?? 0;
+        var notificationsAdmin = Context.Items["NotificationsAdmin"] as List<NotificationAdmin>?? new List<NotificationAdmin>();
+
+        <section class="home-section">
+
+            <nav>
+                <div class="sidebar-button">
+                    <i class="bx bx-menu sidebarBtn"></i>
+                    <span class="dashboard">Admin Dashboard</span>
+
+                </div>
+                <div class="profile-details">
+                    <img src="~/images/profile.png" alt="" />
+                    <span class="admin_name">Admin</span>
+                    <i class="bx bx-chevron-down"></i>
+                </div>
+
+               
+
+                        <ul class="adnotification-drop">
+                            <li class="aditem">
+                                <i class="fa fa-bell-o adnotification-bell" aria-hidden="true"></i>
+                                <span class="adbtn__badge adpulse-button">@totalNotificationsAdmin</span>
+                                <ul>
+                                    @if (totalNotificationsAdmin > 0)
+                                    {
+                                        @foreach (var notification in notificationsAdmin)
+                                        {
+                                            <li>
+                                                @notification.NotificationTitle
+                                                @if (notification.FournisseurID.HasValue)
+                                                {
+                                                    <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
+                                                        <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                    </a>
+                                                }
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li>No Notif</li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+
+            </nav>
+
+            @if (currentPageUrl == "/")
+            {
+                <div class="home-content">
+                    <div class="overview-boxes">
+                        <div class="box">
+                            <div class="right-side">
+                                <div class="box-topic">Total Products</div>
+                                <div class="number">@ViewBag.TotalProducts</div>
+                            </div>
+                            <i class="bx bxs-package cart two"></i>
+                        </div>
+                        <div class="box">
+                            <div class="right-side">
+                                <div class="box-topic">Total Users</div>
+                                <div class="number">@ViewBag.TotalUsers</div>
+                            </div>
+                            <i class="bx bx-user cart three"></i>
+                        </div>
+                        <div class="box">
+                            <div class="right-side">
+                                <div class="box-topic">Total Suppliers</div>
+                                <div class="number">@ViewBag.TotalFournisseurs</div>
+                            </div>
+                            <i class="bx bxs-component cart four"></i>
+                        </div>
+                    </div>
+                    <div class="sales-boxes">
+                        <div class="recent-sales box">
+                            <div class="title">Users</div>
+                            <div class="sales-details">
+                                <div class="table-container">
+                                    <table class="user-table">
+                                        <thead>
+                                            <tr>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (ViewBag.Users != null)
+                                            {
+                                                @foreach (var user in ViewBag.Users)
+                                                {
+                                                    <tr>
+                                                        <td>@user.FirstName</td>
+                                                        <td>@user.LastName</td>
+                                                        <td>@user.Email</td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <a asp-area="" asp-controller="Users" asp-action="Index">See All</a>
+                            </div>
+                        </div>
+                        <div class="top-sales box">
+                            <div class="title">Suppliers</div>
+                            <ul class="top-sales-details">
+                                @if (ViewBag.Fournisseur != null)
+                                {
+                                    @foreach (var supplier in ViewBag.Fournisseur)
+                                    {
+                                        <li>
+                                            <a href="#">
+                                                <img src="" alt="" />
+                                                <span class="product">@supplier.Email</span>
+                                            </a>
+                                            <span class="price">@supplier.NombreTransaction</span>
+                                        </li>
+                                    }
+
+                                }
+
+                            </ul>  
+                            <div class="button">
+                                <a asp-area="" asp-controller="Fournisseurs" asp-action="Index">See All</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </section>
+
+            
+                <section class="home-section">
+            <div class="sales-boxes">
+                <div class="recent-sales box">
+                        @RenderBody()
+                        </div>
+                        </div>
+                        
+                </section>
+        
+     
+
+
+      
+        <script src="~/js/admin.js"></script>
+        <script src="~/js/adminNotification.js"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+
+    }
+
+
+else{
 
     <!-- end loader -->
     <!-- header -->
@@ -62,14 +314,49 @@
                                     <span class="navbar-toggler-icon"></span>
                                 </button>
                                 <div class="collapse navbar-collapse" id="navbarsExample04">
-                                    <ul class="navbar-nav mr-auto logandnot">
+                                    <div class="navbar-nav mr-auto logandnot">
 
 
 
 
                                         @if (User.Identity.IsAuthenticated)
                                         {
-                                            @if (!User.IsInRole("Admin"))
+
+                                       
+                                            @if (User.IsInRole("Fournisseur"))
+                                            {
+                                                var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
+                                                var notifications = Context.Items["Notifications"] as List<NotificationFournisseur> ?? new List<NotificationFournisseur>();
+
+                                                <ul class="notification-drop">
+                                                    <li class="item">
+                                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
+                                                        <span class="btn__badge pulse-button">@totalNotifications</span>
+                                                        <ul>
+                                                            @if (totalNotifications > 0)
+                                                            {
+                                                                @foreach (var notification in notifications)
+                                                                {
+                                                                    <li>
+                                                                        @notification.NotificationTitle
+                                                                        @if (notification.OffreVenteID.HasValue)
+                                                                        {
+                                                                            <a href="@Url.Action("HandleNotification", "Home", new { OffreVenteID = notification.OffreVenteID })">
+                                                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                                            </a>
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <li>No Notif</li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            }
+                                            else
                                             {
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
                                                 var notifications = Context.Items["Notifications"] as List<NotificationReclamation> ?? new List<NotificationReclamation>();
@@ -102,39 +389,6 @@
                                                     </li>
                                                 </ul>
                                             }
-                                            else
-                                            {
-                                                var totalNotificationsAdmin = Context.Items["TotalNotificationsAdmin"] as int? ?? 0;
-                                                var notificationsAdmin = Context.Items["NotificationsAdmin"] as List<NotificationAdmin> ?? new List<NotificationAdmin>();
-
-                                                <ul class="notification-drop">
-                                                    <li class="item">
-                                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
-                                                        <span class="btn__badge pulse-button">@totalNotificationsAdmin</span>
-                                                        <ul>
-                                                            @if (totalNotificationsAdmin > 0)
-                                                            {
-                                                                @foreach (var notification in notificationsAdmin)
-                                                                {
-                                                                    <li>
-                                                                        @notification.NotificationTitle
-                                                                        @if (notification.FournisseurID.HasValue)
-                                                                        {
-                                                                            <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
-                                                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
-                                                                            </a>
-                                                                        }
-                                                                    </li>
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <li>No Notif</li>
-                                                            }
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            }
 
 
                                             <li class="nav-item">
@@ -146,7 +400,7 @@
                                         }
 
 
-                                    </ul>
+                                    </div>
 
                                 </div>
                             </nav>
@@ -165,17 +419,8 @@
                     </div>
 
                     <div class="sidenav-links">
-                        @if (User.IsInRole("Admin"))
-                        {
-                            <a class="link " asp-area="" asp-controller="Users" asp-action="Index">Users</a>
-
-                            <a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'">Add Resp Service Achat</a>
-                            <a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'">Add Resp Service qualite</a>
-                            <a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'">Add Resp Service Finances</a>
-                            <a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">Add Recep Service Achats</a>
-                            <a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'">Add Fournisseur</a>
-                        }
-                        else if (User.IsInRole("Fournisseur"))
+                   
+                        @if (User.IsInRole("Fournisseur"))
                         {
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offres Ventes</a>
@@ -308,12 +553,15 @@
     <script src="~/js/site.js"></script>
     <script src="~/js/Notifications.js"></script>
     <script src="~/js/loader.js"></script>
-    <script src="~/js/custom.js"></script>
+    <script src="~/js/customs.js"></script>
 
     <!-- sidebar -->
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="~/js/custom.js"></script>
+   
 
-    @await RenderSectionAsync("Scripts", required: false)
+
+@await RenderSectionAsync("Scripts", required: false)
+    }
+
 </body>
 </html>

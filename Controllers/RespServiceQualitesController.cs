@@ -83,9 +83,9 @@ namespace GAP.Controllers
 
                 _context.Add(respServiceQualite);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Users");
             }
-            return View(respServiceQualite);
+            return RedirectToAction("Index", "Users");
         }
 
         // GET: RespServiceQualites/Edit/5

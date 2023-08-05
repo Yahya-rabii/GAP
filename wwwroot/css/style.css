@@ -863,7 +863,6 @@ ul.social_icon {
     .sidenav.sidenav-open {
         overflow: hidden;
         margin-bottom: -20px;
-        padding-top: 30px;
         position: relative;
         z-index: 0;
         padding-left: 30px;
@@ -872,15 +871,14 @@ ul.social_icon {
         border-radius: 0% 0% 0% 0%;
         background-color: rgb(8, 145, 248);
     }
- 
-     .sidenav .menu-btn {
-         position: fixed;
-         top: 10%;
-         right:1px;
-         color: white;
-         width: 30px;
-         z-index: 2;
-     }   
+
+    .sidenav .menu-btn {
+        position: relative;
+        margin-top:30px;
+        margin-left: 270px;
+        color: white;
+        width: 30px;
+    }   
     
  
          .sidenav .menu-btn .line {
@@ -1006,14 +1004,10 @@ ul.social_icon {
  }
 
 .logo {
-    position: absolute;
-    top: 0px;
-    left: 5px; /* Adjust the left position as needed */
+    position: relative;
     width: 120px; /* Adjust the width to your desired size */
     height: auto; /* Maintain aspect ratio */
-
     z-index: 1;
-    top: 0%;
     margin-top: -20px;
 }
 
@@ -1049,7 +1043,7 @@ ul.social_icon {
 
         .notification-drop .item ul {
             display: none;
-            width: 350px;
+            width: fit-content;
             position: absolute;
             top: 39px;
             background: rgb(8, 145, 248);
@@ -1058,15 +1052,17 @@ ul.social_icon {
             z-index: 1;
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 1px;
         }
 
             .notification-drop .item ul li {
                 font-size: 16px;
-                padding: 15px 0 15px 25px;
+                padding: 15px 8px 15px 25px;
                 color: #2e428b;
                 background: #ffffff;
+                width: 369px;
                 border-radius: 8px;
+                display:inline-flex;
+
             }
 
                 .notification-drop .item ul li:hover {

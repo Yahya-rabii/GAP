@@ -7,18 +7,18 @@
 <main>
     <article>
 
-        <div class="datatable-container">
+        <div class="addatatable-container">
 
             <h1 class="form-header">Users</h1>
 
             <!-- ======= Header tools ======= -->
-            <div class="header-tools">
+            <div class="adheader-tools">
                
                 
                 
-                <div class="tools">
+                <div class="adtools">
                     <!-- Pagination Links -->
-                    <div class="pagination-container">
+                    <div class="adpagination-container">
                         <ul class="pagination">
                             <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
                                 <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
@@ -39,9 +39,9 @@
                     </div>
                 </div>
 
-                <div class="search">
+                <div class="adsearch">
                     <form method="get" asp-action="Index">
-                        <input type="search" id="form1" class="search-input" placeholder="user Email..." name="SearchString"  />
+                        <input type="search" id="form1" class="adsearch-input" placeholder="user Email..." name="SearchString"  />
                     </form>
                 </div>
             </div>
@@ -52,9 +52,7 @@
                         <th>
                             Email
                         </th>
-                        <th>
-                            Password
-                        </th>
+             
                         <th>
                             FirstName
                         </th>
@@ -74,9 +72,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Email)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Password)
-                            </td>
+                     
                             <td>
                                 @Html.DisplayFor(modelItem => item.FirstName)
                             </td>

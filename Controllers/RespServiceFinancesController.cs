@@ -82,9 +82,9 @@ namespace GAP.Controllers
 
                 _context.Add(respServiceFinance);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Users");
             }
-            return View(respServiceFinance);
+            return RedirectToAction("Index", "Users");
         }
 
         // GET: RespServiceFinances/Edit/5

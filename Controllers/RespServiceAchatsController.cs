@@ -52,6 +52,7 @@ namespace GAP.Controllers
             }
 
             return View(respServiceAchat);
+
         }
 
         // GET: RespServiceAchats/Create
@@ -82,9 +83,10 @@ namespace GAP.Controllers
 
                 _context.Add(respServiceAchat);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Users");
+
             }
-            return View(respServiceAchat);
+            return RedirectToAction("Index", "Users");
         }
 
         // GET: RespServiceAchats/Edit/5

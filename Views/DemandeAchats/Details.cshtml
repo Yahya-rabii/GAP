@@ -34,29 +34,31 @@
                         <dd class="col-sm-10">
                             @Html.DisplayFor(model => model.Budget)
                         </dd>
-                    </dl>
-                </div>
-
-         
-
-            <div>
+                </dl>          
+                
                 <div class="BTNS">
 
-                @if (Model.IsValid)
-                {
-                    <a asp-action="Edit" asp-route-id="@Model?.DemandeAchatID">
-                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
-                    </a>
+                    @if (Model.IsValid)
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model?.DemandeAchatID">
+                            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                        </a>
 
-                    <a asp-action="Delete" asp-route-id="@Model?.DemandeAchatID">
-                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
-                    </a>
-                }
+                        <a asp-action="Delete" asp-route-id="@Model?.DemandeAchatID">
+                            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                        </a>
+                    }
 
-                  
+
                     <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
 
                 </div>
+                </div>
+
+
+
+            <div>
+    
             </div>
 
         </section>

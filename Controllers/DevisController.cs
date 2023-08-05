@@ -144,6 +144,9 @@ namespace GAP.Controllers
 
                 }
 
+
+                
+
                 _context.Add(devis);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

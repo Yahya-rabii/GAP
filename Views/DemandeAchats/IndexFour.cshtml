@@ -5,7 +5,7 @@
 
 <main>
     <article>
-        <div class="datatable-container" style="width:100%">
+        <div class="datatable-container" >
             <h1 class="form-header">Demande Achats</h1>
 
             <!-- ======= Header tools ======= -->
@@ -38,7 +38,7 @@
 
                 <div class="search">
                     <form method="get" asp-action="IndexFour">
-                        <input type="search" id="form1" class="search-input" placeholder="Description..." name="SearchString" style="color:white;" />
+                        <input type="search" id="form1" class="search-input" placeholder="Description..." name="SearchString" />
                     </form>
                 </div>
             </div>
@@ -53,7 +53,6 @@
                         <th>
                             Budget
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,8 +68,8 @@
                             <td>
                                 @if (item.IsValid)
                                 {
-                                    <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
-                                        <a asp-controller="OffreVentes" asp-action="Create" asp-route-demandeAchatId="@item.DemandeAchatID">Reply</a>
+                                    <div class="BTNS" style="right:100%;" >
+                                        <a asp-controller="OffreVentes" class="SUB-button" asp-action="Create" asp-route-demandeAchatId="@item.DemandeAchatID">Reply</a>
                                     </div>
                                 }
                             </td>

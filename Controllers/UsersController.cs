@@ -131,6 +131,7 @@ namespace GAP.Controllers
                 var existingUser = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email && u.UserID != id);
                 if (existingUser != null)
                 {
+
                     // If user with the same email exists (and has a different ID), inform the user with a message
                     ModelState.AddModelError("Email", "Another user with this email already exists.");
                     return View(user);

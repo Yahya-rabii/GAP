@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230803133655_Init")]
+    [Migration("20230804174009_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -401,6 +401,25 @@ namespace GAP.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("NotificationAdmin");
+                });
+
+            modelBuilder.Entity("GAP.Models.NotificationFournisseur", b =>
+                {
+                    b.HasBaseType("GAP.Models.Notification");
+
+                    b.Property<int?>("FournisseurID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OffreVenteID")
+                        .HasColumnType("int");
+
+                    b.ToTable("Notification", t =>
+                        {
+                            t.Property("FournisseurID")
+                                .HasColumnName("NotificationFournisseur_FournisseurID");
+                        });
+
+                    b.HasDiscriminator().HasValue("NotificationFournisseur");
                 });
 
             modelBuilder.Entity("GAP.Models.NotificationReclamation", b =>

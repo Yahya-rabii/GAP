@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using GAP.Data;
+﻿using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Linq;
+using System.Security.Claims;
 using X.PagedList;
 
 namespace GAP.Controllers
@@ -27,27 +24,78 @@ namespace GAP.Controllers
         [Authorize(Roles = "Fournisseur")]
 
         // GET: OffreVentes
+        // GET: OffreVentes
         public async Task<IActionResult> Index(int? page, string SearchString)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-       
 
             IQueryable<OffreVente> OffreVenteiq = from o in _context.OffreVente.Include(o => o.Produits).Include(o => o.Fournisseur).Where(o => o.FournisseurId == userId) select o;
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                OffreVenteiq = _context.OffreVente
+                OffreVenteiq = OffreVenteiq
                     .Include(o => o.Fournisseur)
                     .Where(o => o.Fournisseur.Nom.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-           
             int pageSize = 2;
             int pageNumber = (page ?? 1);
-            return View(await OffreVenteiq.ToPagedListAsync(pageNumber, pageSize));
+            var pagedOffreVentes = await OffreVenteiq.ToPagedListAsync(pageNumber, pageSize);
+
+            // Step 1: Get OffreVente IDs from Devis
+            var offreVenteIdsfromDevis = await _context.Devis
+                .Select(devis => devis.OffreVenteID)
+                .ToListAsync();
+
+            // Step 2: Get offre de vente with devis
+            var offreVenteWithDevis = await _context.OffreVente
+                .Where(owd => offreVenteIdsfromDevis.Contains(owd.OffreVenteID))
+                .ToListAsync();
+
+            // Step 3: Get OffreVente IDs without Devis
+            var offreVentesWithoutDevis = await _context.OffreVente
+                .Where(owtd => !offreVenteIdsfromDevis.Contains(owtd.OffreVenteID))
+                .ToListAsync();
+
+            // Step 4: Check if OffreVente without Devis that I have already got have the same DemandeAchatid as OffreVente with Devis I have already got. If so, delete OffreVente without Devis
+            foreach (var offreWithoutDevis in offreVentesWithoutDevis)
+            {
+                foreach (var offreWithDevis in offreVenteWithDevis)
+                {
+                    if (offreWithoutDevis.DemandeAchatId == offreWithDevis.DemandeAchatId)
+                    {
+                        NotificationFournisseur notificationFournisseur = new NotificationFournisseur();
+                        notificationFournisseur.NotificationTitle = "offre de vente refuse";
+                        notificationFournisseur.FournisseurID = offreWithoutDevis.FournisseurId;
+                        notificationFournisseur.OffreVenteID = offreWithoutDevis.OffreVenteID;
+
+                        _context.NotificationFournisseur.Add(notificationFournisseur);
+
+                        // Update products associated with this OffreVente without Devis to set OffreVenteId to null using ExecuteSqlRawAsync
+                       // var offreVenteIdParam = new SqlParameter("@OffreVenteId", offreWithoutDevis.OffreVenteID);
+                        //await _context.Database.ExecuteSqlRawAsync("UPDATE Produit SET OffreVenteId = NULL WHERE OffreVenteId = @OffreVenteId", offreVenteIdParam);
+
+                        // Remove the OffreVente without Devis
+                       // _context.OffreVente.Remove(offreWithoutDevis);
+                        break; // Exit the inner loop once a match is found and deletion is performed
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync(); // Save the changes to the database
+
+            return View(pagedOffreVentes);
+
+
+
+
 
         }
-        
+
+
+
+
+
         [Authorize(Roles = "RespServiceAchat")]
 
         // GET: OffreVentes
@@ -203,9 +251,17 @@ namespace GAP.Controllers
 
         private async Task<List<Produit>> GetProductsWithoutOffreVente()
         {
-            // Use ExecuteSqlRawAsync to get all products with OffreVenteId as NULL
-            return await _context.Produit.FromSqlRaw("SELECT * FROM Produit WHERE OffreVenteId IS NULL").ToListAsync();
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            // Use ExecuteSqlRawAsync to get products without OffreVenteId and with FournisseurId equal to userId
+            return await _context.Produit.FromSqlRaw("SELECT * FROM Produit WHERE OffreVenteId IS NULL AND FournisseurId = {0}", userId).ToListAsync();
         }
+  
+
+
+
+
         [Authorize(Roles = "Fournisseur")]
         public async Task<IActionResult> Edit(int? id)
         {

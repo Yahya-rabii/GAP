@@ -1,4 +1,6 @@
-﻿<div class="main-content ">
+﻿ @if (!User.IsInRole("Admin"))
+    {
+<div class="main-content ">
 
     <div class="col-md-6">
 
@@ -146,4 +148,9 @@
 
 
 
-</div>
+    </div>
+}
+
+else{
+  
+}

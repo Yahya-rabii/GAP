@@ -143,12 +143,12 @@ $(function () {
 	});
 
 	/* Contact-form
-	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 	$.validator.setDefaults({
 		submitHandler: function () {
 			alert("submitted!");
 		}
-	});
+	});*/
 
 	$(document).ready(function () {
 		$("#contact-form").validate({

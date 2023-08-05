@@ -400,6 +400,25 @@ namespace GAP.Migrations
                     b.HasDiscriminator().HasValue("NotificationAdmin");
                 });
 
+            modelBuilder.Entity("GAP.Models.NotificationFournisseur", b =>
+                {
+                    b.HasBaseType("GAP.Models.Notification");
+
+                    b.Property<int?>("FournisseurID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OffreVenteID")
+                        .HasColumnType("int");
+
+                    b.ToTable("Notification", t =>
+                        {
+                            t.Property("FournisseurID")
+                                .HasColumnName("NotificationFournisseur_FournisseurID");
+                        });
+
+                    b.HasDiscriminator().HasValue("NotificationFournisseur");
+                });
+
             modelBuilder.Entity("GAP.Models.NotificationReclamation", b =>
                 {
                     b.HasBaseType("GAP.Models.Notification");

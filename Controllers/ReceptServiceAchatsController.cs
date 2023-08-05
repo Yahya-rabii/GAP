@@ -189,9 +189,10 @@ namespace GAP.Controllers
                 receptServiceAchat.Password = HashPassword(receptServiceAchat?.Password);
                 _context.Add(receptServiceAchat);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Users");
+
             }
-            return View(receptServiceAchat);
+            return RedirectToAction("Index", "Users");
         }
 
 

@@ -56,6 +56,8 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.NotificationReclamation> NotificationReclamation { get; set; } = default!;
 
+        public DbSet<GAP.Models.NotificationFournisseur> NotificationFournisseur { get; set; } = default!;
+
 
     }
 }

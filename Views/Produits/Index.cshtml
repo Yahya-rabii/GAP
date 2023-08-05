@@ -86,15 +86,26 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FournisseurId)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProduitID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProduitID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProduitID">Delete</a>
-            </td>
+                            <td class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                <a asp-action="Edit" asp-route-id="@item.ProduitID">
+                                    <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ProduitID">
+                                    <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ProduitID">
+                                    <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                </a>
+                            </td>
         </tr>
 }
     </tbody>
 </table>
+            <p>
+
+                <a asp-action="Create">Create New</a>
+
+            </p>
 </div>
 </article>
 </main>

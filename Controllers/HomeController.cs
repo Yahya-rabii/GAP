@@ -20,8 +20,24 @@ namespace GAP.Controllers
 
         public IActionResult Index()
         {
-            return View();
+           
+                var totalProducts = _context.Produit.Count();
+                var totalUsers = _context.User.Count();
+                var totalSuppliers = _context.Fournisseur.Count();
+
+                var users = _context.User.ToList();
+                var suppliers = _context.Fournisseur.ToList();
+
+                ViewBag.TotalProducts = totalProducts;
+                ViewBag.TotalUsers = totalUsers;
+                ViewBag.TotalFournisseurs = totalSuppliers;
+                ViewBag.Users = users;
+                ViewBag.Fournisseur = suppliers;
+
+                return View();
+            
         }
+
 
         public IActionResult Privacy()
         {
@@ -29,7 +45,7 @@ namespace GAP.Controllers
         }
 
         // Action method to handle the "Reply" button click
-        public IActionResult HandleNotification(int devisId , int FournisseurID)
+        public IActionResult HandleNotification(int devisId , int FournisseurID , int OffreVenteID)
         {
 
             // Get the user's role and handle the redirection accordingly
@@ -42,6 +58,10 @@ namespace GAP.Controllers
             {
                 // Redirect to the Create action in Facture controller with the devisId parameter
                 return RedirectToAction("Create", "Factures", new { devisId });
+            }
+            else if (User.IsInRole("Fournisseur"))
+            {
+                return RedirectToAction("Details", "OffreVente", new { OffreVenteID });
             }
             else if (User.IsInRole("Admin"))
             {

@@ -27,10 +27,10 @@
     font-size: 16px;
 }
 
-.datatable-container {
+.addatatable-container {
     font-family: sans-serif;
     border-bottom-style: double;
-    position: relative;
+    position: absolute;
     color: var(--dt-text-color);
     font-size: 12px;
     overflow: auto;
@@ -39,9 +39,7 @@
     left: 50px;
     margin-left: 50px;
     margin-right: 50px;
-    margin-bottom: -1000px;
-    margin-top: 300px;
-    bottom: 700px;
+    margin-top: 250px;
     padding: 10px;
     background-color: rgb(31, 31, 31, 0.068);
     backdrop-filter: blur(20px);
@@ -49,10 +47,15 @@
     border: 1px solid rgba(255, 255, 255, 0.048);
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
     border-radius: 10px;
-    table-layout: auto;
+    table-layout: auto;    
+
 }
 
-    .datatable-container .header-tools {
+    .addatatable-container .form-header {
+        color: #0a2558;
+    }
+
+    .addatatable-container .adheader-tools {
         border-bottom: solid 1px var(--dt-border-color);
         padding: var(--dt-padding);
         padding-left: 0;
@@ -60,11 +63,11 @@
         align-items: baseline;
     }
 
-        .datatable-container .header-tools .search {
+        .addatatable-container .adheader-tools .adsearch {
             width: 30%;
         }
 
-            .datatable-container .header-tools .search .search-input {
+            .addatatable-container .adheader-tools .adsearch .adsearch-input {
                 position: relative;
                 width: 100%;
                 left: 10px;
@@ -82,53 +85,53 @@
                 border-radius: 10px;
                 color: #05355b;
             }
-.search-input::placeholder {
+.adsearch-input::placeholder {
     color: #05355b;
     font-size:12px;
     font-weight:600;
 }
 
-.datatable-container .header-tools .tools {
+.addatatable-container .adheader-tools .adtools {
     width: 70%;
 }
 
-            .datatable-container .header-tools .tools ul {
+            .addatatable-container .adheader-tools .adtools ul {
                 margin: 0;
                 position: relative;
                 justify-content: center;
                 align-items: baseline;
             }
 
-                .datatable-container .header-tools .tools ul li {
+                .addatatable-container .adheader-tools .adtools ul li {
                     margin: 0 var(--dt-padding-xs);
                     align-items: center;
                     display: inline-block;
                 }
 
-    .datatable-container .footer-tools .list-items {
+    .addatatable-container .adfooter-tools .list-items {
         width: 50%;
     }
 
-    .datatable-container .footer-tools .pages {
+    .addatatable-container .adfooter-tools .adpages {
         margin-left: auto;
         margin-right: 0;
         width: 50%;
     }
 
-        .datatable-container .footer-tools .pages ul {
+        .addatatable-container .adfooter-tools .adpages ul {
             margin: 0;
             padding: 0;
             align-items: baseline;
             justify-content: center;
         }
 
-            .datatable-container .footer-tools .pages ul li {
+            .addatatable-container .adfooter-tools .adpages ul li {
                 display: inline;
                 margin: 0 var(--dt-padding-xs);
             }
 
-                .datatable-container .footer-tools .pages ul li button,
-                .datatable-container .header-tools .tools ul li button {
+                .addatatable-container .adfooter-tools .adpages ul li button,
+                .addatatable-container .adheader-tools .adtools ul li button {
                     color: var(--dt-text-color-button);
                     width: 100%;
                     box-sizing: border-box;
@@ -138,71 +141,71 @@
                     cursor: pointer;
                 }
 
-                    .datatable-container .footer-tools .pages ul li button:hover,
-                    .datatable-container .header-tools .tools ul li button:hover {
+                    .addatatable-container .adfooter-tools .adpages ul li button:hover,
+                    .addatatable-container .adheader-tools .adtools ul li button:hover {
                         background: var(--dt-bg-active-button);
                         color: var(--dt-text-color-active-button);
                     }
 
-                .datatable-container .footer-tools .pages ul li span.active {
+                .addatatable-container .adfooter-tools .adpages ul li span.active {
                     background-color: var(--dt-bg-color);
                     border-radius: var(--dt-border-radius);
                 }
 
-                .datatable-container .footer-tools .pages ul li button,
-                .datatable-container .footer-tools .pages ul li span,
-                .datatable-container .header-tools .tools ul li button {
+                .addatatable-container .adfooter-tools .adpages ul li button,
+                .addatatable-container .adfooter-tools .adpages ul li span,
+                .addatatable-container .adheader-tools .adtools ul li button {
                     padding: var(--dt-padding-s) var(--dt-padding);
                 }
 
-    .datatable-container .datatable {
+    .addatatable-container .addatatable {
         border-collapse: collapse;
         width: 100%;
     }
 
-        .datatable-container .datatable,
-        .datatable-container .datatable th,
-        .datatable-container .datatable td {
+        .addatatable-container .addatatable,
+        .addatatable-container .addatatable th,
+        .addatatable-container .addatatable td {
             padding: var(--dt-padding) var(--dt-padding);
             
         }
 
-            .datatable-container .datatable th {
+            .addatatable-container .addatatable th {
                 font-weight: bolder;
                 text-align: left;
                 border-bottom: solid 2px var(--dt-border-color);
             }
 
-            .datatable-container .datatable td {
+            .addatatable-container .addatatable td {
                 border-bottom: solid 1px var(--dt-border-color);
                 max-width: 3px; /* You can adjust this value as needed */
             }
 
-            .datatable-container .datatable tbody tr .available::after,
-            .datatable-container .datatable tbody tr .away::after,
-            .datatable-container .datatable tbody tr .offline::after {
+            .addatatable-container .addatatable tbody tr .available::after,
+            .addatatable-container .addatatable tbody tr .away::after,
+            .addatatable-container .addatatable tbody tr .offline::after {
                 display: inline-block;
                 vertical-align: middle;
             }
 
-            .datatable-container .datatable tbody tr .available::after {
+            .addatatable-container .addatatable tbody tr .available::after {
                 content: "Online";
                 color: var(--dt-status-available-color);
             }
 
-            .datatable-container .datatable tbody tr .away::after {
+            .addatatable-container .addatatable tbody tr .away::after {
                 content: "Away";
                 color: var(--dt-status-away-color);
             }
 
-            .datatable-container .datatable tbody tr .offline::after {
+            .addatatable-container .addatatable tbody tr .offline::after {
                 content: "Offline";
                 color: var(--dt-status-offline-color);
             }
 
-            .datatable-container .datatable tbody tr .available::before,
-            .datatable-container .datatable tbody tr .away::before,
-            .datatable-container .datatable tbody tr .offline::before {
+            .addatatable-container .addatatable tbody tr .available::before,
+            .addatatable-container .addatatable tbody tr .away::before,
+            .addatatable-container .addatatable tbody tr .offline::before {
                 content: "";
                 display: inline-block;
                 width: 10px;
@@ -212,20 +215,20 @@
                 vertical-align: middle;
             }
 
-            .datatable-container .datatable tbody tr .available::before {
+            .addatatable-container .addatatable tbody tr .available::before {
                 background-color: var(--dt-status-available-color);
             }
 
-            .datatable-container .datatable tbody tr .away::before {
+            .addatatable-container .addatatable tbody tr .away::before {
                 background-color: var(--dt-status-away-color);
             }
 
-            .datatable-container .datatable tbody tr .offline::before {
+            .addatatable-container .addatatable tbody tr .offline::before {
                 background-color: var(--dt-status-offline-color);
             }
 
 
-    .datatable-container .header-tools .pagination-container {
+    .addatatable-container .adheader-tools .adpagination-container {
         padding: var(--dt-padding);
         padding-left: 0;
         position: relative;

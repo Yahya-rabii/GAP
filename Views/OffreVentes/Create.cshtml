@@ -8,7 +8,7 @@
     <article>
         <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
 
-            <div class="frmcontainer">
+            <div class="frmcontainer" style="width:500px;">
 
                 <h1 class="form-header">ADD Offre Vente</h1>
         <form asp-action="Create">
@@ -16,16 +16,20 @@
             <!-- Add the hidden field to store the DemandeAchatID -->
             <input type="hidden" name="demandeAchatId" value="@ViewBag.DemandeAchatId" />
             <div class="form-group">
-                <label asp-for="unit_profit" class="control-label"></label>
-                <input asp-for="unit_profit" class="form-control" />
+                <label asp-for="unit_profit" class="control-label" hidden></label>
+                        <input asp-for="unit_profit" class="form-control" placeholder="unit_profit" />
                 <span asp-validation-for="unit_profit" class="text-danger"></span>
             </div>
             <!-- Add the dropdown menu for selecting products -->
-            <div class="form-group">
-                <label asp-for="SelectedProduitId" class="control-label"></label>
-                <select asp-for="SelectedProduitId" asp-items="@ViewBag.ProduitsWithoutOffreVente" class="form-control"></select>
-                <span asp-validation-for="SelectedProduitId" class="text-danger"></span>
-            </div>
+                    <div class="form-group" style="display: flex; flex-direction: row;">
+                        <label asp-for="SelectedProduitId" class="control-label" style="flex: 1;width:100px;"></label>
+                    </div>
+                    <div class="form-group" style="display: flex; flex-direction: row;">
+                        <select asp-for="SelectedProduitId" asp-items="@ViewBag.ProduitsWithoutOffreVente" class="form-control" style="flex: 1; "></select>
+                    </div>
+                    <div class="form-group">
+                        <span asp-validation-for="SelectedProduitId" class="text-danger"></span>
+                    </div>
 
        
                     <div class="BTNS">
