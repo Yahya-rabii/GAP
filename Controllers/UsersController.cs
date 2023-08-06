@@ -11,6 +11,7 @@ using X.PagedList;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 
 namespace GAP.Controllers
 {
@@ -23,6 +24,7 @@ namespace GAP.Controllers
             _context = context;
         }
 
+      
 
         // GET: Users
         public async Task<IActionResult> Index(string SearchString, int? page)
@@ -44,20 +46,61 @@ namespace GAP.Controllers
         // GET: Users1/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.User == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var user = await _context.User
                 .FirstOrDefaultAsync(m => m.UserID == id);
+
             if (user == null)
             {
                 return NotFound();
             }
 
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+
+
+            // Pass the user, profile picture, and claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+
             return View(user);
         }
+
+
+        public async Task<IActionResult> Profile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+            // Get the current user's role claims
+            var currentUserRoles = User.FindAll(ClaimTypes.Role).Select(x => x.Value);
+
+            // Pass the user, profile picture, and role claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+            ViewBag.CurrentUserRoles = currentUserRoles;
+
+            return View(user);
+        }
+
+
+
 
         // GET: Users1/Create
         public IActionResult Create()
@@ -93,6 +136,7 @@ namespace GAP.Controllers
         // GET: Users1/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+
             if (id == null || _context.User == null)
             {
                 return NotFound();
@@ -103,6 +147,16 @@ namespace GAP.Controllers
             {
                 return NotFound();
             }
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+            // Get the current user's role claims
+            var currentUserRoles = User.FindAll(ClaimTypes.Role).Select(x => x.Value);
+
+            // Pass the user, profile picture, and role claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+            ViewBag.CurrentUserRoles = currentUserRoles;
+
             return View(user);
         }
 
@@ -155,9 +209,89 @@ namespace GAP.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            
+            return RedirectToAction("Profile", "Users", new { id = id });
+
         }
+
+
+
+        // GET: Users1/Edit/5
+        public async Task<IActionResult> ProfileEdit(int? id)
+        {
+            if (id == null || _context.User == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+            // Get the current user's role claims
+            var currentUserRoles = User.FindAll(ClaimTypes.Role).Select(x => x.Value);
+
+            // Pass the user, profile picture, and role claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+            ViewBag.CurrentUserRoles = currentUserRoles;
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ProfileEdit(int id, User updatedUser, IFormFile profilePicture)
+        {
+            if (id != updatedUser.UserID)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.UserID == id);
+
+                if (existingUser == null)
+                {
+                    return NotFound();
+                }
+
+                existingUser.Password = updatedUser.Password;
+                existingUser.FirstName = updatedUser.FirstName;
+                existingUser.LastName = updatedUser.LastName;
+
+                if (profilePicture != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await profilePicture.CopyToAsync(memoryStream);
+                        existingUser.ProfilePicture = memoryStream.ToArray();
+                        existingUser.ProfilePictureFileName = profilePicture.FileName;
+                        existingUser.HasCustomProfilePicture = true;
+                    }
+                }
+
+                _context.Update(existingUser);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(updatedUser.UserID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction("Profile", "Users", new { id = id });
+        }
+
 
 
 
@@ -242,28 +376,33 @@ namespace GAP.Controllers
 
                 switch (registeredUser)
                 {
-                    case ReceptServiceAchat _:
-                        claims.Add(new Claim(ClaimTypes.Role, "ReceptServiceAchat"));
+                    case PurchasingReceptionist _:
+                        claims.Add(new Claim(ClaimTypes.Role, "PurchasingReceptionist"));
+                        registeredUser.Role = UserRole.Purchasing_receptionist;
                         redirectAction = "Index";
-                        redirectController = "RapportReceptions";
+                        redirectController = "ReceptionReports";
                         break;
-                    case RespServiceAchat _:
-                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceAchat"));
+                    case PurchasingDepartmentManager _:
+                        claims.Add(new Claim(ClaimTypes.Role, "PurchasingDepartmentManager"));
+                        registeredUser.Role = UserRole.Purchasing_department_manager;
                         redirectAction = "Index";
-                        redirectController = "DemandeAchats";
+                        redirectController = "PurchaseRequests";
                         break;
-                    case RespServiceFinance _:
-                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceFinance"));
+                    case FinanceDepartmentManager _:
+                        claims.Add(new Claim(ClaimTypes.Role, "FinanceDepartmentManager"));
+                        registeredUser.Role = UserRole.Finance_department_manager;
                         redirectAction = "Index";
-                        redirectController = "Factures";
+                        redirectController = "Bills";
                         break;
-                    case RespServiceQualite _:
-                        claims.Add(new Claim(ClaimTypes.Role, "RespServiceQualite"));
+                    case QualityTestingDepartmentManager _:
+                        claims.Add(new Claim(ClaimTypes.Role, "QualityTestingDepartmentManager"));
+                        registeredUser.Role = UserRole.Quality_testing_department_manager;
                         redirectAction = "Index";
-                        redirectController = "RapportTestQualites";
+                        redirectController = "QualityTestReports";
                         break;
                     case var _ when registeredUser.IsAdmin:
                         claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                        registeredUser.Role = UserRole.Admin;
                         redirectAction = "Index";
                         redirectController = "Home";
                         break;
@@ -272,12 +411,13 @@ namespace GAP.Controllers
                         ModelState.AddModelError("", "Invalid user type.");
                         return RedirectToAction("Login", "Users");
                 }
-
+                _context.User.Update(registeredUser);
+                _context.SaveChanges(); 
                 return await SignInAndRedirectToAction(claims, redirectAction, redirectController);
             }
             else
             {
-                var newregisteredUser = await _context.Fournisseur.FirstOrDefaultAsync(u => u.Email == email);
+                var newregisteredUser = await _context.Supplier.FirstOrDefaultAsync(u => u.Email == email);
 
                 if (newregisteredUser != null)
                 {
@@ -285,11 +425,11 @@ namespace GAP.Controllers
                     {
                         var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.NameIdentifier, newregisteredUser.FournisseurID.ToString()),
-                    new Claim(ClaimTypes.Role, "Fournisseur")
+                    new Claim(ClaimTypes.NameIdentifier, newregisteredUser.SupplierID.ToString()),
+                    new Claim(ClaimTypes.Role, "Supplier")
                 };
 
-                        return await SignInAndRedirectToAction(claims, "IndexFour", "DemandeAchats");
+                        return await SignInAndRedirectToAction(claims, "IndexFour", "PurchaseRequests");
                     }
                     else
                     {

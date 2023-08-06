@@ -43,11 +43,7 @@
 
 <!-- body -->
 <body class="main-layout">
-    <!-- loader  
-    <div class="loader_bg">
-        <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
-    </div>
-    -->
+
 
  @if (User.IsInRole("Admin"))
     {
@@ -68,13 +64,13 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Produits" asp-action="Index">
+                    <a asp-area="" asp-controller="Products" asp-action="Index">
                         <i class="bx bx-box"></i>
                         <span class="links_name">Products</span>
                     </a>
                 </li>
                 <li>
-                    <a asp-area="" asp-controller="Fournisseurs" asp-action="Index">
+                    <a asp-area="" asp-controller="Suppliers" asp-action="Index">
                         <i class="bx bx-support"></i>
                         <span class="links_name">Suppliers</span>
                     </a>
@@ -102,11 +98,11 @@
                     <ul>
                         <ul class="dropdownad-menu">
 
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespserviceAchats")'"> <i class="bx bx-message-square-add"></i> Resp Service Achat</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServicequalites")'"> <i class="bx bx-message-square-add"></i> Resp Service qualite</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "RespServiceFinances")'"> <i class="bx bx-message-square-add"></i> Resp Service Finances</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "ReceptServiceAchats")'">  <i class="bx bx-message-square-add"></i>Recep Service Achats</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Fournisseurs")'"> <i class="bx bx-message-square-add"></i> Fournisseur</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service Achat</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "QualityTestingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service qualite</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "FinanceDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service Finances</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingReceptionists")'">  <i class="bx bx-message-square-add"></i>Recep Service Achats</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Suppliers")'"> <i class="bx bx-message-square-add"></i> Supplier</a></li>
                         </ul>
                     </ul>
                 </li>
@@ -177,9 +173,9 @@
                                 {
                                     <li>
                                         @notification.NotificationTitle
-                                        @if (notification.FournisseurID.HasValue)
+                                        @if (notification.SupplierID.HasValue)
                                         {
-                                            <a href="@Url.Action("HandleNotification", "Home", new { FournisseurID = notification.FournisseurID })">
+                                            <a href="@Url.Action("HandleNotification", "Home", new { SupplierID = notification.SupplierID })">
                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
                                             </a>
                                         }
@@ -274,7 +270,7 @@
                         <div class="box">
                             <div class="right-side">
                                 <div class="box-topic">Total Suppliers</div>
-                                <div class="number">@ViewBag.TotalFournisseurs</div>
+                                <div class="number">@ViewBag.TotalSuppliers</div>
                             </div>
                             <i class="bx bxs-component cart four"></i>
                         </div>
@@ -316,9 +312,9 @@
                         <div class="top-sales box">
                             <div class="title">Suppliers</div>
                             <ul class="top-sales-details">
-                                @if (ViewBag.Fournisseur != null)
+                                @if (ViewBag.Supplier != null)
                                 {
-                                    @foreach (var supplier in ViewBag.Fournisseur)
+                                    @foreach (var supplier in ViewBag.Supplier)
                                     {
                                         <li>
                                             <a href="#">
@@ -333,7 +329,7 @@
 
                             </ul>  
                             <div class="button">
-                                <a asp-area="" asp-controller="Fournisseurs" asp-action="Index">See All</a>
+                                <a asp-area="" asp-controller="Suppliers" asp-action="Index">See All</a>
                             </div>
                         </div>
                     </div>
@@ -356,9 +352,10 @@
 
 
       
-        <script src="~/js/admin.js"></script>
+        <script src="~/js/admins.js"></script>
         <script src="~/js/adminNotification.js"></script>
         <script src="~/js/adprofile.js"></script>
+        <script src="~/js/ProfileEdit.js"></script>
 
         @await RenderSectionAsync("Scripts", required: false)
 
@@ -366,7 +363,11 @@
 
 
 else{
-
+        <!-- loader -->
+        <div class="loader_bg">
+            <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
+        </div>
+       
     <!-- end loader -->
     <!-- header -->
     <header>
@@ -401,10 +402,10 @@ else{
                                                 var UserEmail = Context.Items["UserEmail"] as string;
                                                 var UserID = Context.Items["UserID"] as int? ?? 0;
 
-                                            @if (User.IsInRole("Fournisseur"))
+                                            @if (User.IsInRole("Supplier"))
                                             {
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
-                                                var notifications = Context.Items["Notifications"] as List<NotificationFournisseur> ?? new List<NotificationFournisseur>();
+                                                var notifications = Context.Items["Notifications"] as List<NotificationSupplier> ?? new List<NotificationSupplier>();
 
                                                 <ul class="notification-drop">
                                                     <li class="item">
@@ -417,9 +418,9 @@ else{
                                                                 {
                                                                     <li>
                                                                         @notification.NotificationTitle
-                                                                        @if (notification.OffreVenteID.HasValue)
+                                                                        @if (notification.SaleOfferID.HasValue)
                                                                         {
-                                                                            <a href="@Url.Action("HandleNotification", "Home", new { OffreVenteID = notification.OffreVenteID })">
+                                                                            <a href="@Url.Action("HandleNotification", "Home", new { SaleOfferID = notification.SaleOfferID })">
                                                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
                                                                             </a>
                                                                         }
@@ -437,7 +438,7 @@ else{
                                             else
                                             {
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
-                                                var notifications = Context.Items["Notifications"] as List<NotificationReclamation> ?? new List<NotificationReclamation>();
+                                                var notifications = Context.Items["Notifications"] as List<NotificationInfo> ?? new List<NotificationInfo>();
                                               
 
                                                 <ul class="notification-drop">
@@ -451,9 +452,9 @@ else{
                                                                 {
                                                                     <li>
                                                                         @notification.NotificationTitle
-                                                                        @if (notification.DevisID.HasValue)
+                                                                        @if (notification.PurchaseQuoteID.HasValue)
                                                                         {
-                                                                            <a href="@Url.Action("HandleNotification", "Home", new { devisId = notification.DevisID })">
+                                                                            <a href="@Url.Action("HandleNotification", "Home", new { PurchaseQuoteId = notification.PurchaseQuoteID })">
                                                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
                                                                             </a>
                                                                         }
@@ -497,11 +498,11 @@ else{
                                                         <ul>
                                                             <li>
                                                                 <i class="bx bx-user"></i>
-                                                                <a href="@Url.Action("Details", "Users", new { ID = UserID })">My Profile</a>
+                                                                <a href="@Url.Action("Profile", "Users", new { ID = UserID })">My Profile</a>
                                                             </li>
                                                             <li>
                                                                 <i class="bx bx-edit"></i>
-                                                                <a href="@Url.Action("Edit", "Users", new { ID = UserID })">Edit Profile</a>
+                                                                <a href="@Url.Action("ProfileEdit", "Users", new { ID = UserID })">Edit Profile</a>
                                                             </li>
 
                                                             <li>
@@ -542,49 +543,49 @@ else{
 
                     <div class="sidenav-links">
                    
-                        @if (User.IsInRole("Fournisseur"))
+                        @if (User.IsInRole("Supplier"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("Index", "OffreVentes")'">Offres Ventes</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "SaleOffers")'">Offres Ventes</a>
                             //+add
-                            <a class="link" onclick="location.href='@Url.Action("Indexfour", "DemandeAchats")'">Demandes Achats</a>
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>
-                            <a class="link" onclick="location.href='@Url.Action("Details", "Fournisseurs")'">Account</a>
+                            <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Demandes Achats</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
+                            <a class="link" onclick="location.href='@Url.Action("Details", "Suppliers")'">Account</a>
 
                         }
-                        else if (User.IsInRole("RespServiceAchat"))
+                        else if (User.IsInRole("PurchasingDepartmentManager"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "OffreVentes")'">Offre Ventes</a>
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
+                            <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "SaleOffers")'">Offre Ventes</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuote")'">PurchaseQuote</a>
                             //+add
-                            <a class="link" onclick="location.href='@Url.Action("Index", "DemandeAchats")'">Demande Achats</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseRequests")'">Demande Achats</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "Sanctions")'">Sanctions</a>
                             //+add
 
                         }
-                        else if (User.IsInRole("RespServiceFinance"))
+                        else if (User.IsInRole("FinanceDepartmentManager"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Factures")'">Factures</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "Bills")'">Bills</a>
 
 
                         }
-                        else if (User.IsInRole("ReceptServiceAchat"))
+                        else if (User.IsInRole("PurchasingReceptionist"))
                         {
 
 
-                            <a class="link" onclick="location.href='@Url.Action("Index", "RapportReceptions")'">RapportReceptions</a>
-                            <a class="link" onclick="location.href='@Url.Action("IndexDevis", "ReceptServiceAchats")'">Current Arrivals</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "ReceptionReports")'">ReceptionReports</a>
+                            <a class="link" onclick="location.href='@Url.Action("IndexPurchaseQuote", "PurchasingReceptionists")'">Current Arrivals</a>
                             //+add
 
                         }
-                        else if (User.IsInRole("RespServiceQualite"))
+                        else if (User.IsInRole("QualityTestingDepartmentManager"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Produits")'">Produits</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
                             //+add
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Devis")'">Devis</a>
+                            <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuote")'">PurchaseQuote</a>
 
                         }
 
@@ -677,6 +678,7 @@ else{
     <script src="~/js/loader.js"></script>
     <script src="~/js/customs.js"></script>
     <script src="~/js/profile.js"></script>
+    <script src="~/js/ProfileEdit.js"></script>
 
     <!-- sidebar -->
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>

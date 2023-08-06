@@ -1,0 +1,66 @@
+﻿@model GAP.Models.PurchaseQuote
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); margin-top:250px;" id="features" aria-label="featured game">
+
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">EDIT PurchaseQuote</h1>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PurchaseQuoteID" />
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceptionDate" class="control-label"></label>
+                <input asp-for="ReceptionDate" class="form-control" />
+                <span asp-validation-for="ReceptionDate" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="TotalPrice" class="control-label"></label>
+                <input asp-for="TotalPrice" class="form-control" />
+                <span asp-validation-for="TotalPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="typeCntProducts" class="control-label"></label>
+                <input asp-for="typeCntProducts" class="form-control" />
+                <span asp-validation-for="typeCntProducts" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SupplierID" class="control-label"></label>
+                <select asp-for="SupplierID" class="form-control" asp-items="ViewBag.SupplierID"></select>
+                <span asp-validation-for="SupplierID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchasingDepartmentManagerId" class="control-label"></label>
+                <select asp-for="PurchasingDepartmentManagerId" class="form-control" asp-items="ViewBag.PurchasingDepartmentManagerId"></select>
+                <span asp-validation-for="PurchasingDepartmentManagerId" class="text-danger"></span>
+            </div>
+                    <div class="BTNS">
+
+                        <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                        <a asp-action="Delete" asp-route-id="@Model.PurchaseQuoteID"><input type="button" class="DEL-button" value="Delete"> </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

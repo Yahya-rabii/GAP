@@ -1,0 +1,133 @@
+﻿@model GAP.Models.SaleOffer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+
+<main>
+    <article>
+        <div class="datatable-container" style="width:100%">
+            <h1 class="form-header">Demande Achats Details</h1>
+
+
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>PurchaseRequest ID</th>
+                        <th>Description</th>
+                        <th>Budget</th>
+                        <!-- Add other properties of the "PurchaseRequest" model to display as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.DisplayFor(model => model.PurchaseRequestId)</td> @*get the demande achat from table demande achat using this id*@
+                        <td>@Html.DisplayFor(model => model.PurchaseRequest.Description)</td>
+                        <td>@Html.DisplayFor(model => model.PurchaseRequest.Budget)</td>
+                        <!-- Add other properties of the "PurchaseRequest" model to display as needed -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <br/>
+
+
+        <div class="datatable-container" style="width: 100%">
+            <h1 class="form-header" style="color:rgb(46, 66, 139)">SaleOffer Details</h1>
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Supplier)</td>
+                        <td>@Html.DisplayFor(model => model.Supplier.Email)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.UnitProfit)</td>
+                        <td>@Html.DisplayFor(model => model.UnitProfit)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Validity)</td>
+                        <td>@Html.DisplayFor(model => model.Validity)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+
+        <br />
+
+
+        @if (Model.Products != null && Model.Products.Count > 0)
+        {
+
+            <div class="datatable-container" style="width:100%">
+                <h1 class="form-header" style="color:rgb(46, 66, 139)">Products</h1>
+
+
+
+                <table class="table custom-table-style">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prix Unitaire</th>
+                            <th>Nombre de Pièces</th>
+                            <!-- Add other properties of the "Product" model to display as needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Product in Model.Products)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => Product.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => Product.Unitprice)</td>
+                                <td>@Html.DisplayFor(modelItem => Product.ItemsNumber)</td>
+                                <!-- Add other properties of the "Product" model to display as needed -->
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="BTNS">
+                @if (!Model.Validity && User.IsInRole("Supplier"))
+                {
+                   
+                        <a asp-action="Edit" asp-route-id="@Model?.SaleOfferID">
+                            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                        </a>
+
+                        <a asp-action="Delete" asp-route-id="@Model?.SaleOfferID">
+                            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                        </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                   
+                }
+                @if (!User.IsInRole("Supplier"))
+                {
+                        <a asp-action="IndexRespSA"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                }
+                </div>
+            </div>
+        }
+
+
+
+    </article>
+</main>
+

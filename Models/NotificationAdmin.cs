@@ -5,9 +5,9 @@ namespace GAP.Models
     public class NotificationAdmin : Notification
     {
 
-        [ForeignKey("Fournisseur")]
+        [ForeignKey("Supplier")]
 
-        public int? FournisseurID { get; set; } 
+        public int? SupplierID { get; set; } 
         
 
 
@@ -16,11 +16,11 @@ namespace GAP.Models
 
         public NotificationAdmin() : base()
         {
-         FournisseurID = 0;
+         SupplierID = 0;
         }
-        public NotificationAdmin(int notificationID,string notificationTitle, int Fournisseurid) : base(notificationID,notificationTitle)
+        public NotificationAdmin(int notificationID,string notificationTitle, int Supplierid) : base(notificationID,notificationTitle)
         {
-          FournisseurID=Fournisseurid;
+          SupplierID=Supplierid;
         }      
      
     }

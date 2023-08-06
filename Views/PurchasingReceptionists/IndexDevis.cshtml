@@ -1,0 +1,154 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.PurchaseQuote>
+
+@{
+    ViewData["Title"] = "IndexPurchaseQuote";
+}
+
+<main>
+    <article>
+        <div class="datatable-container" >
+            <h1 class="form-header">PurchaseQuote</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <!-- ... (unchanged code) ... -->
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="Supplier..." name="SearchString" />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>
+                            DateReception
+                        </th>
+                        <th>
+                            PrixTTL
+                        </th>
+                        <th>
+                            Supplier
+                        </th>
+                        <th>
+                            Product
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        var x = 0;
+                        @foreach (var item2 in ViewBag.Bills)
+                        {
+
+                            @if (item.PurchaseQuoteID == item2.PurchaseQuoteID)
+                            {
+                                x = 1;
+                            }
+
+                        }
+
+
+
+                        @if (item.ReceptionDate.Date.Equals(DateTime.Now.Date) && x==0)
+                        {//current
+                            
+                       
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReceptionDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalPrice)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Supplier.Email)
+                            </td>
+
+                            @foreach (var p in item.Products)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => p.Desc)
+                                </td>
+                            }
+
+                            <td>
+                                <div>
+                                    <form method="post" asp-action="CreateNotification">
+                                        <input type="hidden" name="PurchaseQuoteId" value="@item.PurchaseQuoteID" />
+
+                                        <label for="respFinnance">RespServiceFinnance:</label>
+                                        <select id="respFinnance" name="respFinnanceEmail">
+                                            @foreach (var user in ViewBag.RespServiceFinnanceUsers)
+                                            {
+                                                <option value="@user.Email">@user.Email</option>
+                                            }
+                                        </select>
+
+                                        <label for="respQalite">RespServiceQalite:</label>
+                                        <select id="respQalite" name="respQaliteEmail">
+                                            @foreach (var user in ViewBag.RespServiceQaliteUsers)
+                                            {
+                                                <option value="@user.Email">@user.Email</option>
+                                            }
+                                        </select>
+
+                                        <input type="submit" value="Reclamation" class="form-button RECL-button" />
+                                    </form>
+                                </div>
+                            </td>
+                            </tr>
+                        }
+                        else if (item.ReceptionDate.Date < DateTime.Now.Date && x == 0)
+                        {
+                            // sanction a cause de retard
+
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReceptionDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Supplier.Email)
+                                </td>
+
+                                @foreach (var p in item.Products)
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => p.Desc)
+                                    </td>
+                                }
+
+                                <td>
+                                    <p> 
+                                        Une Sanction est envoyee
+                                    </p>
+                                </td>
+
+                            </tr>
+
+
+                        }
+
+
+                    }
+                </tbody>
+            </table>
+
+      
+        </div>
+    </article>
+</main>

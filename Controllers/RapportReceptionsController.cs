@@ -11,19 +11,19 @@ using X.PagedList;
 
 namespace GAP.Controllers
 {
-    public class RapportReceptionsController : Controller
+    public class ReceptionReportsController : Controller
     {
         private readonly GAPContext _context;
 
-        public RapportReceptionsController(GAPContext context)
+        public ReceptionReportsController(GAPContext context)
         {
             _context = context;
         }
 
-        // GET: RapportReceptions
+        // GET: ReceptionReports
         public async Task<IActionResult> Index(int? page)
         {
-            IQueryable<RapportReception> iseriq = from rc in _context.RapportReception
+            IQueryable<ReceptionReport> iseriq = from rc in _context.ReceptionReport
                                                   select rc;
 
 
@@ -35,70 +35,70 @@ namespace GAP.Controllers
             
         }
 
-        // GET: RapportReceptions/Details/5
+        // GET: ReceptionReports/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.RapportReception == null)
+            if (id == null || _context.ReceptionReport == null)
             {
                 return NotFound();
             }
 
-            var rapportReception = await _context.RapportReception
-                .FirstOrDefaultAsync(m => m.RapportReceptionID == id);
-            if (rapportReception == null)
+            var ReceptionReport = await _context.ReceptionReport
+                .FirstOrDefaultAsync(m => m.ReceptionReportID == id);
+            if (ReceptionReport == null)
             {
                 return NotFound();
             }
 
-            return View(rapportReception);
+            return View(ReceptionReport);
         }
 
-        // GET: RapportReceptions/Create
+        // GET: ReceptionReports/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: RapportReceptions/Create
+        // POST: ReceptionReports/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RapportReceptionID,DateCreation,ReceptServiceAchatId,DevisId")] RapportReception rapportReception)
+        public async Task<IActionResult> Create([Bind("ReceptionReportID,CreationDate,PurchasingReceptionistId,PurchaseQuoteId")] ReceptionReport ReceptionReport)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(rapportReception);
+                _context.Add(ReceptionReport);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(rapportReception);
+            return View(ReceptionReport);
         }
 
-        // GET: RapportReceptions/Edit/5
+        // GET: ReceptionReports/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.RapportReception == null)
+            if (id == null || _context.ReceptionReport == null)
             {
                 return NotFound();
             }
 
-            var rapportReception = await _context.RapportReception.FindAsync(id);
-            if (rapportReception == null)
+            var ReceptionReport = await _context.ReceptionReport.FindAsync(id);
+            if (ReceptionReport == null)
             {
                 return NotFound();
             }
-            return View(rapportReception);
+            return View(ReceptionReport);
         }
 
-        // POST: RapportReceptions/Edit/5
+        // POST: ReceptionReports/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RapportReceptionID,DateCreation,ReceptServiceAchatId,DevisId")] RapportReception rapportReception)
+        public async Task<IActionResult> Edit(int id, [Bind("ReceptionReportID,CreationDate,PurchasingReceptionistId,PurchaseQuoteId")] ReceptionReport ReceptionReport)
         {
-            if (id != rapportReception.RapportReceptionID)
+            if (id != ReceptionReport.ReceptionReportID)
             {
                 return NotFound();
             }
@@ -107,12 +107,12 @@ namespace GAP.Controllers
             {
                 try
                 {
-                    _context.Update(rapportReception);
+                    _context.Update(ReceptionReport);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RapportReceptionExists(rapportReception.RapportReceptionID))
+                    if (!ReceptionReportExists(ReceptionReport.ReceptionReportID))
                     {
                         return NotFound();
                     }
@@ -123,49 +123,49 @@ namespace GAP.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(rapportReception);
+            return View(ReceptionReport);
         }
 
-        // GET: RapportReceptions/Delete/5
+        // GET: ReceptionReports/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.RapportReception == null)
+            if (id == null || _context.ReceptionReport == null)
             {
                 return NotFound();
             }
 
-            var rapportReception = await _context.RapportReception
-                .FirstOrDefaultAsync(m => m.RapportReceptionID == id);
-            if (rapportReception == null)
+            var ReceptionReport = await _context.ReceptionReport
+                .FirstOrDefaultAsync(m => m.ReceptionReportID == id);
+            if (ReceptionReport == null)
             {
                 return NotFound();
             }
 
-            return View(rapportReception);
+            return View(ReceptionReport);
         }
 
-        // POST: RapportReceptions/Delete/5
+        // POST: ReceptionReports/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.RapportReception == null)
+            if (_context.ReceptionReport == null)
             {
-                return Problem("Entity set 'GAPContext.RapportReception'  is null.");
+                return Problem("Entity set 'GAPContext.ReceptionReport'  is null.");
             }
-            var rapportReception = await _context.RapportReception.FindAsync(id);
-            if (rapportReception != null)
+            var ReceptionReport = await _context.ReceptionReport.FindAsync(id);
+            if (ReceptionReport != null)
             {
-                _context.RapportReception.Remove(rapportReception);
+                _context.ReceptionReport.Remove(ReceptionReport);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RapportReceptionExists(int id)
+        private bool ReceptionReportExists(int id)
         {
-          return (_context.RapportReception?.Any(e => e.RapportReceptionID == id)).GetValueOrDefault();
+          return (_context.ReceptionReport?.Any(e => e.ReceptionReportID == id)).GetValueOrDefault();
         }
     }
 }

@@ -56,7 +56,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FournisseurID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
+        public async Task<IActionResult> Create([Bind("SupplierID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +88,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("FournisseurID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
+        public async Task<IActionResult> Edit(int id, [Bind("SupplierID,NotificationID,NotificationTitle")] NotificationAdmin notificationAdmin)
         {
             if (id != notificationAdmin.NotificationID)
             {

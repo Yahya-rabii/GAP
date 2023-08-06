@@ -1,0 +1,59 @@
+﻿@model GAP.Models.QualityTestReport
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); margin-top:250px;" id="features" aria-label="featured game">
+
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">EDIT Rapport Test Qualite</h1>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="QualityTestReportID" />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="StateValidity" /> @Html.DisplayNameFor(model => model.StateValidity)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CntItemsValidity" /> @Html.DisplayNameFor(model => model.CntItemsValidity)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="OperationValidity" /> @Html.DisplayNameFor(model => model.OperationValidity)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="QualityTestingDepartmentManagerId" class="control-label"></label>
+                <select asp-for="QualityTestingDepartmentManagerId" class="form-control" asp-items="ViewBag.QualityTestingDepartmentManagerId"></select>
+                <span asp-validation-for="QualityTestingDepartmentManagerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseQuoteId" class="control-label"></label>
+                <input asp-for="PurchaseQuoteId" class="form-control" />
+                <span asp-validation-for="PurchaseQuoteId" class="text-danger"></span>
+            </div>
+                    <div class="BTNS">
+
+                        <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                        <a asp-action="Delete" asp-route-id="@Model.QualityTestReportID"><input type="button" class="DEL-button" value="Delete"> </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

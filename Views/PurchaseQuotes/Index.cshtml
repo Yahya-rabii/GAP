@@ -1,0 +1,108 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.PurchaseQuote>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+        <div class="datatable-container">
+            <h1 class="form-header">PurchaseQuote</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="Supplier..." name="SearchString"  />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>
+                            DateCreation
+                        </th>
+                        <th>
+                            DateReception
+                        </th>
+                        <th>
+                            PrixTTL
+                        </th>
+                      
+                        <th>
+                            Supplier
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReceptionDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalPrice)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Supplier.Email)
+                            </td>
+
+                            <td>
+                            <div class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                <a asp-action="Edit" asp-route-id="@item.PurchaseQuoteID">
+                                    <input type="submit" value="Edit" class="form-button EDI-button"  />
+                                </a>
+                                    <a asp-action="Details" asp-route-id="@item.PurchaseQuoteID">
+                                    <input type="button" class="form-button DET-button" value="Details">
+                                </a>
+                                    <a asp-action="Delete" asp-route-id="@item.PurchaseQuoteID">
+                                    <input type="button" class="form-button DEL-button" value="Delete">
+                                </a>
+                            </div>
+
+                            
+                              
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <p>
+                <a asp-action="Create">Create New</a>
+            </p>
+        </div>
+    </article>
+</main>

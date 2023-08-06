@@ -9,32 +9,32 @@ namespace GAP.Models
         public int SanctionID { get; set; }
         public string SanctionTitle { get; set;}
         public string SanctionDescription { get;set;}
-        [ForeignKey("DevisID")]
+        [ForeignKey("PurchaseQuoteID")]
 
-        public int DevisID { get; set; }
+        public int PurchaseQuoteID { get; set; }
 
-        [ForeignKey("Fournisseur")]
-        public int? FournisseurId { get; set; } // Foreign key property
+        [ForeignKey("Supplier")]
+        public int? SupplierId { get; set; } // Foreign key property
 
-        public Sanction(int sanctionID, string sanctionTitle, string sanctionDescription, int fournisseurId)
+        public Sanction(int sanctionID, string sanctionTitle, string sanctionDescription, int supplierId)
         {
             SanctionID = sanctionID;
             SanctionTitle = sanctionTitle;
             SanctionDescription = sanctionDescription;
-            FournisseurId = fournisseurId;
-        }     public Sanction(int sanctionID, string sanctionTitle, string sanctionDescription, int fournisseurId,int devisID)
+            SupplierId = supplierId;
+        }     public Sanction(int sanctionID, string sanctionTitle, string sanctionDescription, int supplierId,int purchaseQuoteID)
         {
             SanctionID = sanctionID;
             SanctionTitle = sanctionTitle;
             SanctionDescription = sanctionDescription;
-            FournisseurId = fournisseurId;
-            DevisID = devisID;
+            SupplierId = supplierId;
+            PurchaseQuoteID = purchaseQuoteID;
         }
         public Sanction() {
             SanctionID = 0;
             SanctionTitle = string.Empty;
             SanctionDescription = string.Empty;
-            FournisseurId = 0;
+            SupplierId = 0;
         }
     }
 }

@@ -1,0 +1,111 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+
+        <div class="datatable-container">
+
+            <h1 class="form-header">Products</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+
+
+
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                PrixUnitaire
+            </th>
+            <th>
+                Prixtotal
+            </th>
+            <th>
+                Nom
+            </th>
+            <th>
+                NombrePiece
+            </th>
+            <th>
+                Desc
+            </th>
+            <th>
+                SupplierId
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unitprice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Totalprice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemsNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Desc)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SupplierId)
+            </td>
+                            <td class="form-button disp BTNS" style="color:white; display: flex; align-items: center;">
+                                <a asp-action="Edit" asp-route-id="@item.ProductID">
+                                    <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ProductID">
+                                    <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ProductID">
+                                    <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                </a>
+                            </td>
+        </tr>
+}
+    </tbody>
+</table>
+            <p>
+
+                <a asp-action="Create">Create New</a>
+
+            </p>
+</div>
+</article>
+</main>

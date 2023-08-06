@@ -22,13 +22,144 @@ namespace GAP.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GAP.Models.DemandeAchat", b =>
+            modelBuilder.Entity("GAP.Models.Bill", b =>
                 {
-                    b.Property<int>("DemandeAchatID")
+                    b.Property<int>("BillID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DemandeAchatID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillID"));
+
+                    b.Property<int>("FinanceDepartmentManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PurchaseQuoteID")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Validity")
+                        .HasColumnType("bit");
+
+                    b.HasKey("BillID");
+
+                    b.HasIndex("FinanceDepartmentManagerId");
+
+                    b.ToTable("Bill");
+                });
+
+            modelBuilder.Entity("GAP.Models.Notification", b =>
+                {
+                    b.Property<int>("NotificationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("NotificationTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("NotificationID");
+
+                    b.ToTable("Notification");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Notification");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("GAP.Models.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"));
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ItemsNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PurchaseQuoteID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SaleOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Totalprice")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Unitprice")
+                        .HasColumnType("real");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("PurchaseQuoteID");
+
+                    b.HasIndex("SaleOfferID");
+
+                    b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
+                {
+                    b.Property<int>("PurchaseQuoteID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseQuoteID"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("PurchasingDepartmentManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReceptionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SaleOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SupplierID")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("TotalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("typeCntProducts")
+                        .HasColumnType("int");
+
+                    b.HasKey("PurchaseQuoteID");
+
+                    b.HasIndex("PurchasingDepartmentManagerId");
+
+                    b.HasIndex("SaleOfferID");
+
+                    b.HasIndex("SupplierID");
+
+                    b.ToTable("PurchaseQuote");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchaseRequest", b =>
+                {
+                    b.Property<int>("PurchaseRequestID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseRequestID"));
 
                     b.Property<double>("Budget")
                         .HasColumnType("float");
@@ -44,278 +175,100 @@ namespace GAP.Migrations
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RespServiceAchatUserID")
+                    b.Property<int?>("PurchasingDepartmentManagerUserID")
                         .HasColumnType("int");
 
-                    b.HasKey("DemandeAchatID");
+                    b.HasKey("PurchaseRequestID");
 
-                    b.HasIndex("RespServiceAchatUserID");
+                    b.HasIndex("PurchasingDepartmentManagerUserID");
 
-                    b.ToTable("DemandeAchat");
+                    b.ToTable("PurchaseRequest");
                 });
 
-            modelBuilder.Entity("GAP.Models.Devis", b =>
+            modelBuilder.Entity("GAP.Models.QualityTestReport", b =>
                 {
-                    b.Property<int>("DevisID")
+                    b.Property<int>("QualityTestReportID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DevisID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QualityTestReportID"));
 
-                    b.Property<DateTime>("DateCreation")
+                    b.Property<bool>("CntItemsValidity")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OperationValidity")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PurchaseQuoteId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QualityTestingDepartmentManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("StateValidity")
+                        .HasColumnType("bit");
+
+                    b.HasKey("QualityTestReportID");
+
+                    b.HasIndex("QualityTestingDepartmentManagerId");
+
+                    b.ToTable("QualityTestReport");
+                });
+
+            modelBuilder.Entity("GAP.Models.ReceptionReport", b =>
+                {
+                    b.Property<int>("ReceptionReportID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReceptionReportID"));
+
+                    b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateReception")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FournisseurID")
+                    b.Property<int>("PurchaseQuoteId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Ntypeproduits")
+                    b.Property<int>("PurchasingReceptionistId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OffreVenteID")
+                    b.HasKey("ReceptionReportID");
+
+                    b.HasIndex("PurchasingReceptionistId");
+
+                    b.ToTable("ReceptionReport");
+                });
+
+            modelBuilder.Entity("GAP.Models.SaleOffer", b =>
+                {
+                    b.Property<int>("SaleOfferID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<double?>("PrixTTL")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleOfferID"));
+
+                    b.Property<int>("PurchaseRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("TotalProfit")
                         .HasColumnType("float");
 
-                    b.Property<int?>("RespServiceAchatId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DevisID");
-
-                    b.HasIndex("FournisseurID");
-
-                    b.HasIndex("OffreVenteID");
-
-                    b.HasIndex("RespServiceAchatId");
-
-                    b.ToTable("Devis");
-                });
-
-            modelBuilder.Entity("GAP.Models.Facture", b =>
-                {
-                    b.Property<int>("FactureID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FactureID"));
-
-                    b.Property<int?>("DevisID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RespServiceFinanceId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Validite")
-                        .HasColumnType("bit");
-
-                    b.HasKey("FactureID");
-
-                    b.HasIndex("RespServiceFinanceId");
-
-                    b.ToTable("Facture");
-                });
-
-            modelBuilder.Entity("GAP.Models.Fournisseur", b =>
-                {
-                    b.Property<int>("FournisseurID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("FournisseurID"));
-
-                    b.Property<string>("Adresse")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int?>("CodePostal")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int>("NombreTransaction")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Numtele")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("FournisseurID");
-
-                    b.ToTable("Fournisseur");
-                });
-
-            modelBuilder.Entity("GAP.Models.Notification", b =>
-                {
-                    b.Property<int>("NotificationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationID"));
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("nvarchar(34)");
-
-                    b.Property<string>("NotificationTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("NotificationID");
-
-                    b.ToTable("Notification");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Notification");
-
-                    b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("GAP.Models.OffreVente", b =>
-                {
-                    b.Property<int>("OffreVenteID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OffreVenteID"));
-
-                    b.Property<int>("DemandeAchatId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FournisseurId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Validite")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("profitTTL")
+                    b.Property<double>("UnitProfit")
                         .HasColumnType("float");
 
-                    b.Property<double>("unit_profit")
-                        .HasColumnType("float");
-
-                    b.HasKey("OffreVenteID");
-
-                    b.HasIndex("DemandeAchatId");
-
-                    b.HasIndex("FournisseurId");
-
-                    b.ToTable("OffreVente");
-                });
-
-            modelBuilder.Entity("GAP.Models.Produit", b =>
-                {
-                    b.Property<int>("ProduitID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProduitID"));
-
-                    b.Property<string>("Desc")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DevisID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FournisseurId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("NombrePiece")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OffreVenteID")
-                        .HasColumnType("int");
-
-                    b.Property<float>("PrixUnitaire")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Prixtotal")
-                        .HasColumnType("real");
-
-                    b.HasKey("ProduitID");
-
-                    b.HasIndex("DevisID");
-
-                    b.HasIndex("OffreVenteID");
-
-                    b.ToTable("Produit");
-                });
-
-            modelBuilder.Entity("GAP.Models.RapportReception", b =>
-                {
-                    b.Property<int>("RapportReceptionID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RapportReceptionID"));
-
-                    b.Property<DateTime>("DateCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DevisId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ReceptServiceAchatId")
-                        .HasColumnType("int");
-
-                    b.HasKey("RapportReceptionID");
-
-                    b.HasIndex("ReceptServiceAchatId");
-
-                    b.ToTable("RapportReception");
-                });
-
-            modelBuilder.Entity("GAP.Models.RapportTestQualite", b =>
-                {
-                    b.Property<int>("RapportTestQualiteID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RapportTestQualiteID"));
-
-                    b.Property<int>("DevisId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RespServiceQualiteId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("ValiditeEtat")
+                    b.Property<bool>("Validity")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("ValiditeFonctionnement")
-                        .HasColumnType("bit");
+                    b.HasKey("SaleOfferID");
 
-                    b.Property<bool>("ValiditeNbrPiece")
-                        .HasColumnType("bit");
+                    b.HasIndex("PurchaseRequestId");
 
-                    b.HasKey("RapportTestQualiteID");
+                    b.HasIndex("SupplierId");
 
-                    b.HasIndex("RespServiceQualiteId");
-
-                    b.ToTable("RapportTestQualite");
+                    b.ToTable("SaleOffer");
                 });
 
             modelBuilder.Entity("GAP.Models.Sanction", b =>
@@ -326,10 +279,7 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SanctionID"));
 
-                    b.Property<int>("DevisID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FournisseurId")
+                    b.Property<int>("PurchaseQuoteID")
                         .HasColumnType("int");
 
                     b.Property<string>("SanctionDescription")
@@ -340,9 +290,59 @@ namespace GAP.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("int");
+
                     b.HasKey("SanctionID");
 
                     b.ToTable("Sanction");
+                });
+
+            modelBuilder.Entity("GAP.Models.Supplier", b =>
+                {
+                    b.Property<int>("SupplierID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierID"));
+
+                    b.Property<string>("Adresse")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int?>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("SupplierID");
+
+                    b.ToTable("Supplier");
                 });
 
             modelBuilder.Entity("GAP.Models.User", b =>
@@ -355,8 +355,8 @@ namespace GAP.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)");
+                        .HasMaxLength(34)
+                        .HasColumnType("nvarchar(34)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -390,6 +390,9 @@ namespace GAP.Migrations
                     b.Property<string>("ProfilePictureFileName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
                     b.HasKey("UserID");
 
                     b.ToTable("User");
@@ -403,181 +406,181 @@ namespace GAP.Migrations
                 {
                     b.HasBaseType("GAP.Models.Notification");
 
-                    b.Property<int?>("FournisseurID")
+                    b.Property<int?>("SupplierID")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("NotificationAdmin");
                 });
 
-            modelBuilder.Entity("GAP.Models.NotificationFournisseur", b =>
+            modelBuilder.Entity("GAP.Models.NotificationInfo", b =>
                 {
                     b.HasBaseType("GAP.Models.Notification");
 
-                    b.Property<int?>("FournisseurID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OffreVenteID")
-                        .HasColumnType("int");
-
-                    b.ToTable("Notification", t =>
-                        {
-                            t.Property("FournisseurID")
-                                .HasColumnName("NotificationFournisseur_FournisseurID");
-                        });
-
-                    b.HasDiscriminator().HasValue("NotificationFournisseur");
-                });
-
-            modelBuilder.Entity("GAP.Models.NotificationReclamation", b =>
-                {
-                    b.HasBaseType("GAP.Models.Notification");
-
-                    b.Property<int?>("DevisID")
+                    b.Property<int?>("PurchaseQuoteID")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserID")
                         .HasColumnType("int");
 
-                    b.HasDiscriminator().HasValue("NotificationReclamation");
+                    b.HasDiscriminator().HasValue("NotificationInfo");
                 });
 
-            modelBuilder.Entity("GAP.Models.ReceptServiceAchat", b =>
+            modelBuilder.Entity("GAP.Models.NotificationSupplier", b =>
+                {
+                    b.HasBaseType("GAP.Models.Notification");
+
+                    b.Property<int?>("SaleOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SupplierID")
+                        .HasColumnType("int");
+
+                    b.ToTable("Notification", t =>
+                        {
+                            t.Property("SupplierID")
+                                .HasColumnName("NotificationSupplier_SupplierID");
+                        });
+
+                    b.HasDiscriminator().HasValue("NotificationSupplier");
+                });
+
+            modelBuilder.Entity("GAP.Models.FinanceDepartmentManager", b =>
                 {
                     b.HasBaseType("GAP.Models.User");
 
-                    b.HasDiscriminator().HasValue("ReceptServiceAchat");
+                    b.HasDiscriminator().HasValue("FinanceDepartmentManager");
                 });
 
-            modelBuilder.Entity("GAP.Models.RespServiceAchat", b =>
+            modelBuilder.Entity("GAP.Models.PurchasingDepartmentManager", b =>
                 {
                     b.HasBaseType("GAP.Models.User");
 
-                    b.HasDiscriminator().HasValue("RespServiceAchat");
+                    b.HasDiscriminator().HasValue("PurchasingDepartmentManager");
                 });
 
-            modelBuilder.Entity("GAP.Models.RespServiceFinance", b =>
+            modelBuilder.Entity("GAP.Models.PurchasingReceptionist", b =>
                 {
                     b.HasBaseType("GAP.Models.User");
 
-                    b.HasDiscriminator().HasValue("RespServiceFinance");
+                    b.HasDiscriminator().HasValue("PurchasingReceptionist");
                 });
 
-            modelBuilder.Entity("GAP.Models.RespServiceQualite", b =>
+            modelBuilder.Entity("GAP.Models.QualityTestingDepartmentManager", b =>
                 {
                     b.HasBaseType("GAP.Models.User");
 
-                    b.HasDiscriminator().HasValue("RespServiceQualite");
+                    b.HasDiscriminator().HasValue("QualityTestingDepartmentManager");
                 });
 
-            modelBuilder.Entity("GAP.Models.DemandeAchat", b =>
+            modelBuilder.Entity("GAP.Models.Bill", b =>
                 {
-                    b.HasOne("GAP.Models.RespServiceAchat", null)
+                    b.HasOne("GAP.Models.FinanceDepartmentManager", null)
+                        .WithMany("HistoriqueBills")
+                        .HasForeignKey("FinanceDepartmentManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GAP.Models.Product", b =>
+                {
+                    b.HasOne("GAP.Models.PurchaseQuote", null)
+                        .WithMany("Products")
+                        .HasForeignKey("PurchaseQuoteID");
+
+                    b.HasOne("GAP.Models.SaleOffer", null)
+                        .WithMany("Products")
+                        .HasForeignKey("SaleOfferID");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
+                {
+                    b.HasOne("GAP.Models.PurchasingDepartmentManager", null)
+                        .WithMany("PurchaseQuotes")
+                        .HasForeignKey("PurchasingDepartmentManagerId");
+
+                    b.HasOne("GAP.Models.SaleOffer", "SaleOffer")
+                        .WithMany()
+                        .HasForeignKey("SaleOfferID");
+
+                    b.HasOne("GAP.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierID");
+
+                    b.Navigation("SaleOffer");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchaseRequest", b =>
+                {
+                    b.HasOne("GAP.Models.PurchasingDepartmentManager", null)
                         .WithMany("DemandesAchats")
-                        .HasForeignKey("RespServiceAchatUserID");
+                        .HasForeignKey("PurchasingDepartmentManagerUserID");
                 });
 
-            modelBuilder.Entity("GAP.Models.Devis", b =>
+            modelBuilder.Entity("GAP.Models.QualityTestReport", b =>
                 {
-                    b.HasOne("GAP.Models.Fournisseur", "Fournisseur")
-                        .WithMany()
-                        .HasForeignKey("FournisseurID");
-
-                    b.HasOne("GAP.Models.OffreVente", "OffreVente")
-                        .WithMany()
-                        .HasForeignKey("OffreVenteID");
-
-                    b.HasOne("GAP.Models.RespServiceAchat", null)
-                        .WithMany("Devis")
-                        .HasForeignKey("RespServiceAchatId");
-
-                    b.Navigation("Fournisseur");
-
-                    b.Navigation("OffreVente");
-                });
-
-            modelBuilder.Entity("GAP.Models.Facture", b =>
-                {
-                    b.HasOne("GAP.Models.RespServiceFinance", null)
-                        .WithMany("HistoriqueFactures")
-                        .HasForeignKey("RespServiceFinanceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GAP.Models.OffreVente", b =>
-                {
-                    b.HasOne("GAP.Models.DemandeAchat", "DemandeAchat")
-                        .WithMany()
-                        .HasForeignKey("DemandeAchatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("GAP.Models.Fournisseur", "Fournisseur")
-                        .WithMany()
-                        .HasForeignKey("FournisseurId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DemandeAchat");
-
-                    b.Navigation("Fournisseur");
-                });
-
-            modelBuilder.Entity("GAP.Models.Produit", b =>
-                {
-                    b.HasOne("GAP.Models.Devis", null)
-                        .WithMany("Produits")
-                        .HasForeignKey("DevisID");
-
-                    b.HasOne("GAP.Models.OffreVente", null)
-                        .WithMany("Produits")
-                        .HasForeignKey("OffreVenteID");
-                });
-
-            modelBuilder.Entity("GAP.Models.RapportReception", b =>
-                {
-                    b.HasOne("GAP.Models.ReceptServiceAchat", null)
-                        .WithMany("HistoriqueRapportsReceptions")
-                        .HasForeignKey("ReceptServiceAchatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GAP.Models.RapportTestQualite", b =>
-                {
-                    b.HasOne("GAP.Models.RespServiceQualite", null)
+                    b.HasOne("GAP.Models.QualityTestingDepartmentManager", null)
                         .WithMany("HistoriqueRapportQualite")
-                        .HasForeignKey("RespServiceQualiteId");
+                        .HasForeignKey("QualityTestingDepartmentManagerId");
                 });
 
-            modelBuilder.Entity("GAP.Models.Devis", b =>
+            modelBuilder.Entity("GAP.Models.ReceptionReport", b =>
                 {
-                    b.Navigation("Produits");
+                    b.HasOne("GAP.Models.PurchasingReceptionist", null)
+                        .WithMany("HistoriqueRapportsReceptions")
+                        .HasForeignKey("PurchasingReceptionistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("GAP.Models.OffreVente", b =>
+            modelBuilder.Entity("GAP.Models.SaleOffer", b =>
                 {
-                    b.Navigation("Produits");
+                    b.HasOne("GAP.Models.PurchaseRequest", "PurchaseRequest")
+                        .WithMany()
+                        .HasForeignKey("PurchaseRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GAP.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PurchaseRequest");
+
+                    b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("GAP.Models.ReceptServiceAchat", b =>
+            modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GAP.Models.SaleOffer", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GAP.Models.FinanceDepartmentManager", b =>
+                {
+                    b.Navigation("HistoriqueBills");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchasingDepartmentManager", b =>
+                {
+                    b.Navigation("DemandesAchats");
+
+                    b.Navigation("PurchaseQuotes");
+                });
+
+            modelBuilder.Entity("GAP.Models.PurchasingReceptionist", b =>
                 {
                     b.Navigation("HistoriqueRapportsReceptions");
                 });
 
-            modelBuilder.Entity("GAP.Models.RespServiceAchat", b =>
-                {
-                    b.Navigation("DemandesAchats");
-
-                    b.Navigation("Devis");
-                });
-
-            modelBuilder.Entity("GAP.Models.RespServiceFinance", b =>
-                {
-                    b.Navigation("HistoriqueFactures");
-                });
-
-            modelBuilder.Entity("GAP.Models.RespServiceQualite", b =>
+            modelBuilder.Entity("GAP.Models.QualityTestingDepartmentManager", b =>
                 {
                     b.Navigation("HistoriqueRapportQualite");
                 });

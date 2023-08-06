@@ -1,0 +1,76 @@
+﻿@model GAP.Models.Supplier
+
+@{
+    ViewData["Title"] = "Create";
+}
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
+
+            <div class="adfrmcontainer" >
+
+                <h1 class="form-header">ADD Supplier</h1>
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                        <label asp-for="Name" class="control-label" hidden></label>
+                        <input asp-for="Name" class="form-control" placeholder="Nom" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                        <label asp-for="Email" class="control-label" hidden></label>
+                        <input asp-for="Email" class="form-control" placeholder="Email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                        <label asp-for="Password" class="control-label" hidden></label>
+                        <input asp-for="Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                        <label asp-for="Adresse" class="control-label" hidden></label>
+                        <input asp-for="Adresse" class="form-control" placeholder="Adresse" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                        <label asp-for="PostalCode" class="control-label" hidden></label>
+                        <input asp-for="PostalCode" class="form-control" placeholder="CodePostal" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label" hidden></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Numtele" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TransactionNumber" class="control-label" hidden></label>
+                        <input asp-for="TransactionNumber" class="form-control" placeholder="NombreTransaction" />
+                <span asp-validation-for="TransactionNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
+                </label>
+            </div>
+
+                    <div class="BTNS">
+
+                        <a asp-for="SupplierID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

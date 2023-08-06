@@ -1,0 +1,46 @@
+﻿@model GAP.Models.PurchaseQuote
+
+@{
+    ViewData["Title"] = "Create";
+}
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
+
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">ADD PurchaseQuote</h1>
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* Add the hidden field for SaleOfferID *@
+            <input type="hidden" asp-for="SaleOfferID" value="@ViewBag.SaleOfferID" />
+
+            <div class="form-group">
+                <label asp-for="ReceptionDate" class="control-label"></label>
+                <input asp-for="ReceptionDate" class="form-control" />
+                <span asp-validation-for="ReceptionDate" class="text-danger"></span>
+            </div>
+
+
+                    <div class="BTNS">
+
+                        <a asp-for="PurchaseQuoteID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </section>
+
+    </article>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

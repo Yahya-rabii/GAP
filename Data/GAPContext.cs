@@ -23,29 +23,29 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.User> User { get; set; } = default!;
 
-        public DbSet<GAP.Models.Devis> Devis { get; set; } = default!;
+        public DbSet<GAP.Models.PurchaseQuote> PurchaseQuote { get; set; } = default!;
 
-        public DbSet<GAP.Models.Facture> Facture { get; set; } = default!;
+        public DbSet<GAP.Models.Bill> Bill { get; set; } = default!;
 
-        public DbSet<GAP.Models.Fournisseur> Fournisseur { get; set; } = default!;
+        public DbSet<GAP.Models.Supplier> Supplier { get; set; } = default!;
 
-        public DbSet<GAP.Models.RapportReception> RapportReception { get; set; } = default!;
+        public DbSet<GAP.Models.ReceptionReport> ReceptionReport { get; set; } = default!;
 
-        public DbSet<GAP.Models.RapportTestQualite> RapportTestQualite { get; set; } = default!;
+        public DbSet<GAP.Models.QualityTestReport> QualityTestReport { get; set; } = default!;
 
-        public DbSet<GAP.Models.ReceptServiceAchat> ReceptServiceAchat { get; set; } = default!;
+        public DbSet<GAP.Models.PurchasingReceptionist> PurchasingReceptionist { get; set; } = default!;
 
-        public DbSet<GAP.Models.RespServiceAchat> RespServiceAchat { get; set; } = default!;
+        public DbSet<GAP.Models.PurchasingDepartmentManager> PurchasingDepartmentManager { get; set; } = default!;
 
-        public DbSet<GAP.Models.RespServiceFinance> RespServiceFinance { get; set; } = default!;
+        public DbSet<GAP.Models.FinanceDepartmentManager> FinanceDepartmentManager { get; set; } = default!;
 
-        public DbSet<GAP.Models.RespServiceQualite> RespServiceQualite { get; set; } = default!;
+        public DbSet<GAP.Models.QualityTestingDepartmentManager> QualityTestingDepartmentManager { get; set; } = default!;
 
-        public DbSet<GAP.Models.DemandeAchat> DemandeAchat { get; set; } = default!;
+        public DbSet<GAP.Models.PurchaseRequest> PurchaseRequest { get; set; } = default!;
 
-        public DbSet<GAP.Models.OffreVente> OffreVente { get; set; } = default!;
+        public DbSet<GAP.Models.SaleOffer> SaleOffer { get; set; } = default!;
 
-        public DbSet<GAP.Models.Produit> Produit { get; set; } = default!;
+        public DbSet<GAP.Models.Product> Product { get; set; } = default!;
 
 
         public DbSet<GAP.Models.Notification> Notification { get; set; } = default!;
@@ -54,9 +54,9 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.NotificationAdmin> NotificationAdmin { get; set; } = default!;
 
-        public DbSet<GAP.Models.NotificationReclamation> NotificationReclamation { get; set; } = default!;
+        public DbSet<GAP.Models.NotificationInfo> NotificationInfo { get; set; } = default!;
 
-        public DbSet<GAP.Models.NotificationFournisseur> NotificationFournisseur { get; set; } = default!;
+        public DbSet<GAP.Models.NotificationSupplier> NotificationSupplier { get; set; } = default!;
 
 
     }

@@ -1,0 +1,100 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.QualityTestingDepartmentManager>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<main>
+    <article>
+
+        <div class="datatable-container">
+
+            <h1 class="form-header">QualityTestingDepartmentManager</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+
+
+
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="user Email..." name="SearchString" />
+                    </form>
+                </div>
+            </div>
+<table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            FirstName
+                        </th>
+                        <th>
+                            LastName
+                        </th>
+
+                        <th></th>
+                    </tr>
+                </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Password)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+
+                            <td>
+                                <div class="BTNS">
+                                    <a asp-action="Edit" asp-route-id="@item.UserID">
+                                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.UserID">
+                                        <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.UserID">
+                                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                    </a>
+                                </div>
+                            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>
+</article>
+</main>

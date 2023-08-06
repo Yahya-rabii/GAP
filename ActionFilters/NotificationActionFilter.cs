@@ -26,7 +26,7 @@ namespace GAP.ActionFilters
                 if (!context.HttpContext.User.IsInRole("Admin"))
                 {
                     // Fetch notifications for the authenticated user
-                    var notifications = await _context.NotificationReclamation
+                    var notifications = await _context.NotificationInfo
                         .Where(n => n.UserID == userId)
                         .ToListAsync();
 

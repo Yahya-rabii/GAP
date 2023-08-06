@@ -24,11 +24,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
-    options.AddPolicy("Fournisseur", policy => policy.RequireClaim(ClaimTypes.Role, "Fournisseur"));
-    options.AddPolicy("RespServiceAchatPolicy", policy => policy.RequireRole("RespServiceAchat"));
-    options.AddPolicy("ReceptServiceAchatPolicy", policy => policy.RequireRole("ReceptServiceAchat"));
-    options.AddPolicy("RespServiceFinancePolicy", policy => policy.RequireRole("RespServiceFinance"));
-    options.AddPolicy("RespServiceQualitePolicy", policy => policy.RequireRole("RespServiceQualite"));
+    options.AddPolicy("Supplier", policy => policy.RequireClaim(ClaimTypes.Role, "Supplier"));
+    options.AddPolicy("PurchasingDepartmentManagerPolicy", policy => policy.RequireRole("PurchasingDepartmentManager"));
+    options.AddPolicy("PurchasingReceptionistPolicy", policy => policy.RequireRole("PurchasingReceptionist"));
+    options.AddPolicy("FinanceDepartmentManagerPolicy", policy => policy.RequireRole("FinanceDepartmentManager"));
+    options.AddPolicy("QualityTestingDepartmentManagerPolicy", policy => policy.RequireRole("QualityTestingDepartmentManager"));
 });
 
 builder.Services.AddSession();
@@ -64,7 +64,7 @@ app.UseAuthorization();
 
 app.Use(async (context, next) =>
 {
-    if (!context.User.Identity.IsAuthenticated && context.Request.Path.Value != "/Users/Login" && context.Request.Path.Value != "/Fournisseurs/Register")
+    if (!context.User.Identity.IsAuthenticated && context.Request.Path.Value != "/Users/Login" && context.Request.Path.Value != "/Suppliers/Register")
     {
         context.Response.Redirect("/Users/Login");
     }

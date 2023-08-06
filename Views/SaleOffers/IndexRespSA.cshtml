@@ -1,0 +1,137 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.SaleOffer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+        <div class="datatable-container">
+            <h1 class="form-header">Offre Vente</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="IndexRespSA">
+                        <input type="search" id="form1" class="search-input" placeholder="Supplier..." name="SearchString" />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+                        <th>
+                            Supplier
+                        </th>
+                        <th>
+                            Profit Par Unite
+                        </th>
+                           <th>
+                            Nom Product
+                        </th>
+                           <th>
+                            Prix Unitaire
+                        </th>
+                           <th>
+                            Nombre Pieces
+                        </th>
+                           <th>
+                            prix total Products
+                        </th>
+
+
+
+                        <th>
+                            Validite
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Supplier.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnitProfit)
+                            </td>
+
+                            @foreach (var item2 in item.Products)
+                            {
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Unitprice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.ItemsNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Totalprice)
+                                </td>
+
+                            }
+
+
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Validity)
+                            </td>
+
+
+
+                            @if (!item.Validity) // Only show buttons if the element is not validated
+                            {
+                                <td>
+
+                               
+
+                                <div class="BTNS">
+                                        <a asp-controller="PurchaseQuote" class="SUB-button" asp-action="Create" asp-route-SaleOfferID="@item.SaleOfferID">Reply</a>
+
+                                </div>
+                                
+                            
+                            </td>
+                            }
+                          
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+       
+        </div>
+    </article>
+</main>

@@ -12,16 +12,15 @@
 .adfrmcontainer {
     font-family: sans-serif;
     border-bottom-style: double;
-    position: absolute;
     color: var(--dt-text-color);
     font-size: 12px;
     overflow: auto;
     width: fit-content;
     min-width: 500px;
-    left: 50px;
+    min-height: 500px;
     margin-left: 50px;
     margin-right: 50px;
-    padding: 10px;
+    align-content:center;
     margin-top:100px;
     background-color: rgb(31, 31, 31, 0.068);
     backdrop-filter: blur(20px);
@@ -165,4 +164,106 @@
         column-count: 1;
         column-gap: 0px;
     }
+}
+
+
+
+
+
+
+
+
+.adpcontainer {
+    position:absolute;
+    margin-top:100px;
+    top:100px;
+    font-family: sans-serif;
+    border-bottom-style: double;
+    position: relative;
+    color: var(--dt-text-color);
+    font-size: 12px;
+    overflow: auto;
+    width: fit-content;
+    left: 150px;
+    margin-top: 60px;
+    margin-bottom: -1000px;
+    bottom: 600px;
+    padding: 10px;
+    background: rgb(30, 30, 30, 0.068);
+    backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.048);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
+    border-radius: 10px;
+    table-layout: auto;
+}
+
+.main-body {
+    display: flex;
+    justify-content: space-between; /* Arrange items side by side */
+}
+
+.profile-container {
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    text-align: center;
+    margin-right: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+.profile-card {
+    text-align: center;
+    background: rgb(10, 98, 168, 0.08);
+    -webkit-backdrop-filter: blur(60px);
+}
+
+.adpcontainer .profile-card p {
+    color: rgb(10, 37, 88);
+}
+
+.adpcontainer .texts input {
+    color: rgb(10, 37, 88);
+}
+
+    .profile-card h4 {
+        color: rgb(10, 37, 88);
+    }
+
+    .profile-card img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+
+.uprofile-details {
+    flex: 1; /* Take remaining space */
+    max-width: 600px;
+    background: rgb(10, 98, 168, 0.08);
+    -webkit-backdrop-filter: blur(60px);
+}
+
+.profile-details h6 {
+    font-weight: bold;
+    margin: 5px 0;
+    color: rgb(10, 37, 88);
+}
+
+.profile-details .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+
+.texts {
+    color: rgb(14, 53, 126);
+    font-weight: 500;
 }

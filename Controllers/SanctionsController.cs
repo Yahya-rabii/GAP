@@ -61,7 +61,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SanctionID,SanctionTitle,SanctionDescription,FournisseurId")] Sanction sanction)
+        public async Task<IActionResult> Create([Bind("SanctionID,SanctionTitle,SanctionDescription,SupplierId")] Sanction sanction)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SanctionID,SanctionTitle,SanctionDescription,FournisseurId")] Sanction sanction)
+        public async Task<IActionResult> Edit(int id, [Bind("SanctionID,SanctionTitle,SanctionDescription,SupplierId")] Sanction sanction)
         {
             if (id != sanction.SanctionID)
             {

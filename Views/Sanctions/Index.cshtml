@@ -19,7 +19,7 @@
                 @Html.DisplayNameFor(model => model.SanctionDescription)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FournisseurId)
+                @Html.DisplayNameFor(model => model.SupplierId)
             </th>
             <th></th>
         </tr>
@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.SanctionDescription)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FournisseurId)
+                @Html.DisplayFor(modelItem => item.SupplierId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SanctionID">Edit</a> |

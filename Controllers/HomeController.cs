@@ -21,18 +21,18 @@ namespace GAP.Controllers
         public IActionResult Index()
         {
            
-                var totalProducts = _context.Produit.Count();
+                var totalProducts = _context.Product.Count();
                 var totalUsers = _context.User.Count();
-                var totalSuppliers = _context.Fournisseur.Count();
+                var totalSuppliers = _context.Supplier.Count();
 
                 var users = _context.User.ToList();
-                var suppliers = _context.Fournisseur.ToList();
+                var suppliers = _context.Supplier.ToList();
 
                 ViewBag.TotalProducts = totalProducts;
                 ViewBag.TotalUsers = totalUsers;
-                ViewBag.TotalFournisseurs = totalSuppliers;
+                ViewBag.TotalSuppliers = totalSuppliers;
                 ViewBag.Users = users;
-                ViewBag.Fournisseur = suppliers;
+                ViewBag.Supplier = suppliers;
 
                 return View();
             
@@ -45,29 +45,29 @@ namespace GAP.Controllers
         }
 
         // Action method to handle the "Reply" button click
-        public IActionResult HandleNotification(int devisId , int FournisseurID , int OffreVenteID)
+        public IActionResult HandleNotification(int PurchaseQuoteId , int SupplierID , int SaleOfferID)
         {
 
             // Get the user's role and handle the redirection accordingly
-            if (User.IsInRole("RespServiceQualite"))
+            if (User.IsInRole("QualityTestingDepartmentManager"))
             {
-                // Redirect to the Create action in RapportTestQualite controller with the devisId parameter
-                return RedirectToAction("Create", "RapportTestQualites", new { devisId });
+                // Redirect to the Create action in QualityTestReport controller with the PurchaseQuoteId parameter
+                return RedirectToAction("Create", "QualityTestReports", new { PurchaseQuoteId });
             }
-            else if (User.IsInRole("RespServiceFinance"))
+            else if (User.IsInRole("FinanceDepartmentManager"))
             {
-                // Redirect to the Create action in Facture controller with the devisId parameter
-                return RedirectToAction("Create", "Factures", new { devisId });
+                // Redirect to the Create action in Bill controller with the PurchaseQuoteId parameter
+                return RedirectToAction("Create", "Bills", new { PurchaseQuoteId });
             }
-            else if (User.IsInRole("Fournisseur"))
+            else if (User.IsInRole("Supplier"))
             {
-                return RedirectToAction("Details", "OffreVente", new { OffreVenteID });
+                return RedirectToAction("Details", "SaleOffer", new { SaleOfferID });
             }
             else if (User.IsInRole("Admin"))
             {
-                var ID = FournisseurID;
-                // Redirect to the Create action in Facture controller with the devisId parameter
-                return RedirectToAction("Validate", "Fournisseurs", new { ID });
+                var ID = SupplierID;
+                // Redirect to the Create action in Bill controller with the PurchaseQuoteId parameter
+                return RedirectToAction("Validate", "Suppliers", new { ID });
             }
 
             // Default behavior if user is not in the specified roles

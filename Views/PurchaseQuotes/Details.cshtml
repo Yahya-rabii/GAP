@@ -1,0 +1,114 @@
+﻿@model GAP.Models.PurchaseQuote
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>SaleOffer ID</th>
+                <th>PurchaseRequest ID</th>
+                <!-- Add other properties of the "PurchaseRequest" model to display as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.SaleOfferID)</td>
+                <td>@Html.DisplayFor(model => model.SaleOffer.PurchaseRequestId)</td>
+                <!-- Add other properties of the "PurchaseRequest" model to display as needed -->
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h4>PurchaseQuote</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ReceptionDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ReceptionDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.typeCntProducts)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.typeCntProducts)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Supplier)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Supplier.Email)
+        </dd>
+    </dl>
+</div>
+
+@if (Model.Products != null && Model.Products.Count > 0)
+{
+    <div>
+        <h4>Products</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ProductID</th>
+                    <th>PrixUnitaire</th>
+                    <th>Nom</th>
+                    <th>NombrePiece</th>
+                    <th>Desc</th>
+                    <!-- Add other properties of the "Product" model to display as needed -->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Product in Model.Products)
+                {
+                    <tr>
+                        <td>@Product.ProductID</td>
+                        <td>@Product.Unitprice</td>
+                        <td>@Product.Name</td>
+                        <td>@Product.ItemsNumber</td>
+                        <td>@Product.Desc</td>
+                        <!-- Add other properties of the "Product" model to display as needed -->
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+
+
+<div>
+
+    <div class="BTNS">
+        <a asp-action="Edit" asp-route-id="@Model?.PurchaseQuoteID">
+            <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+        </a>
+
+        <a asp-action="Delete" asp-route-id="@Model?.PurchaseQuoteID">
+            <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+        </a>
+    
+        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+    </div>
+</div>

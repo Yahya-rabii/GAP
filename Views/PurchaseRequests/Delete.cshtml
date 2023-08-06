@@ -1,0 +1,54 @@
+﻿@model GAP.Models.PurchaseRequest
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); width:500px; margin-top:250px;" id="features" aria-label="featured game">
+
+            <div class="frmcontainer">
+
+
+
+                <h1 style="text-align:center; color:white">Are you sure you want to delete this ?</h1>
+                <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreationDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Budget)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Budget)
+        </dd>
+    </dl>
+
+                <form asp-action="Delete">
+
+                    <div class="BTNS">
+
+                        <a asp-for="PurchaseRequestID"><input type="submit" class="DEL-button" value="Delete"> </a>
+
+                        <a asp-controller="PurchaseRequests" asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </section>
+
+    </article>
+</main>

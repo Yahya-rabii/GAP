@@ -1,0 +1,51 @@
+﻿@model GAP.Models.SaleOffer
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<main>
+    <article>
+        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); margin-top:250px;" id="features" aria-label="featured game">
+
+            <div class="frmcontainer" style="width:550px;">
+
+                <h1 class="form-header">EDIT Offre Vente</h1>
+
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SaleOfferID" />
+            <div class="form-group">
+                <label asp-for="UnitProfit" class="control-label"></label>
+                <input asp-for="UnitProfit" class="form-control" />
+                <span asp-validation-for="UnitProfit" class="text-danger"></span>
+            </div>
+
+            <!-- Add the dropdown menu for selecting products -->
+            <div class="form-group">
+                <label asp-for="SelectedProductId" class="control-label"></label>
+                <select asp-for="SelectedProductId" asp-items="@ViewBag.ProductsWithoutSaleOffer" class="form-control"></select>
+                <span asp-validation-for="SelectedProductId" class="text-danger"></span>
+            </div>
+
+                            <div class="BTNS">
+
+                                <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                        <a asp-action="Delete" asp-route-id="@Model.SaleOfferID"><input type="button" class="DEL-button" value="Delete"> </a>
+                                <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+        </section>
+
+    </article>
+</main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
