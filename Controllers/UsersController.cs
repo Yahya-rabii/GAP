@@ -209,7 +209,7 @@ namespace GAP.Controllers
                         throw;
                     }
                 }
-            return RedirectToAction("Profile", "Users", new { id = id });
+            return RedirectToAction("Details", "Users", new { id = id });
 
         }
 

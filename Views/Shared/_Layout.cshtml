@@ -131,16 +131,7 @@
         var UserEmail = Context.Items["UserEmail"] as string;
         var UserID = Context.Items["UserID"] as int? ?? 0;
 
-@*   <section class="home-section">
-        @if (userProfilePicture != null)
-        {
-            <img src="data:image/jpeg;base64,@Convert.ToBase64String(userProfilePicture)" alt="Profile Picture" class="icon-profile" />
-        }
-        else
-        {
-            <img src="~/images/image-prof.png" alt="Default Profile Picture" class="icon-profile" />
-        }
-    </section>*@
+
  
 
         <section class="home-section">
@@ -321,7 +312,7 @@
                                                 <img src="" alt="" />
                                                 <span class="product">@supplier.Email</span>
                                             </a>
-                                            <span class="price">@supplier.NombreTransaction</span>
+                                            <span class="price">@supplier.TransactionNumber</span>
                                         </li>
                                     }
 
@@ -359,6 +350,256 @@
 
         @await RenderSectionAsync("Scripts", required: false)
 
+    }
+
+
+
+        else if (User.IsInRole("Supplier"))
+    {
+
+
+        <!-- loader -->
+        <div class="loader_bg">
+            <div class="loader"><img src="~/images/loading.gif" alt="#" /></div>
+        </div>
+
+        <!-- end loader -->
+        <!-- header -->
+        <header>
+            <!-- header inner -->
+            <div class="head_top">
+                <div class="header">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-3 col logo_section">
+                                <div class="full">
+                                    <div class="center-desk">
+                                        <div class="logo">
+                                            <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9">
+                                <nav class="navigation navbar navbar-expand-md navbar-dark ">
+                                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse" id="navbarsExample04">
+                                        <div class="navbar-nav mr-auto logandnot">
+
+
+
+
+                                            @if (User.Identity.IsAuthenticated)
+                                            {
+                                                var UserEmail = Context.Items["UserEmail"] as string;
+                                                var UserID = Context.Items["UserID"] as int? ?? 0;
+
+
+                                                var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
+                                                var notifications = Context.Items["Notifications"] as List<NotificationSupplier> ?? new List<NotificationSupplier>();
+
+                                                <ul class="notification-drop">
+                                                    <li class="item">
+                                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
+                                                        <span class="btn__badge pulse-button">@totalNotifications</span>
+                                                        <ul>
+                                                            @if (totalNotifications > 0)
+                                                            {
+                                                                @foreach (var notification in notifications)
+                                                                {
+                                                                    <li>
+                                                                        @notification.NotificationTitle
+                                                                        @if (notification.SaleOfferID.HasValue)
+                                                                        {
+                                                                            <a href="@Url.Action("HandleNotification", "Home", new { SaleOfferID = notification.SaleOfferID })">
+                                                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                                            </a>
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <li>No Notif</li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            }
+
+
+
+
+                                                <div class="action">
+                                                    <div class="profile" onclick="menuToggle();">
+
+
+                                                       
+                                                            <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                        
+
+
+                                                    </div>
+
+                                                    <div class="menu">
+                                                        <h3>
+                                                            Welcome
+                                                            <br />
+                                                           
+                                                        </h3>
+
+                                                        <ul>
+                                                           
+
+                                                            <li>
+                                                                <i class="bx bx-log-out"></i>
+
+                                                                <a onclick="location.href='@Url.Action("Logout", "Users")'">
+                                                                    <span>Logout</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                            
+
+
+                                        </div>
+
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end header inner -->
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="sidenav">
+                        <div class="menu-btn">
+                            <div class="line line--1"></div>
+                            <div class="line line--2"></div>
+                            <div class="line line--3"></div>
+                        </div>
+
+                        <div class="sidenav-links">
+
+                            
+
+                                <a class="link" onclick="location.href='@Url.Action("Index", "SaleOffers")'">Offres Ventes</a>
+                                //+add
+                                <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Demandes Achats</a>
+                                <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
+                                <a class="link" onclick="location.href='@Url.Action("Details", "Suppliers")'">Account</a>
+
+                            
+                            
+
+
+                        </div>
+                    </div>
+                }
+
+
+
+
+                <!-- end header -->
+                <!-- banner -->
+                <section class="banner_main">
+                    <div class="container-fluid">
+                        <div class="row d_flex">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-img">
+                                    <figure><img src="~/images/box_img.png" alt="#" /></figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+
+        </header>
+        <!-- end banner -->
+
+
+        <div class="main-content ">
+
+            <div class="bodycontainer">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+
+
+        </div>
+        <!-- end contact -->
+        <!--  footer -->
+        <footer>
+            <div class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="cont">
+                                <h3>
+                                    <strong class="multi"> GAP - Tech </strong><br>
+                                    Follow US ON
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="social_icon">
+                                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Copyright 2023 All Right Reserved By <a href="https://html.design/"> Finatech Group</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- end footer -->
+        <!-- Javascript files-->
+        <script src="~/js/jquery.min.js"></script>
+        <script src="~/js/popper.min.js"></script>
+        <script src="~/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/jquery-3.0.0.min.js"></script>
+        <script src="~/js/plugin.js"></script>
+        <script src="~/js/site.js"></script>
+        <script src="~/js/Notifications.js"></script>
+        <script src="~/js/loader.js"></script>
+        <script src="~/js/customs.js"></script>
+        <script src="~/js/profile.js"></script>
+        <script src="~/js/ProfileEdit.js"></script>
+
+        <!-- sidebar -->
+        <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
+
+
+
+        @await RenderSectionAsync("Scripts", required: false)
+    
+    
     }
 
 
@@ -402,41 +643,7 @@ else{
                                                 var UserEmail = Context.Items["UserEmail"] as string;
                                                 var UserID = Context.Items["UserID"] as int? ?? 0;
 
-                                            @if (User.IsInRole("Supplier"))
-                                            {
-                                                var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
-                                                var notifications = Context.Items["Notifications"] as List<NotificationSupplier> ?? new List<NotificationSupplier>();
-
-                                                <ul class="notification-drop">
-                                                    <li class="item">
-                                                        <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
-                                                        <span class="btn__badge pulse-button">@totalNotifications</span>
-                                                        <ul>
-                                                            @if (totalNotifications > 0)
-                                                            {
-                                                                @foreach (var notification in notifications)
-                                                                {
-                                                                    <li>
-                                                                        @notification.NotificationTitle
-                                                                        @if (notification.SaleOfferID.HasValue)
-                                                                        {
-                                                                            <a href="@Url.Action("HandleNotification", "Home", new { SaleOfferID = notification.SaleOfferID })">
-                                                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
-                                                                            </a>
-                                                                        }
-                                                                    </li>
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <li>No Notif</li>
-                                                            }
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            }
-                                            else
-                                            {
+                                            
                                                 var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
                                                 var notifications = Context.Items["Notifications"] as List<NotificationInfo> ?? new List<NotificationInfo>();
                                               
@@ -468,7 +675,7 @@ else{
                                                         </ul>
                                                     </li>
                                                 </ul>
-                                            }
+                                            
 
 
 
@@ -543,17 +750,7 @@ else{
 
                     <div class="sidenav-links">
                    
-                        @if (User.IsInRole("Supplier"))
-                        {
-
-                            <a class="link" onclick="location.href='@Url.Action("Index", "SaleOffers")'">Offres Ventes</a>
-                            //+add
-                            <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Demandes Achats</a>
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
-                            <a class="link" onclick="location.href='@Url.Action("Details", "Suppliers")'">Account</a>
-
-                        }
-                        else if (User.IsInRole("PurchasingDepartmentManager"))
+                        @if (User.IsInRole("PurchasingDepartmentManager"))
                         {
 
                             <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "SaleOffers")'">Offre Ventes</a>
