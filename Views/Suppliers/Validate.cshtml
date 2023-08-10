@@ -3,27 +3,26 @@
 @{
     ViewData["Title"] = "Validate";
 }
-<main>
-    <article>
-        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
-
-            <div class="adfrmcontainer" style="width:550px;">
+<div class="adpcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
 
                 <h1 class="form-header">VALIDATE Supplier </h1>
 
                 <div style="color:#0a2558;">
                     <hr />
                     <dl class="row">
-                        <dt class="col-sm-2">
+                        <dt class="col-sm-3">
                             @Html.DisplayNameFor(model => model.Name)
                         </dt>
-                        <dd class="col-sm-10">
+                        <dd class="col-sm-9">
                             @Html.DisplayFor(model => model.Name)
                         </dd>
-                        <dt class="col-sm-2">
+                        <dt class="col-sm-3">
                             @Html.DisplayNameFor(model => model.Email)
                         </dt>
-                        <dd class="col-sm-10">
+                        <dd class="col-sm-9">
                             @Html.DisplayFor(model => model.Email)
                         </dd>
 
@@ -55,10 +54,9 @@
             </div>
             </div>
 
-        </section>
-
-    </article>
-</main>
+</div>
+</div>
+</div>
 
 @section Scripts {
     @{

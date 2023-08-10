@@ -231,3 +231,34 @@
         position: relative;
         right: 30%;
     }
+.pselect {
+    width: 100%;
+    max-width: 200px;
+    position: relative;
+    font-size: 14px;
+    position:relative;
+display:inline;
+}
+    .pselect .list{
+        width: fit-content;
+        font-size: 13px;
+        position:relative;
+        left:-15px
+        }
+
+   
+
+
+    .pselect .current {
+        position: relative;
+        background-color: transparent;
+        color: #0a5ea1;
+        font-weight:700;
+        padding-right: 10px;
+    }
+    .pselect .nice-select {
+        position:relative;
+        background-color: transparent;
+        padding-right: 10px;
+    }
+

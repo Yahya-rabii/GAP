@@ -16,11 +16,11 @@ namespace GAP.Controllers
 {
     [Authorize]
     [Authorize(Roles = "PurchasingDepartmentManager")]
-    public class PurchaseQuoteController : Controller
+    public class PurchaseQuotesController : Controller
     {
         private readonly GAPContext _context;
 
-        public PurchaseQuoteController(GAPContext context)
+        public PurchaseQuotesController(GAPContext context)
         {
             _context = context;
         }
@@ -77,6 +77,7 @@ namespace GAP.Controllers
         public IActionResult Create(int SaleOfferID)
         {
             // Retrieve the SaleOffer object based on the received SaleOfferID
+            
             var SaleOffer = _context.SaleOffer.Find(SaleOfferID);
 
             if (SaleOffer == null)

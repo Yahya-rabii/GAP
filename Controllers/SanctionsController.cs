@@ -21,11 +21,15 @@ namespace GAP.Controllers
         }
 
         // GET: Sanctions
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
-            IQueryable<Sanction> iseriq = from rc in _context.Sanction
-                                          select rc;
+            IQueryable<Sanction> iseriq = from s in _context.Sanction
+                                      select s;
 
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.Sanction.Where(s => s.SupplierId == _context.Supplier.Where(ss => ss.Email.ToLower().Contains(SearchString.ToLower().Trim())).FirstOrDefault().SupplierID ) ;
+            }
 
             int pageSize = 2;
             int pageNumber = (page ?? 1);

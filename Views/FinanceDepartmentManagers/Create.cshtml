@@ -6,14 +6,11 @@
 
 
 
-<main>
-    <article>
-        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3);" id="features" aria-label="featured game">
-
-
-
-            <div class="adfrmcontainer">
-                <h1 class="form-header"> ADD FinanceDepartmentManager</h1>
+<div class="adpcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+                <h1 class="form-header"> ADD F-D Manager</h1>
 
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -48,12 +45,9 @@
                     </div>
 
 
-        </section>
-
-    </article>
-</main>
-
-
+</div>
+</div>
+</div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

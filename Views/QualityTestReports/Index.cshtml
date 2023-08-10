@@ -88,19 +88,22 @@
                             <td>
                                 @foreach (var dataItem in ViewBag.RapportData)
                                 {
-                                    if (dataItem.PurchaseQuoteId == item.PurchaseQuoteId)
-                                    {
-                                        @dataItem.ProductName
-                                    }
+                                    @foreach (var dataI in dataItem.Products)
+                                {
+                                    
+                                        
+                                            @dataI.Name
+                                        
+                                } 
+                                
                                 }
                             </td>
                             <td>
                                 @foreach (var dataItem in ViewBag.RapportData)
                                 {
-                                    if (dataItem.PurchaseQuoteId == item.PurchaseQuoteId)
-                                    {
+                                    
                                         @dataItem.SupplierEmail
-                                    }
+                                    
                                 }
                             </td>
                             <td>

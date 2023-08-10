@@ -1,15 +1,25 @@
-/*=============== GOOGLE FONTS ===============*/
-@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&display=swap");
 
-/*=============== VARIABLES ===============*/
-
-:root {
-    --accent-color: rgb(255, 255, 255);
+.pcontainer .form-group input {
+    color: #0a2558;
 }
 
-/*=============== BASE ===============*/
 
-.frmcontainer {
+    .pcontainer .form-group input::placeholder {
+        color: dimgray;
+    }
+
+
+.pcontainer .form-header {
+    color: #0a2558;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+
+.pcontainer {
     font-family: sans-serif;
     border-bottom-style: double;
     position: relative;
@@ -20,7 +30,7 @@
     left: 150px;
     margin-top: 60px;
     margin-bottom: -1000px;
-    bottom: 700px;
+    bottom: 600px;
     padding: 10px;
     background: rgb(30, 30, 30, 0.068);
     backdrop-filter: blur(50px);
@@ -31,146 +41,68 @@
     table-layout: auto;
 }
 
-.frminput-box {
-    position: relative;
-    margin: 10px 0;
-    padding-bottom: 20px;
+.main-body {
+    display: flex;
+    justify-content: space-between; /* Arrange items side by side */
 }
 
-.frminput-text {
-    width: 100%; /* or adjust the percentage as per your preference */
-    height: 40px;
-    padding: 0.375rem 0.75rem;
-    margin-top: 0.5rem;
-    font-size: 20px;
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.068);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: none;
-    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.068);
-}
-
-.form-header {
-    font-size: 40px;
+.profile-container {
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
     text-align: center;
-    padding: 20px;
-    color: white;
+    margin-right: 20px;
 }
 
-select option {
-    color: black;
+.card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 10px;
 }
 
-.frminput-checkbox {
-    padding: 5px 10px;
+.profile-card {
+    text-align: center;
+    background: rgb(10, 98, 168, 0.08);
+    -webkit-backdrop-filter: blur(60px);
 }
 
-frminput {
-    margin-right: 10px;
-    accent-color: var(--accent-color);
-    min-height: 1rem;
-    min-width: 1rem;
+    .profile-card p {
+        color: white;
+    }
+
+    .profile-card h4 {
+        color: rgb(10, 37, 88);
+    }
+
+    .profile-card img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+    }
+
+.uprofile-details {
+    flex: 1; /* Take remaining space */
+    max-width: 600px;
+    background: rgb(10, 98, 168, 0.08);
+    -webkit-backdrop-filter: blur(60px);
 }
 
-input::placeholder,
-textarea::placeholder {
-    opacity: 0.5;
-    color: #fff;
+.profile-details h6 {
+    font-weight: bold;
+    margin: 5px 0;
+    color: rgb(10, 37, 88);
 }
 
-#comment {
-    height: 5rem;
-    min-height: 2.5rem;
-}
-
-/*=============== BUTTON ===============*/
-
-.BTNS {
-    display: inline-block;
+.profile-details .row {
+    display: flex;
     justify-content: space-between;
-}
-
-.SUB-button {
-    flex: 1;
-    padding: 10px;
-    justify-content: center;
-    align-content: center;
-    border-radius: 10px;
-    color: #05355b;
-    height: 40px;
-    background: rgb(107, 196, 190);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.048);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.192);
-    transition-duration: 0.5s;
-}
-.DEL-button,
-.DET-button,
-.EDI-button,
-.BTL-button {
-    padding: 10px;
-    position: relative;
-    display: inline-block;
-    flex: 1;
-    border-radius: 10px;
-    color: white;
-    height: 40px;
-    background: #05355b;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.048);
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.192);
-    transition-duration: 0.5s;
+    align-items: center;
+    margin: 10px 0;
 }
 
 
-
-.SUB-button:hover {
-    background: rgb(67, 238, 228);
-    transition-duration: 0.5s;
-    color: black;
-}
-
-    .DEL-button:hover {
-        background: rgba(255, 0, 0, 0.26);
-        transition-duration: 0.5s;
-        color: black;
-    }
-
-    .EDI-button:hover {
-        background: rgb(229, 255, 0);
-        transition-duration: 0.5s;
-        color: black;
-    }
-
-    .DET-button:hover {
-        background: rgb(0, 68, 114);
-        transition-duration: 0.5s;
-        color: black;
-    }
-
-.BTL-button:hover {
-    background: #ec7b4e;
-    transition-duration: 0.5s;
-    color: rgb(46, 66, 139);
-}
-
-/*=============== MEDIA QUERY ===============*/
-
-@media only screen and (max-width: 200px) {
-    /* For mobile phones: */
-    body {
-        padding: 20px;
-    }
-
-    .frmcontainer {
-        padding: 20px;
-    }
-
-    #frmcheckbox-section {
-        column-count: 1;
-        column-gap: 0px;
-    }
+.texts {
+    color: rgb(14, 53, 126);
+    font-weight: 500;
 }

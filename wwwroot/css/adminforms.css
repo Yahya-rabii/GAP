@@ -170,13 +170,37 @@
 
 
 
+.adpcontainer dl {
+    color: #0a2558;
+}
 
+.adpcontainer .form-group input {
+    color: #0a2558;
+}
+
+
+    .adpcontainer .form-group input::placeholder {
+        color: dimgray;
+    }
+
+
+.adpcontainer .form-header {
+    color: #0a2558;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center;
+    margin-bottom:15px;
+}
 
 
 .adpcontainer {
-    position:absolute;
-    margin-top:100px;
-    top:100px;
+
+
+
+    position: absolute;
+    margin-top: 100px;
+    top: 100px;
     font-family: sans-serif;
     border-bottom-style: double;
     position: relative;
@@ -196,6 +220,10 @@
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.479);
     border-radius: 10px;
     table-layout: auto;
+
+
+
+    
 }
 
 .main-body {

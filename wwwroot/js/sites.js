@@ -15,3 +15,10 @@ menuBtn.addEventListener('click', () => {
     lineThree.classList.toggle('line-cross');
     link.classList.toggle('fade-in');
 })
+
+
+function toggleList() {
+    var list = document.querySelector('.pselect .list');
+    list.classList.toggle('open');
+}
+

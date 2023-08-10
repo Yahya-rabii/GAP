@@ -3,13 +3,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
-<main>
-    <article>
-        <section class="sectiong featured-games" style="background-color: var(--raisin-black-3); margin-top:250px;" id="features" aria-label="featured game">
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
 
-            <div class="frmcontainer" style="width:550px;">
-
-                <h1 class="form-header">EDIT Rapport Test Qualite</h1>
+                <h1 class="form-header">EDIT Quality Test Rapport </h1>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="QualityTestReportID" />
@@ -49,10 +48,9 @@
             </div>
 
 
-        </section>
-
-    </article>
-</main>
+</div>
+</div>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
