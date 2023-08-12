@@ -1,0 +1,150 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.Project>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+        <div class="datatable-container">
+            <h1 class="form-header">PurchaseQuote</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-input" placeholder="Status..." name="SearchString" />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                StartDate
+            </th>
+            <th>
+                EndDate
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Budget
+            </th>
+
+                        <th>
+                            PrixUnitaire
+                        </th>
+                        <th>
+                            Prixtotal
+                        </th>
+                        <th>
+                            Nom
+                        </th>
+                        <th>
+                            NombrePiece
+                        </th>
+                        <th>
+                            Desc
+                        </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+
+                            @foreach (var item2 in item.Products)
+                            {
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Unitprice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Totalprice)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.ItemsNumber)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item2.Desc)
+                                </td>
+
+                            }
+
+
+
+
+
+                            <td class="use BTNS" >
+                                <a asp-action="Edit" asp-route-id="@item.ProjectID">
+                                    <input type="submit" value="Edit" class="form-button EDI-button" />
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ProjectID">
+                                    <input type="button" class="form-button DET-button" value="Details">
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.ProjectID">
+                                    <input type="button" class="form-button DEL-button" value="Delete">
+                                </a>
+                            </td>
+        </tr>
+}
+
+                </tbody>
+
+            </table>        <p>
+
+                <a asp-action="Create">Create New</a>
+
+            </p>
+        </div>
+    </article>
+</main>

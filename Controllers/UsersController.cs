@@ -400,6 +400,12 @@ namespace GAP.Controllers
                         redirectAction = "Index";
                         redirectController = "QualityTestReports";
                         break;
+                    case ProjectManager _:
+                        claims.Add(new Claim(ClaimTypes.Role, "ProjectManager"));
+                        registeredUser.Role = UserRole.Project_Manager;
+                        redirectAction = "Index";
+                        redirectController = "Projects";
+                        break;
                     case var _ when registeredUser.IsAdmin:
                         claims.Add(new Claim(ClaimTypes.Role, "Admin"));
                         registeredUser.Role = UserRole.Admin;

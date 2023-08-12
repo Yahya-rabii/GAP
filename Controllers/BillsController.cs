@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
@@ -13,6 +11,7 @@ using System.Security.Claims;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 using X.PagedList;
+using iTextSharp.text.pdf;
 
 namespace GAP.Controllers
 {
@@ -65,13 +64,13 @@ namespace GAP.Controllers
             using (DocX document = DocX.Load(templatePath))
             {
                 // Replace placeholders in the template with the corresponding data
-                document.ReplaceText("Numéro de Bill :", "Numéro de Bill : #" + DateTime.Now.Date.ToString("yyyyMMdd") + "-" +Bill.BillID.ToString());
+                document.ReplaceText("Numéro de facture :", "Numéro de facture : #" + DateTime.Now.Date.ToString("yyyyMMdd") + "-" +Bill.BillID.ToString());
                 document.ReplaceText("Date de Création :", "Date de Création : " + PurchaseQuote.CreationDate.Date.ToString());
-                document.ReplaceText("Name du Supplier :", "Name du Supplier : " + PurchaseQuote.Supplier.Name.ToString());
-                document.ReplaceText("Email Supplier :", "Email Supplier : " + PurchaseQuote.Supplier.Email.ToString());
-                document.ReplaceText("Adresse Supplier :", "Adresse Supplier : " + PurchaseQuote.Supplier.Adresse.ToString());
-                document.ReplaceText("Code Postal Supplier :", "Code Postal Supplier : " + PurchaseQuote.Supplier.PostalCode.ToString());
-                document.ReplaceText("Numéro de téléphone Supplier :", "Numéro de téléphone Supplier : " + PurchaseQuote.Supplier.PhoneNumber.ToString());
+                document.ReplaceText("Nom du Fournisseur :", "Nom du Fournisseur : " + PurchaseQuote.Supplier.Name.ToString());
+                document.ReplaceText("Email Fournisseur :", "Email Fournisseur : " + PurchaseQuote.Supplier.Email.ToString());
+                document.ReplaceText("Adresse Fournisseur :", "Adresse Fournisseur : " + PurchaseQuote.Supplier.Adresse.ToString());
+                document.ReplaceText("Code Postal Fournisseur :", "Code Postal Fournisseur : " + PurchaseQuote.Supplier.PostalCode.ToString());
+                document.ReplaceText("Numéro de téléphone Fournisseur :", "Numéro de téléphone Fournisseur : " + PurchaseQuote.Supplier.PhoneNumber.ToString());
 
                 // Check if the document has at least one table
                 if (document.Tables.Count > 2)
@@ -104,19 +103,14 @@ namespace GAP.Controllers
                     var offre = _context.SaleOffer.Where(o => o.SupplierId == PurchaseQuote.SupplierID).FirstOrDefault();
 
                     TotalTTC = (float)(MTotalHT + TotalTVA + offre.TotalProfit);
-                    document.ReplaceText("Profit Supplier :", "Profit Supplier : " + offre.TotalProfit.ToString());
+                    document.ReplaceText("Profit Fournisseur :", "Profit Fournisseur : " + offre.TotalProfit.ToString());
                     document.ReplaceText("Montant Total HT :", "Montant Total HT : " + MTotalHT.ToString());
                     document.ReplaceText("Total TVA :", "Total TVA : " + TotalTVA.ToString());
                     document.ReplaceText("Montant Total TTC :", "Montant Total TTC : " + TotalTTC.ToString()); // Corrected line
                     document.ReplaceText("Montant déjà versé :", "Montant déjà versé : 0"); ;
                     document.ReplaceText("Reste à payer :", "Reste à payer : " + TotalTTC.ToString());
 
-                
-
-
-
-
-
+              
 
                 }
 
@@ -125,11 +119,55 @@ namespace GAP.Controllers
                 string fileName = $"fact-{PurchaseQuote.Supplier.Name}-{dateFormatted}.docx";
                 string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "templates", fileName);
                 document.SaveAs(outputPath);
+
+                // Pass the fileName to the view
+                ViewData["PdfFileName"] = fileName;
             }
 
             // Return the file for download or other processing (e.g., you can use a FileResult)
             return View(Bill);
         }
+        public IActionResult ViewPdf(string filename)
+        {
+            // Load the DOCX document
+            string docxPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "templates", filename);
+            Spire.Doc.Document document = new Spire.Doc.Document();
+            document.LoadFromFile(docxPath);
+
+            // Create a PDF stream
+            MemoryStream pdfStream = new MemoryStream();
+
+            // Save the document as PDF
+            document.SaveToStream(pdfStream, Spire.Doc.FileFormat.PDF);
+
+            // Reset the PDF stream position
+            pdfStream.Position = 0;
+
+            // Load the PDF into iTextSharp
+            PdfReader reader = new PdfReader(pdfStream.ToArray());
+
+            using (MemoryStream outputStream = new MemoryStream())
+            {
+                using (PdfStamper stamper = new PdfStamper(reader, outputStream))
+                {
+                    // Remove any existing watermarks and text
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        PdfContentByte content = stamper.GetUnderContent(i);
+                        // Clearing content on the page (you might need to adjust coordinates)
+                        content.Reset();
+                    }
+                }
+                string output = filename + ".pdf";
+                // Return the PDF for viewing
+                return File(outputStream.ToArray(), "application/pdf",output);
+            }
+        }
+
+
+
+
+
 
         // GET: Bills/Create
         public IActionResult Create(int PurchaseQuoteId)

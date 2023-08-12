@@ -16,7 +16,7 @@ namespace GAP.Controllers
 {
 
     [Authorize]
-    [Authorize(Roles = "Supplier")]
+    [Authorize(Roles = "Supplier , Admin")]
     public class ProductsController : Controller
     {
         private readonly GAPContext _context;
@@ -41,6 +41,7 @@ namespace GAP.Controllers
 
 
         }
+    
 
         // GET: Products1/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -142,7 +143,10 @@ namespace GAP.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(Product);
-        }
+        } 
+        
+        
+      
 
         // GET: Products1/Delete/5
         public async Task<IActionResult> Delete(int? id)

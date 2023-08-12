@@ -47,6 +47,18 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stock",
+                columns: table => new
+                {
+                    StockID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stock", x => x.StockID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Supplier",
                 columns: table => new
                 {
@@ -81,7 +93,8 @@ namespace GAP.Migrations
                     ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     ProfilePictureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HasCustomProfilePicture = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false)
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    ProjectManagerID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,6 +120,29 @@ namespace GAP.Migrations
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Project",
+                columns: table => new
+                {
+                    ProjectID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Budget = table.Column<double>(type: "float", nullable: false),
+                    ProjectManagerUserID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Project", x => x.ProjectID);
+                    table.ForeignKey(
+                        name: "FK_Project_User_ProjectManagerUserID",
+                        column: x => x.ProjectManagerUserID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -249,12 +285,19 @@ namespace GAP.Migrations
                     ItemsNumber = table.Column<int>(type: "int", nullable: true),
                     Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SupplierId = table.Column<int>(type: "int", nullable: false),
+                    ProjectID = table.Column<int>(type: "int", nullable: true),
                     PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
-                    SaleOfferID = table.Column<int>(type: "int", nullable: true)
+                    SaleOfferID = table.Column<int>(type: "int", nullable: true),
+                    StockID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.ProductID);
+                    table.ForeignKey(
+                        name: "FK_Product_Project_ProjectID",
+                        column: x => x.ProjectID,
+                        principalTable: "Project",
+                        principalColumn: "ProjectID");
                     table.ForeignKey(
                         name: "FK_Product_PurchaseQuote_PurchaseQuoteID",
                         column: x => x.PurchaseQuoteID,
@@ -265,12 +308,22 @@ namespace GAP.Migrations
                         column: x => x.SaleOfferID,
                         principalTable: "SaleOffer",
                         principalColumn: "SaleOfferID");
+                    table.ForeignKey(
+                        name: "FK_Product_Stock_StockID",
+                        column: x => x.StockID,
+                        principalTable: "Stock",
+                        principalColumn: "StockID");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bill_FinanceDepartmentManagerId",
                 table: "Bill",
                 column: "FinanceDepartmentManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_ProjectID",
+                table: "Product",
+                column: "ProjectID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_PurchaseQuoteID",
@@ -281,6 +334,16 @@ namespace GAP.Migrations
                 name: "IX_Product_SaleOfferID",
                 table: "Product",
                 column: "SaleOfferID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_StockID",
+                table: "Product",
+                column: "StockID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Project_ProjectManagerUserID",
+                table: "Project",
+                column: "ProjectManagerUserID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PurchaseQuote_PurchasingDepartmentManagerId",
@@ -345,7 +408,13 @@ namespace GAP.Migrations
                 name: "Sanction");
 
             migrationBuilder.DropTable(
+                name: "Project");
+
+            migrationBuilder.DropTable(
                 name: "PurchaseQuote");
+
+            migrationBuilder.DropTable(
+                name: "Stock");
 
             migrationBuilder.DropTable(
                 name: "SaleOffer");

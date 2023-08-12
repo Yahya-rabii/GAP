@@ -105,11 +105,21 @@ namespace GAP.Controllers
                     var PurchaseQuote = _context.PurchaseQuote.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
                     var Bill  = _context.Bill.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
                     var Supplier  = _context.Supplier.Where(f=>f.SupplierID==PurchaseQuote.SupplierID).FirstOrDefault();
-                    
+                    var saleOffer = _context.SaleOffer.Include(so=>so.Products).Where(so=>so.SupplierId==Supplier.SupplierID).FirstOrDefault();   
+                    var Products = saleOffer.Products.ToList();
+
+                    var stock = new Stock();
                     if (Bill != null && Supplier !=null)
                     {
                         Bill.Validity =  true;
                         Supplier.TransactionNumber++;
+                        foreach (var product in Products)
+                        {
+                            stock.Products.Add(product);
+
+                        }
+
+                        _context.Stock.Add(stock);
                         _context.Update(Bill);
                         _context.Update(Supplier);
 
@@ -164,7 +174,7 @@ namespace GAP.Controllers
         }
 
         // GET: QualityTestReports/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit( int? id)
         {
             if (id == null || _context.QualityTestReport == null)
             {
@@ -195,6 +205,37 @@ namespace GAP.Controllers
             {
                 try
                 {
+                    if (QualityTestReport.CntItemsValidity && QualityTestReport.StateValidity && QualityTestReport.OperationValidity)
+                    {
+                        var PurchaseQuote = _context.PurchaseQuote.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
+                        var Bill = _context.Bill.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
+                        var Supplier = _context.Supplier.Where(f => f.SupplierID == PurchaseQuote.SupplierID).FirstOrDefault();
+                        var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.SupplierID).FirstOrDefault();
+                        var Products = saleOffer.Products.ToList();
+
+                        if (Bill != null && Supplier != null)
+                        {
+                            Bill.Validity = true;
+                            Supplier.TransactionNumber++;
+                            foreach (var product in Products)
+                            {
+                                var productInStock = _context.Stock
+                                    .Where(s => s.Products.Any(p => p.ProductID == product.ProductID))
+                                    .FirstOrDefault();
+
+                                if (productInStock == null)
+                                {
+                                    var stock = new Stock();
+                                    stock.Products.Add(product);
+                                    _context.Stock.Add(stock);
+                                }
+                            }
+
+                            _context.Update(Bill);
+                            _context.Update(Supplier);
+                        }
+                    }
+
                     _context.Update(QualityTestReport);
                     await _context.SaveChangesAsync();
                 }
@@ -213,6 +254,7 @@ namespace GAP.Controllers
             }
             return View(QualityTestReport);
         }
+
 
         // GET: QualityTestReports/Delete/5
         public async Task<IActionResult> Delete(int? id)

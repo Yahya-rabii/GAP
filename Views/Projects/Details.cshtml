@@ -1,0 +1,76 @@
+﻿@model GAP.Models.Project
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+
+
+
+                <h1 style="text-align:center;">Details </h1>
+                <hr />
+                <dl class="row">
+                    <div class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.StartDate)
+                        </dd>
+                    </div>
+
+                    <div class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.EndDate)
+                        </dd>
+                    </div>
+
+                    <div class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                    </div>
+
+                    <div class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                    </div>
+
+                    <div class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Budget)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.Budget)
+                        </dd>
+                    </div>
+                </dl>
+            <div class="BTNS">
+                <a asp-action="Edit" asp-route-id="@Model?.ProjectID">
+                    <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                </a>
+
+                <a asp-action="Delete" asp-route-id="@Model?.ProjectID">
+                    <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                </a>
+                <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+            </div>
+            </div>
+
+        </div>
+    </div>
+</div>

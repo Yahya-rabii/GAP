@@ -1,0 +1,75 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.Stock>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+        <div class="datatable-container">
+            <h1 class="form-header">Products</h1>
+
+            <div class="header-tools">
+                <div class="tools">
+                    <div class="pagination-container">
+                        <!-- Pagination links code here -->
+                    </div>
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Stock ID</th>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+                        <th>Project</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stock in Model)
+                    {
+                        @foreach (var product in stock.Products)
+                        {
+                            <tr>
+                                <td>@stock.StockID</td>
+                                <td>@product.ProductID</td>
+                                <td>@product.Name</td>
+                                <td>@product.Unitprice</td>
+                                <td>@product.Totalprice</td>
+                                    <form method="post" asp-controller="Stocks" asp-action="Add">
+                                        <!-- Add these hidden fields to send data to the "Add" action -->
+                                        <input type="hidden" name="productId" value="@product.ProductID" />
+                                        <td>
+                                        <div class="pselect">
+                                            <input type="hidden" name="stockId" value="@stock.StockID" /> <!-- Add hidden field for stock ID -->
+                                            <select id="respFinnance" name="respFinnanceEmail">
+                                                @if (ViewBag.Projects != null)
+                                                {
+                                                    @foreach (var project in ViewBag.Projects)
+                                                    {
+                                                        <option value="@project.ProjectID">@project.ProjectName</option>
+                                                        <input type="hidden" name="ProjectID" value="@project.ProjectID" />
+
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        </td>
+                                        <td>
+                                        <div>
+                                            <input type="submit" value="ADD" class="SUB-button" />
+                                        </div>
+                                        </td>
+                                    </form>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </article>
+</main>

@@ -65,9 +65,19 @@
                 @Html.DisplayFor(modelItem => item.PurchaseQuoteID)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.BillID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BillID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BillID">Delete</a>
+
+                                <div class="BTNS">
+                                    <a asp-action="Edit" asp-route-id="@item.BillID">
+                                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.BillID">
+                                        <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.BillID">
+                                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                                    </a>
+                                </div>
+
             </td>
         </tr>
 }

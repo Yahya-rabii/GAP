@@ -98,11 +98,12 @@
                     <ul>
                         <ul class="dropdownad-menu">
 
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service Achat</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "QualityTestingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service qualite</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "FinanceDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Resp Service Finances</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingReceptionists")'">  <i class="bx bx-message-square-add"></i>Recep Service Achats</a></li>
-                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Suppliers")'"> <i class="bx bx-message-square-add"></i> Supplier</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i>Purchasing DM</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "QualityTestingDepartmentManagers")'"> <i class="bx bx-message-square-add"></i> Quality Testing DM</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "FinanceDepartmentManagers")'"> <i class="bx bx-message-square-add"></i>Finance DM</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "PurchasingReceptionists")'">  <i class="bx bx-message-square-add"></i>PD Receptionist</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "ProjectManagers")'">  <i class="bx bx-message-square-add"></i>Project Manager</a></li>
+                            <li><a class="link" onclick="location.href='@Url.Action("Create", "Suppliers")'"> <i class="bx bx-message-square-add"></i>Supplier</a></li>
                         </ul>
                     </ul>
                 </li>
@@ -354,8 +355,9 @@
 
 
 
-        else if (User.IsInRole("Supplier"))
+     else if (User.IsInRole("Supplier"))
     {
+
 
 
         <!-- loader -->
@@ -375,7 +377,7 @@
                                 <div class="full">
                                     <div class="center-desk">
                                         <div class="logo">
-                                            <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                                            <a  onclick="location.href='@Url.Action("Index", "Home")'"><img src="~/images/logo.png" alt="#" /></a>
                                         </div>
                                     </div>
                                 </div>
@@ -479,6 +481,9 @@
                 <!-- end header inner -->
                 @if (User.Identity.IsAuthenticated)
                 {
+
+
+
                     <div class="sidenav">
                         <div class="menu-btn">
                             <div class="line line--1"></div>
@@ -488,20 +493,21 @@
 
                         <div class="sidenav-links">
 
-                            
+                            @if (User.IsInRole("Supplier"))
+                            {
 
                                 <a class="link" onclick="location.href='@Url.Action("Index", "SaleOffers")'">Offres Ventes</a>
-                                //+add
                                 <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Demandes Achats</a>
                                 <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
-                                <a class="link" onclick="location.href='@Url.Action("Details", "Suppliers")'">Account</a>
 
-                            
-                            
-
+                            }
+                          
 
                         </div>
                     </div>
+
+
+             
                 }
 
 
@@ -582,7 +588,7 @@
         <script src="~/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/jquery-3.0.0.min.js"></script>
         <script src="~/js/plugin.js"></script>
-        <script src="~/js/site.js"></script>
+        <script src="~/js/sites.js"></script>
         <script src="~/js/Notifications.js"></script>
         <script src="~/js/loader.js"></script>
         <script src="~/js/customs.js"></script>
@@ -618,7 +624,7 @@ else{
                             <div class="full">
                                 <div class="center-desk">
                                     <div class="logo">
-                                        <a href="index.html"><img src="~/images/logo.png" alt="#" /></a>
+                                            <a onclick="location.href='@Url.Action("Index", "Home")'"><img src="~/images/logo.png" alt="#" /></a>
                                     </div>
                                 </div>
                             </div>
@@ -752,10 +758,8 @@ else{
 
                             <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "SaleOffers")'">Offre Ventes</a>
                                 <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuotes")'">PurchaseQuote</a>
-                            //+add
                             <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseRequests")'">Demande Achats</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "Sanctions")'">Sanctions</a>
-                            //+add
 
                         }
                         else if (User.IsInRole("FinanceDepartmentManager"))
@@ -771,15 +775,20 @@ else{
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "ReceptionReports")'">ReceptionReports</a>
                                 <a class="link" onclick="location.href='@Url.Action("IndexPurchaseQuote", "PurchasingReceptionists")'">Current Arrivals</a>
-                            //+add
 
                         }
                         else if (User.IsInRole("QualityTestingDepartmentManager"))
                         {
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
-                            //+add
                             <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuote")'">PurchaseQuote</a>
+
+                        }
+                            else if (User.IsInRole("ProjectManager"))
+                        {
+
+                                <a class="link" onclick="location.href='@Url.Action("IndexProjectManager", "Stocks")'">Products</a>
+                                <a class="link" onclick="location.href='@Url.Action("Index", "Projects")'">Projects</a>
 
                         }
 

@@ -26,8 +26,6 @@
             @Html.DisplayFor(model => model.PurchaseQuoteID)
         </dd>
     </dl>
-</div>
-<div>
     <div class="BTNS">
         <a asp-action="Edit" asp-route-id="@Model?.BillID">
             <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
@@ -38,8 +36,15 @@
         </a>
         <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
 
-    </div>
-</div>
+                    <a asp-action="ViewPdf" asp-route-filename="@ViewData["PdfFileName"]" target="_blank">
+                        <input type="button" class="SUB-button" value="View as PDF" />
+                    </a>
+
+            </div>
+            <div>
+                </div>
+            </div>
+
 
 </div>
 </div>

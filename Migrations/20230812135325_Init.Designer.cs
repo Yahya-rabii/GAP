@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230806220945_Init")]
+    [Migration("20230812135325_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -92,10 +92,16 @@ namespace GAP.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProjectID")
+                        .HasColumnType("int");
+
                     b.Property<int?>("PurchaseQuoteID")
                         .HasColumnType("int");
 
                     b.Property<int?>("SaleOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StockID")
                         .HasColumnType("int");
 
                     b.Property<int>("SupplierId")
@@ -109,11 +115,50 @@ namespace GAP.Migrations
 
                     b.HasKey("ProductID");
 
+                    b.HasIndex("ProjectID");
+
                     b.HasIndex("PurchaseQuoteID");
 
                     b.HasIndex("SaleOfferID");
 
+                    b.HasIndex("StockID");
+
                     b.ToTable("Product");
+                });
+
+            modelBuilder.Entity("GAP.Models.Project", b =>
+                {
+                    b.Property<int>("ProjectID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProjectID"));
+
+                    b.Property<double>("Budget")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProjectManagerUserID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProjectID");
+
+                    b.HasIndex("ProjectManagerUserID");
+
+                    b.ToTable("Project");
                 });
 
             modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
@@ -301,6 +346,19 @@ namespace GAP.Migrations
                     b.ToTable("Sanction");
                 });
 
+            modelBuilder.Entity("GAP.Models.Stock", b =>
+                {
+                    b.Property<int>("StockID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StockID"));
+
+                    b.HasKey("StockID");
+
+                    b.ToTable("Stock");
+                });
+
             modelBuilder.Entity("GAP.Models.Supplier", b =>
                 {
                     b.Property<int>("SupplierID")
@@ -454,6 +512,16 @@ namespace GAP.Migrations
                     b.HasDiscriminator().HasValue("FinanceDepartmentManager");
                 });
 
+            modelBuilder.Entity("GAP.Models.ProjectManager", b =>
+                {
+                    b.HasBaseType("GAP.Models.User");
+
+                    b.Property<int>("ProjectManagerID")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("ProjectManager");
+                });
+
             modelBuilder.Entity("GAP.Models.PurchasingDepartmentManager", b =>
                 {
                     b.HasBaseType("GAP.Models.User");
@@ -486,6 +554,10 @@ namespace GAP.Migrations
 
             modelBuilder.Entity("GAP.Models.Product", b =>
                 {
+                    b.HasOne("GAP.Models.Project", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ProjectID");
+
                     b.HasOne("GAP.Models.PurchaseQuote", null)
                         .WithMany("Products")
                         .HasForeignKey("PurchaseQuoteID");
@@ -493,6 +565,17 @@ namespace GAP.Migrations
                     b.HasOne("GAP.Models.SaleOffer", null)
                         .WithMany("Products")
                         .HasForeignKey("SaleOfferID");
+
+                    b.HasOne("GAP.Models.Stock", null)
+                        .WithMany("Products")
+                        .HasForeignKey("StockID");
+                });
+
+            modelBuilder.Entity("GAP.Models.Project", b =>
+                {
+                    b.HasOne("GAP.Models.ProjectManager", null)
+                        .WithMany("Projects")
+                        .HasForeignKey("ProjectManagerUserID");
                 });
 
             modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
@@ -556,6 +639,11 @@ namespace GAP.Migrations
                     b.Navigation("Supplier");
                 });
 
+            modelBuilder.Entity("GAP.Models.Project", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("GAP.Models.PurchaseQuote", b =>
                 {
                     b.Navigation("Products");
@@ -566,9 +654,19 @@ namespace GAP.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("GAP.Models.Stock", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("GAP.Models.FinanceDepartmentManager", b =>
                 {
                     b.Navigation("HistoriqueBills");
+                });
+
+            modelBuilder.Entity("GAP.Models.ProjectManager", b =>
+                {
+                    b.Navigation("Projects");
                 });
 
             modelBuilder.Entity("GAP.Models.PurchasingDepartmentManager", b =>

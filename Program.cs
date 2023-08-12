@@ -25,6 +25,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
     options.AddPolicy("Supplier", policy => policy.RequireClaim(ClaimTypes.Role, "Supplier"));
+    options.AddPolicy("ProjectManager", policy => policy.RequireClaim(ClaimTypes.Role, "ProjectManager"));
     options.AddPolicy("PurchasingDepartmentManagerPolicy", policy => policy.RequireRole("PurchasingDepartmentManager"));
     options.AddPolicy("PurchasingReceptionistPolicy", policy => policy.RequireRole("PurchasingReceptionist"));
     options.AddPolicy("FinanceDepartmentManagerPolicy", policy => policy.RequireRole("FinanceDepartmentManager"));

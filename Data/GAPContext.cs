@@ -58,6 +58,12 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.NotificationSupplier> NotificationSupplier { get; set; } = default!;
 
+        public DbSet<GAP.Models.Project> Project { get; set; } = default!;
+
+        public DbSet<GAP.Models.ProjectManager> ProjectManager { get; set; } = default!;
+
+        public DbSet<GAP.Models.Stock> Stock { get; set; } = default!;
+
 
     }
 }

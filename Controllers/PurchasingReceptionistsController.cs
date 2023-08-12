@@ -47,7 +47,9 @@ namespace GAP.Controllers
 
         public async Task<IActionResult> IndexPurchaseQuote(int? page, string SearchString)
         {
-            IQueryable<PurchaseQuote> PurchaseQuoteiq = from o in _context.PurchaseQuote.Include(o => o.Supplier).Include(o => o.Products) select o;
+            // Query to retrieve PurchaseQuotes that are not added to the reception report
+            IQueryable<PurchaseQuote> PurchaseQuoteiq = _context.PurchaseQuote.Include(o => o.Supplier).Include(o => o.Products)
+                                                        .Where(pq => !_context.ReceptionReport.Any(rr => rr.PurchaseQuoteId == pq.PurchaseQuoteID));
 
             if (!string.IsNullOrEmpty(SearchString))
             {
@@ -63,7 +65,7 @@ namespace GAP.Controllers
 
             // Materialize the factiq query into a list to avoid the DataReader conflict
             List<Bill> BillsList = await _context.Bill.ToListAsync();
-            List<Sanction> sanctions =  await _context.Sanction.ToListAsync();
+            List<Sanction> sanctions = await _context.Sanction.ToListAsync();
 
             // Iterate through the PurchaseQuote items and check if a corresponding Bill exists
             foreach (var PurchaseQuoteItem in PurchaseQuoteiq)
@@ -84,12 +86,11 @@ namespace GAP.Controllers
 
             ViewBag.Bills = BillsList;
 
-           // Save the changes to the database
-           await _context.SaveChangesAsync();
+            // Save the changes to the database
+            await _context.SaveChangesAsync();
 
             return View(await PurchaseQuoteiq.ToPagedListAsync(pageNumber, pageSize));
         }
-
 
 
 
@@ -131,6 +132,9 @@ namespace GAP.Controllers
 
                 };
                 _context.ReceptionReport.Add(ReceptionReport);
+
+
+
 
 
 
