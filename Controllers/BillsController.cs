@@ -158,7 +158,9 @@ namespace GAP.Controllers
                         content.Reset();
                     }
                 }
-                string output = filename + ".pdf";
+                string filenameWithoutExtension = filename.Replace(".docx", "");
+                string output = filenameWithoutExtension + ".pdf";
+
                 // Return the PDF for viewing
                 return File(outputStream.ToArray(), "application/pdf",output);
             }
