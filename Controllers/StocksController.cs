@@ -22,11 +22,23 @@ namespace GAP.Controllers
         }
 
         // GET: Stocks
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
-              return _context.Stock != null ? 
-                          View(await _context.Stock.ToListAsync()) :
-                          Problem("Entity set 'GAPContext.Stock'  is null.");
+            IQueryable<Stock> iseriq = from s in _context.Stock.Include(s=>s.Products)
+                                       select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.Stock
+                    .Include(s => s.Products)
+                    .Where(s => s.Products.Any(p => p.Name.ToLower().Contains(SearchString.ToLower().Trim())))
+                    ;
+            }
+
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
         public async Task<IActionResult> IndexProjectManager(int? page)
@@ -68,8 +80,6 @@ namespace GAP.Controllers
 
 
 
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(int productId, int projectId)
@@ -80,6 +90,8 @@ namespace GAP.Controllers
             if (product != null && project != null)
             {
                 project.Products.Add(product);
+                var stock = _context.Stock.FirstOrDefault(); // Adjust this part based on your logic to get the appropriate stock entity
+                stock.Products.Remove(product); // Remove from stock.products list
                 await _context.SaveChangesAsync();
             }
 

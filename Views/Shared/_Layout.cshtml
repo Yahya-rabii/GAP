@@ -63,12 +63,7 @@
                         <span class="links_name">Dashboard</span>
                     </a>
                 </li>
-                <li>
-                    <a asp-area="" asp-controller="Products" asp-action="Index">
-                        <i class="bx bx-box"></i>
-                        <span class="links_name">Products</span>
-                    </a>
-                </li>
+                
                 <li>
                     <a asp-area="" asp-controller="Suppliers" asp-action="Index">
                         <i class="bx bx-support"></i>
@@ -76,9 +71,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a asp-area="" asp-controller="Stocks" asp-action="Index">
                         <i class="bx bx-coin-stack"></i>
-                        <span class="links_name">Stock</span>
+                        <span class="links_name">Stocks</span>
                     </a>
                 </li>
 
@@ -325,6 +320,54 @@
                             </div>
                         </div>
                     </div>
+                    <br/>
+                    <div class="sales-boxes">
+                        <div class="recent-sales box">
+                            <div class="title">Project Managers</div>
+                            <div class="sales-details">
+                                <div class="table-container">
+                                    <table class="user-table" style="width:fit-content; white-space: nowrap;">
+                                        <thead>
+                                            <tr>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Email</th>
+                                                <th>Projrct Name</th>
+                                                <th>Projrct Budget</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                            @if (ViewBag.PManagers != null)
+                                            {
+                                                @foreach (var pmanagers in ViewBag.PManagers)
+                                                {
+                                                    <tr>
+                                                        <td>@pmanagers.FirstName</td>
+                                                        <td>@pmanagers.LastName</td>
+                                                        <td>@pmanagers.Email</td>
+                                                    
+
+                                                        @foreach (var project in pmanagers.Projects)
+                                                                {
+                                                            <td>@project.Name</td>
+                                                            <td>@project.Budget</td>
+
+                                                        }
+
+                                                        <td></td>
+                                                    </tr>
+                                                }
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                           
+                        </div>
+                   
+                    </div>
+                    <br/>
                 </div>
             }
 

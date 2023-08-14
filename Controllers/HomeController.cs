@@ -1,6 +1,7 @@
 ﻿using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -20,18 +21,23 @@ namespace GAP.Controllers
 
         public IActionResult Index()
         {
-           
-                var totalProducts = _context.Product.Count();
-                var totalUsers = _context.User.Count();
+
+            var totalProducts = _context.Stock
+             .SelectMany(s => s.Products)
+             .Count();
+
+
+            var totalUsers = _context.User.Count();
                 var totalSuppliers = _context.Supplier.Count();
 
-                var users = _context.User.ToList();
+                var users = _context.User.Where(u=>u.Role != UserRole.Project_Manager).ToList();
                 var suppliers = _context.Supplier.ToList();
-
+                var pmanagers = _context.ProjectManager.Where(u => u.Role == UserRole.Project_Manager).Include(u=>u.Projects).ToList();
                 ViewBag.TotalProducts = totalProducts;
                 ViewBag.TotalUsers = totalUsers;
                 ViewBag.TotalSuppliers = totalSuppliers;
                 ViewBag.Users = users;
+                ViewBag.PManagers = pmanagers;
                 ViewBag.Supplier = suppliers;
 
                 return View();

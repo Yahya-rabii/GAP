@@ -1,29 +1,88 @@
-﻿@model IEnumerable<GAP.Models.Stock>
+﻿@model X.PagedList.IPagedList<GAP.Models.Stock>
 
 @{
     ViewData["Title"] = "Index";
 }
+@if (User.IsInRole("Admin"))
+{
+    <main>
+        <article>
+            <div class="addatatable-container">
+                <h1 class="form-header">Products</h1>
 
-<h1>Index</h1>
+                <!-- ======= Header tools ======= -->
+                <div class="adheader-tools">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.StockID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.StockID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.StockID">Delete</a>
-            </td>
-        </tr>
+
+
+                    <div class="adtools">
+                        <!-- Pagination Links -->
+                        <div class="adpagination-container">
+                            <ul class="pagination">
+                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                                </li>
+                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                                </li>
+                                <li class="page-item active">
+                                    <a class="page-link">@Model.PageNumber</a>
+                                </li>
+                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                                </li>
+                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="adsearch">
+                        <form method="get" asp-action="Index">
+                            <input type="search" id="form1" class="adsearch-input" placeholder="Product Name..." name="SearchString" />
+                        </form>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Stock ID</th>
+
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Product Description</th>
+                            <th>Unit Price</th>
+                            <th>Total Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (@Model != null)
+                        {
+                            @foreach (var stock in Model)
+                            {
+
+                                @foreach (var product in stock.Products)
+                                {
+                                    <tr>
+                                        <td>@stock.StockID</td>
+
+                                        <td>@product.ProductID</td>
+                                        <td>@product.Name</td>
+                                        <td>@product.Desc</td>
+                                        <td>@product.Unitprice</td>
+                                        <td>@product.Totalprice</td>
+
+                                    </tr>
+                                }}
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </article>
+    </main>
+
 }
-    </tbody>
-</table>
