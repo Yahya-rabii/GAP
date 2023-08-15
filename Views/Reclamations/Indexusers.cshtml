@@ -1,0 +1,156 @@
+﻿@model GAP.Models.ReclamationReply
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+
+                <h1 class="form-header"> Reclamations </h1>
+
+                <div class="comment-thread">
+                    @if (ViewBag.ReclamationsWithRepliesAndUsers != null)
+                    {
+                        @foreach (var reclamationDetails in ViewBag.ReclamationsWithRepliesAndUsers)
+                        {
+                            var reclamation = reclamationDetails.Reclamation;
+                            var user = reclamationDetails.User;
+                            var reclamationReply = reclamationDetails.ReclamationReply;
+
+                            <details open class="comment" id="comment-@reclamation.ReclamationID">
+                                <a href="#comment-@reclamation.ReclamationID" class="comment-border-link">
+                                    <span class="sr-only">Jump to comment-@reclamation.ReclamationID</span>
+                                </a>
+                                <summary>
+                                    <div class="comment-heading">
+                                        <div class="comment-voting">
+                                            <button type="button">
+                                                <span aria-hidden="true">&#9650;</span>
+                                                <span class="sr-only">Vote up</span>
+                                            </button>
+                                            <button type="button">
+                                                <span aria-hidden="true">&#9660;</span>
+                                                <span class="sr-only">Vote down</span>
+                                            </button>
+                                        </div>
+                                        <div class="comment-info">
+                                            <a href="#" class="comment-author">@user.FirstName @user.LastName</a>
+                                            <p class="m-0">
+                                                @reclamation.CreationDate
+                                            </p>
+                                        </div>
+                                    </div>
+                                </summary>
+
+                                <div class="comment-body">
+                                    <p>
+                                        @reclamation.Description
+
+                                    </p>
+                                    <form asp-action="DeleteReclamation" asp-controller="Reclamations" method="post" class="d-flex align-items-center">
+
+
+
+                                        <div class="form-group">
+                                            <input type="hidden" asp-for="ReclamationID" value="@reclamation.ReclamationID" />
+                                        </div>
+                                      
+                                            <button class="btn">
+                                                <svg viewBox="0 0 15 17.5" height="15.5" width="15" xmlns="http://www.w3.org/2000/svg" class="icon">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" fill="white"></path>
+                                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" fill="white"></path>
+                                                </svg>
+
+                                            </button>
+                                    
+
+                                    </form>
+
+
+                                 
+                                    <form asp-action="Create" class="reply-form d-none" id="comment-@reclamation.ReclamationID-reply-form">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <input asp-for="ReclamationID" value="@reclamation.ReclamationID" hidden />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Answer" class="control-label"></label>
+                                            <input asp-for="Answer" class="form-control" />
+                                            <span asp-validation-for="Answer" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="Create" class="btn btn-primary" />
+                                            <button type="button" data-toggle="reply-form" data-target="comment-@reclamation.ReclamationID-reply-form">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="replies">
+                                    @if (reclamationReply != null)
+                                    {
+                                        @foreach(var ReclamationRep in reclamationReply)
+                                        {
+                                            <details open class="comment" id="reply-@ReclamationRep.ReclamationReplyID">
+                                                <a href="#reply-@ReclamationRep.ReclamationReplyID" class="comment-border-link">
+                                                    <span class="sr-only">Jump to reply-@ReclamationRep.ReclamationReplyID</span>
+                                                </a>
+                                                <summary>
+                                                    <div class="comment-heading">
+                                                        <div class="comment-voting">
+                                                            <button type="button">
+                                                                <span aria-hidden="true">&#9650;</span>
+                                                                <span class="sr-only">Vote up</span>
+                                                            </button>
+                                                            <button type="button">
+                                                                <span aria-hidden="true">&#9660;</span>
+                                                                <span class="sr-only">Vote down</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="comment-info">
+                                                            <a href="#" class="comment-author">Admin</a>
+                                                            <p class="m-0">
+                                                                @* Display relevant information about the reclamation reply creation date *@
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </summary>
+
+                                                <div class="comment-body">
+                                                   
+
+                                                   
+                                                        <p>
+                                                            @ReclamationRep.Answer
+                                                       
+                                                    </p>
+
+
+
+                                                    
+                                                </div>
+                                            </details>
+                                        }
+                                      
+                                    }
+                                </div>
+                            </details>
+                        }
+                    }
+                </div>
+
+
+                <div>
+                    <a asp-action="Create">Report Bug</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -64,6 +64,10 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.Stock> Stock { get; set; } = default!;
 
+        public DbSet<GAP.Models.Reclamation> Reclamation { get; set; } = default!;
+
+        public DbSet<GAP.Models.ReclamationReply> ReclamationReply { get; set; } = default!;
+
 
     }
 }

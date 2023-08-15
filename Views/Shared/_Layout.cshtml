@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="~/css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
 </head>
 
@@ -57,13 +58,18 @@
             <ul class="nav-links">
 
 
-                <li>
+               <li>
                     <a asp-area="" asp-controller="Home" asp-action="Index">
                         <i class="bx bx-grid-alt"></i>
                         <span class="links_name">Dashboard</span>
                     </a>
-                </li>
-                
+            </li>
+                <li>
+                    <a asp-area="" asp-controller="Reclamationreplies" asp-action="Indexadmin">
+                        <i class="bx bx-bug"></i>
+                        <span class="links_name">Reclamations</span>
+                    </a>
+            </li>
                 <li>
                     <a asp-area="" asp-controller="Suppliers" asp-action="Index">
                         <i class="bx bx-support"></i>
@@ -84,6 +90,8 @@
                     </a>
                 </li>
                   
+
+
                 <li class="dropdownad">
 
                     <a href="#">
@@ -103,8 +111,9 @@
                     </ul>
                 </li>
 
-            
+        
 
+         
 
                 <li class="log_out">
                     <a onclick="location.href='@Url.Action("Logout", "Users")'">
@@ -391,6 +400,7 @@
         <script src="~/js/adminNotification.js"></script>
         <script src="~/js/adprofile.js"></script>
         <script src="~/js/ProfileEdit.js"></script>
+        <script src="~/js/reply.js"></script>
 
         @await RenderSectionAsync("Scripts", required: false)
 
@@ -637,6 +647,7 @@
         <script src="~/js/customs.js"></script>
         <script src="~/js/profile.js"></script>
         <script src="~/js/ProfileEdit.js"></script>
+        <script src="~/js/bug.js"></script>
 
         <!-- sidebar -->
         <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -803,12 +814,16 @@ else{
                                 <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuotes")'">PurchaseQuote</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseRequests")'">Demande Achats</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "Sanctions")'">Sanctions</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
+
 
                         }
                         else if (User.IsInRole("FinanceDepartmentManager"))
                         {
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "Bills")'">Bills</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
+
 
 
                         }
@@ -818,6 +833,8 @@ else{
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "ReceptionReports")'">ReceptionReports</a>
                                 <a class="link" onclick="location.href='@Url.Action("IndexPurchaseQuote", "PurchasingReceptionists")'">Current Arrivals</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
+
 
                         }
                         else if (User.IsInRole("QualityTestingDepartmentManager"))
@@ -825,6 +842,8 @@ else{
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuote")'">PurchaseQuote</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
+
 
                         }
                             else if (User.IsInRole("ProjectManager"))
@@ -832,6 +851,8 @@ else{
 
                                 <a class="link" onclick="location.href='@Url.Action("IndexProjectManager", "Stocks")'">Products</a>
                                 <a class="link" onclick="location.href='@Url.Action("Index", "Projects")'">Projects</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
+
 
                         }
 
@@ -925,10 +946,11 @@ else{
     <script src="~/js/customs.js"></script>
     <script src="~/js/profile.js"></script>
     <script src="~/js/ProfileEdit.js"></script>
+        <script src="~/js/reply.js"></script>
 
     <!-- sidebar -->
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
-   
+
 
 
 @await RenderSectionAsync("Scripts", required: false)

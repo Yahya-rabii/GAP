@@ -12,9 +12,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GAP.Controllers
 {
+
     public class UsersController : Controller
     {
         private readonly GAPContext _context;
@@ -344,6 +347,8 @@ namespace GAP.Controllers
 
 
         /*---------------------------------------------------------------*/
+
+
 
 
         // GET: User/Login
