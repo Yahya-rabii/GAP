@@ -77,7 +77,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.CompanyName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
@@ -100,11 +100,14 @@
             </td>
             <td>
                                 <div class="BTNS">
-                                    <a asp-action="Edit" asp-route-id="@item.SupplierID">
+                                    <a asp-action="Edit" asp-route-id="@item.UserID">
                                         <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
                                     </a>
-                                    <a asp-action="Details" asp-route-id="@item.SupplierID">
+                                    <a asp-action="Details" asp-route-id="@item.UserID">
                                         <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
+                                    </a> 
+                                    <a asp-action="Delete" asp-route-id="@item.UserID">
+                                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
                                     </a>
 
                                 </div>

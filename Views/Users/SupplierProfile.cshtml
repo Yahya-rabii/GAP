@@ -1,0 +1,71 @@
+﻿@model GAP.Models.Supplier
+
+@{
+    ViewData["Title"] = "Supplier Profile";
+}
+<div class="pcontainer">
+    <div class="main-body">
+        <div class="profile-container">
+            <div class="card profile-card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        @if (ViewBag.UserProfilePicture != null)
+                        {
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(ViewBag.UserProfilePicture)" alt="Profile Picture" class="rounded-circle" />
+                        }
+                        else
+                        {
+                            <img src="~/images/image-prof.png" alt="Default Profile Picture" class="rounded-circle" />
+                        }
+
+                        <div class="mt-3">
+                            <h4>Hello @Model.FirstName</h4>
+
+                            @foreach (var role in ViewBag.CurrentUserRoles)
+                            {
+                                <p class="mb-1">@role</p>
+
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card uprofile-details">
+            <div class="card-body">
+                <div class="row">
+                    <div>
+                        <h6>Company Name</h6>
+                    </div>
+                    <div class="texts">
+                        @Html.DisplayFor(model => model.CompanyName)
+                    </div>
+                </div>             
+                <hr>
+                <div class="row">
+                    <div>
+                        <h6>Email</h6>
+                    </div>
+                    <div class="texts">
+                        @Html.DisplayFor(model => model.Email)
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div>
+                        <a asp-action="SupplierProfileEdit" asp-route-id="@Model?.UserID">
+                            <input type="submit" value="Edit" class="form-button EDI-button" style="width: 50px;" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -34,7 +34,7 @@ namespace GAP.Controllers
                                       select f;
 
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         
@@ -66,7 +66,7 @@ namespace GAP.Controllers
                 // Replace placeholders in the template with the corresponding data
                 document.ReplaceText("Numéro de facture :", "Numéro de facture : #" + DateTime.Now.Date.ToString("yyyyMMdd") + "-" +Bill.BillID.ToString());
                 document.ReplaceText("Date de Création :", "Date de Création : " + PurchaseQuote.CreationDate.Date.ToString());
-                document.ReplaceText("Nom du Fournisseur :", "Nom du Fournisseur : " + PurchaseQuote.Supplier.Name.ToString());
+                document.ReplaceText("Nom du Fournisseur :", "Nom du Fournisseur : " + PurchaseQuote.Supplier.CompanyName.ToString());
                 document.ReplaceText("Email Fournisseur :", "Email Fournisseur : " + PurchaseQuote.Supplier.Email.ToString());
                 document.ReplaceText("Adresse Fournisseur :", "Adresse Fournisseur : " + PurchaseQuote.Supplier.Adresse.ToString());
                 document.ReplaceText("Code Postal Fournisseur :", "Code Postal Fournisseur : " + PurchaseQuote.Supplier.PostalCode.ToString());
@@ -116,7 +116,7 @@ namespace GAP.Controllers
 
                 // Save the updated document with the new data
                 string dateFormatted = DateTime.Now.Date.ToString("yyyyMMdd");
-                string fileName = $"fact-{PurchaseQuote.Supplier.Name}-{dateFormatted}.docx";
+                string fileName = $"fact-{PurchaseQuote.Supplier.CompanyName}-{dateFormatted}.docx";
                 string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "templates", fileName);
                 document.SaveAs(outputPath);
 

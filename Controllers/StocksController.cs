@@ -36,7 +36,7 @@ namespace GAP.Controllers
             }
 
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
@@ -70,7 +70,7 @@ namespace GAP.Controllers
                     .ToList();
 
 
-                int pageSize = 2;
+                int pageSize = 5;
                 int pageNumber = page ?? 1;
                 return View(await stockItemsWithProductsNotInProjects.ToPagedListAsync(pageNumber, pageSize));
             }

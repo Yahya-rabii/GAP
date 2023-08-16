@@ -31,6 +31,37 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Reclamation",
+                columns: table => new
+                {
+                    ReclamationID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReclamationTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserID = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BugPicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reclamation", x => x.ReclamationID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ReclamationReply",
+                columns: table => new
+                {
+                    ReclamationReplyID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReclamationID = table.Column<int>(type: "int", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReclamationReply", x => x.ReclamationReplyID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sanction",
                 columns: table => new
                 {
@@ -59,26 +90,6 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Supplier",
-                columns: table => new
-                {
-                    SupplierID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Adresse = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PostalCode = table.Column<int>(type: "int", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    TransactionNumber = table.Column<int>(type: "int", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Supplier", x => x.SupplierID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -94,7 +105,14 @@ namespace GAP.Migrations
                     ProfilePictureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HasCustomProfilePicture = table.Column<bool>(type: "bit", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    ProjectManagerID = table.Column<int>(type: "int", nullable: true)
+                    ProjectManagerID = table.Column<int>(type: "int", nullable: true),
+                    SupplierID = table.Column<int>(type: "int", nullable: true),
+                    CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Adresse = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    PostalCode = table.Column<int>(type: "int", nullable: true),
+                    PhoneNumber = table.Column<int>(type: "int", nullable: true),
+                    TransactionNumber = table.Column<int>(type: "int", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,10 +250,10 @@ namespace GAP.Migrations
                         principalColumn: "PurchaseRequestID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SaleOffer_Supplier_SupplierId",
+                        name: "FK_SaleOffer_User_SupplierId",
                         column: x => x.SupplierId,
-                        principalTable: "Supplier",
-                        principalColumn: "SupplierID",
+                        principalTable: "User",
+                        principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -262,13 +280,13 @@ namespace GAP.Migrations
                         principalTable: "SaleOffer",
                         principalColumn: "SaleOfferID");
                     table.ForeignKey(
-                        name: "FK_PurchaseQuote_Supplier_SupplierID",
-                        column: x => x.SupplierID,
-                        principalTable: "Supplier",
-                        principalColumn: "SupplierID");
-                    table.ForeignKey(
                         name: "FK_PurchaseQuote_User_PurchasingDepartmentManagerId",
                         column: x => x.PurchasingDepartmentManagerId,
+                        principalTable: "User",
+                        principalColumn: "UserID");
+                    table.ForeignKey(
+                        name: "FK_PurchaseQuote_User_SupplierID",
+                        column: x => x.SupplierID,
                         principalTable: "User",
                         principalColumn: "UserID");
                 });
@@ -405,6 +423,12 @@ namespace GAP.Migrations
                 name: "ReceptionReport");
 
             migrationBuilder.DropTable(
+                name: "Reclamation");
+
+            migrationBuilder.DropTable(
+                name: "ReclamationReply");
+
+            migrationBuilder.DropTable(
                 name: "Sanction");
 
             migrationBuilder.DropTable(
@@ -421,9 +445,6 @@ namespace GAP.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseRequest");
-
-            migrationBuilder.DropTable(
-                name: "Supplier");
 
             migrationBuilder.DropTable(
                 name: "User");

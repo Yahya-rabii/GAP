@@ -28,10 +28,10 @@ namespace GAP.Controllers
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                iseriq = _context.Sanction.Where(s => s.SupplierId == _context.Supplier.Where(ss => ss.Email.ToLower().Contains(SearchString.ToLower().Trim())).FirstOrDefault().SupplierID ) ;
+                iseriq = _context.Sanction.Where(s => s.SupplierId == _context.Supplier.Where(ss => ss.Email.ToLower().Contains(SearchString.ToLower().Trim())).FirstOrDefault().UserID) ;
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }

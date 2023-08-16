@@ -130,6 +130,7 @@
         var currentPageUrl = Context.Request.Path;
         var totalNotificationsAdmin = Context.Items["TotalNotificationsAdmin"] as int? ?? 0;
         var notificationsAdmin = Context.Items["NotificationsAdmin"] as List<NotificationAdmin>?? new List<NotificationAdmin>();
+        var notificationsReclamation = Context.Items["notificationsReclamation"] as List<NotificationReclamation> ?? new List<NotificationReclamation>();
 
 
         var userProfilePicture = Context.Items["UserProfilePicture"] as byte[];
@@ -137,7 +138,7 @@
         var UserID = Context.Items["UserID"] as int? ?? 0;
 
 
- 
+
 
         <section class="home-section">
 
@@ -161,8 +162,18 @@
                 <ul class="adnotification-drop">
                     <li class="aditem">
                         <i class="fa fa-bell-o adnotification-bell" aria-hidden="true"></i>
-                        <span class="adbtn__badge adpulse-button">@totalNotificationsAdmin</span>
+                     
+                        <span class="adbtn__badge adpulse-button">@totalNotificationsAdmin </span>
                         <ul>
+
+
+                            @foreach (var notification in notificationsReclamation)
+                            {
+                                <li>
+                                    @notification.NotificationTitle
+                                </li>
+                            }
+
                             @if (totalNotificationsAdmin > 0)
                             {
                                 @foreach (var notification in notificationsAdmin)
@@ -255,6 +266,13 @@
                                 <div class="number">@ViewBag.TotalProducts</div>
                             </div>
                             <i class="bx bxs-package cart two"></i>
+                        </div>    
+                        <div class="box">
+                            <div class="right-side">
+                                <div class="box-topic">Total Bug Reports </div>
+                                <div class="number">@ViewBag.TotalBugs</div>
+                            </div>
+                            <i class="bx bxs-bug cart five"></i>
                         </div>
                         <div class="box">
                             <div class="right-side">
@@ -279,6 +297,7 @@
                                     <table class="user-table">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Email</th>
@@ -290,6 +309,16 @@
                                                 @foreach (var user in ViewBag.Users)
                                                 {
                                                     <tr>
+                                                        <td>
+                                                            @if (user.ProfilePicture != null)
+                                                            {
+                                                                <img class="prof" src="data:image/jpeg;base64,@Convert.ToBase64String(user.ProfilePicture)" alt="Profile Picture" />
+                                                            }
+                                                            else
+                                                            {
+                                                                <img class="prof" src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                            }
+                                                        </td>
                                                         <td>@user.FirstName</td>
                                                         <td>@user.LastName</td>
                                                         <td>@user.Email</td>
@@ -314,7 +343,16 @@
                                     {
                                         <li>
                                             <a href="#">
-                                                <img src="" alt="" />
+
+                                                @if (supplier.ProfilePicture != null)
+                                                {
+                                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(supplier.ProfilePicture)" alt="Profile Picture" />
+                                                }
+                                                else
+                                                {
+                                                    <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                }
+
                                                 <span class="product">@supplier.Email</span>
                                             </a>
                                             <span class="price">@supplier.TransactionNumber</span>
@@ -331,18 +369,19 @@
                     </div>
                     <br/>
                     <div class="sales-boxes">
-                        <div class="recent-sales box">
+                        <div class="recent-sales box" style="width:100%; ">
                             <div class="title">Project Managers</div>
                             <div class="sales-details">
-                                <div class="table-container">
-                                    <table class="user-table" style="width:fit-content; white-space: nowrap;">
+                                <div class="table-container" >
+                                    <table class="user-table" style="width:1111px ; white-space: nowrap;">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
                                                 <th>Email</th>
-                                                <th>Projrct Name</th>
-                                                <th>Projrct Budget</th>
+                                                <th>Project Name</th>
+                                                <th>Project Budget</th>
                                             </tr>
                                         </thead>
                                         <tbody >
@@ -351,6 +390,16 @@
                                                 @foreach (var pmanagers in ViewBag.PManagers)
                                                 {
                                                     <tr>
+                                                        <td>
+                                                            @if (pmanagers.ProfilePicture != null)
+                                                                {
+                                                                <img class="prof" src="data:image/jpeg;base64,@Convert.ToBase64String(pmanagers.ProfilePicture)" alt="Profile Picture" />
+                                                                }
+                                                                else
+                                                                {
+                                                                <img class="prof" src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                                }
+                                                        </td>
                                                         <td>@pmanagers.FirstName</td>
                                                         <td>@pmanagers.LastName</td>
                                                         <td>@pmanagers.Email</td>
@@ -410,7 +459,11 @@
 
      else if (User.IsInRole("Supplier"))
     {
-
+        var SupplierEmail = Context.Items["SupplierEmail"] as string;
+        var SupplierID = Context.Items["SupplierID"] as int? ?? 0;
+        var SupplierProfilePicture = Context.Items["SupplierProfilePicture"] as byte[];
+        var totalNotificationsSupplier = Context.Items["TotalNotificationsSupplier"] as int? ?? 0;
+        var notificationsSupplier = Context.Items["NotificationsSupplier"] as List<NotificationSupplier> ?? new List<NotificationSupplier>();
 
 
         <!-- loader -->
@@ -443,26 +496,19 @@
                                     <div class="collapse navbar-collapse" id="navbarsExample04">
                                         <div class="navbar-nav mr-auto logandnot">
 
+                                           
 
 
-
-                                            @if (User.Identity.IsAuthenticated)
-                                            {
-                                                var UserEmail = Context.Items["UserEmail"] as string;
-                                                var UserID = Context.Items["UserID"] as int? ?? 0;
-
-
-                                                var totalNotifications = Context.Items["TotalNotifications"] as int? ?? 0;
-                                                var notifications = Context.Items["Notifications"] as List<NotificationSupplier> ?? new List<NotificationSupplier>();
+      
 
                                                 <ul class="notification-drop">
                                                     <li class="item">
                                                         <i class="fa fa-bell-o notification-bell" aria-hidden="true"></i>
-                                                        <span class="btn__badge pulse-button">@totalNotifications</span>
+                                                        <span class="btn__badge pulse-button">@totalNotificationsSupplier</span>
                                                         <ul>
-                                                            @if (totalNotifications > 0)
+                                                            @if (totalNotificationsSupplier > 0)
                                                             {
-                                                                @foreach (var notification in notifications)
+                                                                @foreach (var notification in notificationsSupplier)
                                                                 {
                                                                     <li>
                                                                         @notification.NotificationTitle
@@ -482,7 +528,7 @@
                                                         </ul>
                                                     </li>
                                                 </ul>
-                                            }
+                                            
 
 
 
@@ -491,32 +537,52 @@
                                                     <div class="profile" onclick="menuToggle();">
 
 
-                                                       
-                                                            <img src="~/images/image-prof.png" alt="Default Profile Picture" />
-                                                        
 
 
-                                                    </div>
+                                                    @if (SupplierProfilePicture != null)
+                                                    {
+                                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(SupplierProfilePicture)" alt="Profile Picture" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                    }
 
-                                                    <div class="menu">
-                                                        <h3>
-                                                            Welcome
-                                                            <br />
-                                                           
-                                                        </h3>
 
-                                                        <ul>
-                                                           
 
-                                                            <li>
-                                                                <i class="bx bx-log-out"></i>
 
-                                                                <a onclick="location.href='@Url.Action("Logout", "Users")'">
-                                                                    <span>Logout</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                </div>
+
+
+
+                                                <div class="menu">
+                                                    <h3>
+                                                        Welcome
+                                                        <br />
+                                                        <span>  @SupplierEmail  </span>
+                                                    </h3>
+
+                                                    <ul>
+                                                        <li>
+                                                            <i class="bx bx-user"></i>
+                                                            <a href="@Url.Action("SupplierProfile", "Users", new { ID = SupplierID })">My Profile</a>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bx bx-edit"></i>
+                                                            <a href="@Url.Action("SupplierProfileEdit", "Users", new { ID = SupplierID })">Edit Profile</a>
+                                                        </li>
+                                                        <li>
+                                                            <i class="bx bx-log-out"></i>
+
+                                                            <a onclick="location.href='@Url.Action("Logout", "Users")'">
+                                                                <span>Logout</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+
+                               
                                                 </div>
 
 

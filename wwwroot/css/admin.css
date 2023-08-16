@@ -305,12 +305,21 @@ nav .profile-details i{
   margin: 10px 0;
 }
 .sales-boxes .top-sales li a img{
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   object-fit: cover;
   border-radius: 12px;
   margin-right: 10px;
-  background: #333;
+  background-color: transparent;
+}
+
+.prof {
+    height: 30px;
+    width: 30px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-right: 10px;
+    background-color: transparent;
 }
 .sales-boxes .top-sales li a{
   display: flex;

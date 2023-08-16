@@ -35,10 +35,10 @@ namespace GAP.Controllers
             {
                 SaleOfferiq = SaleOfferiq
                     .Include(o => o.Supplier)
-                    .Where(o => o.Supplier.Name.ToLower().Contains(SearchString.ToLower().Trim()));
+                    .Where(o => o.Supplier.CompanyName.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             var pagedSaleOffers = await SaleOfferiq.ToPagedListAsync(pageNumber, pageSize);
 
@@ -110,7 +110,7 @@ namespace GAP.Controllers
                 SaleOfferiq = _context.SaleOffer.Include(o=>o.PurchaseRequest).Where(o => o.PurchaseRequest.Description.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await SaleOfferiq.ToPagedListAsync(pageNumber, pageSize));
 
@@ -158,7 +158,7 @@ namespace GAP.Controllers
 
 
         var ProductsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
-            ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "Name");
+            ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "CompanyName");
 
             return View();
 
@@ -183,7 +183,7 @@ namespace GAP.Controllers
 
 
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var user = _context.Supplier.FirstOrDefault(u => u.SupplierID == userId);
+            var user = _context.Supplier.FirstOrDefault(u => u.UserID == userId);
             SaleOffer.SupplierId = userId;
             SaleOffer.Supplier = user;
             SaleOffer.PurchaseRequestId = PurchaseRequestId;
@@ -284,7 +284,7 @@ namespace GAP.Controllers
             var ProductsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
             if (ProductsWithoutSaleOffer.Count() > 0)
             {
-                ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "Name");
+                ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "CompanyName");
             }
             else
             {
@@ -293,7 +293,7 @@ namespace GAP.Controllers
     {
         new Product { ProductID = 0, Name = "No products in your stock" }
     };
-                ViewData["ProductsWithoutSaleOffer"] = new SelectList(emptyList, "ProductID", "Name");
+                ViewData["ProductsWithoutSaleOffer"] = new SelectList(emptyList, "ProductID", "CompanyName");
             }
 
             return View(SaleOffer);

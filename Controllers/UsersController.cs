@@ -40,7 +40,7 @@ namespace GAP.Controllers
                 iseriq = _context.User.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
@@ -75,6 +75,35 @@ namespace GAP.Controllers
 
 
         public async Task<IActionResult> Profile(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+            // Get the current user's role claims
+            var currentUserRoles = User.FindAll(ClaimTypes.Role).Select(x => x.Value);
+
+            // Pass the user, profile picture, and role claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+            ViewBag.CurrentUserRoles = currentUserRoles;
+
+            return View(user);
+        }
+
+        
+        public async Task<IActionResult> SupplierProfile(int? id)
         {
             if (id == null)
             {
@@ -294,6 +323,84 @@ namespace GAP.Controllers
 
             return RedirectToAction("Profile", "Users", new { id = id });
         }
+        
+        
+        // GET: Users1/Edit/5
+        public async Task<IActionResult> SupplierProfileEdit(int? id)
+        {
+            if (id == null || _context.User == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            // Get the user's profile picture (assuming you have a property for it in the User model)
+            var userProfilePicture = user.ProfilePicture;
+
+            // Get the current user's role claims
+            var currentUserRoles = User.FindAll(ClaimTypes.Role).Select(x => x.Value);
+
+            // Pass the user, profile picture, and role claims to the view
+            ViewBag.UserProfilePicture = userProfilePicture;
+            ViewBag.CurrentUserRoles = currentUserRoles;
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SupplierProfileEdit(int id, Supplier updatedUser, IFormFile profilePicture)
+        {
+            if (id != updatedUser.UserID)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var existingUser = await _context.Supplier.FirstOrDefaultAsync(u => u.UserID == id);
+
+                if (existingUser == null)
+                {
+                    return NotFound();
+                }
+
+                existingUser.Password = updatedUser.Password;
+                existingUser.Email = updatedUser.Email;
+                existingUser.CompanyName = updatedUser.CompanyName;
+
+                if (profilePicture != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await profilePicture.CopyToAsync(memoryStream);
+                        existingUser.ProfilePicture = memoryStream.ToArray();
+                        existingUser.ProfilePictureFileName = profilePicture.FileName;
+                        existingUser.HasCustomProfilePicture = true;
+                    }
+                }
+
+                _context.Update(existingUser);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(updatedUser.UserID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction("SupplierProfile", "Users", new { id = id });
+        }
 
 
 
@@ -372,9 +479,9 @@ namespace GAP.Controllers
             if (registeredUser != null && BCrypt.Net.BCrypt.Verify(password, registeredUser.Password))
             {
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
-        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, registeredUser.UserID.ToString())
+                };
 
                 string redirectAction = string.Empty;
                 string redirectController = string.Empty;
@@ -410,6 +517,20 @@ namespace GAP.Controllers
                         registeredUser.Role = UserRole.Project_Manager;
                         redirectAction = "Index";
                         redirectController = "Projects";
+                        break; 
+                    case Supplier _:
+                        if (((Supplier)registeredUser).IsValid == true)
+                        {
+                            claims.Add(new Claim(ClaimTypes.Role, "Supplier"));
+                            registeredUser.Role = UserRole.Supplier;
+                            redirectAction = "IndexFour";
+                            redirectController = "PurchaseRequests";
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Email", "Your account is not valid yet. Please wait for approval");
+
+                        }
                         break;
                     case var _ when registeredUser.IsAdmin:
                         claims.Add(new Claim(ClaimTypes.Role, "Admin"));
@@ -428,33 +549,10 @@ namespace GAP.Controllers
             }
             else
             {
-                var newregisteredUser = await _context.Supplier.FirstOrDefaultAsync(u => u.Email == email);
-
-                if (newregisteredUser != null)
-                {
-                    if (newregisteredUser.IsValid == true)
-                    {
-                        var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, newregisteredUser.SupplierID.ToString()),
-                    new Claim(ClaimTypes.Role, "Supplier")
-                };
-
-                        return await SignInAndRedirectToAction(claims, "IndexFour", "PurchaseRequests");
-                    }
-                    else
-                    {
-                        // Account is not valid yet
-                        ModelState.AddModelError("Email", "Your account is not valid yet. Please wait for approval");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Invalid email or password.");
-                }
-
                 return RedirectToAction("Login", "Users");
+
             }
+
         }
 
         private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)

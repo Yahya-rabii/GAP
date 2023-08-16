@@ -18,7 +18,6 @@ namespace GAP.Models
 
         public DateTime CreationDate { get; set; }
 
-
         public Reclamation() 
         {
             UserID = 0;

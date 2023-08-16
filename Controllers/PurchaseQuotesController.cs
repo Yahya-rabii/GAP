@@ -37,7 +37,7 @@ namespace GAP.Controllers
                 PurchaseQuoteiq = _context.PurchaseQuote.Include(o => o.Supplier).Where(o => o.Supplier.Email.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await PurchaseQuoteiq.ToPagedListAsync(pageNumber, pageSize));
 

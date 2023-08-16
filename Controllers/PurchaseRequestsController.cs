@@ -38,7 +38,7 @@ namespace GAP.Controllers
                 PurchaseRequestiq = _context.PurchaseRequest.Where(d => d.Description.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await PurchaseRequestiq.ToPagedListAsync(pageNumber, pageSize));
 

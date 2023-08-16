@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230812135325_Init")]
-    partial class Init
+    [Migration("20230816100107_Init2")]
+    partial class Init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -287,6 +287,72 @@ namespace GAP.Migrations
                     b.ToTable("ReceptionReport");
                 });
 
+            modelBuilder.Entity("GAP.Models.Reclamation", b =>
+                {
+                    b.Property<int>("ReclamationID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclamationID"));
+
+                    b.Property<byte[]>("BugPicture")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReclamationTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReclamationID");
+
+                    b.ToTable("Reclamation");
+                });
+
+            modelBuilder.Entity("GAP.Models.ReclamationReply", b =>
+                {
+                    b.Property<int>("ReclamationReplyID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclamationReplyID"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ReclamationID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReclamationReplyID");
+
+                    b.ToTable("ReclamationReply");
+                });
+
+            modelBuilder.Entity("GAP.Models.ReclamationsHistory", b =>
+                {
+                    b.Property<int>("ReclamationsHistoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclamationsHistoryID"));
+
+                    b.Property<int>("ReclamationsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReclamationsHistoryID");
+
+                    b.ToTable("ReclamationsHistory");
+                });
+
             modelBuilder.Entity("GAP.Models.SaleOffer", b =>
                 {
                     b.Property<int>("SaleOfferID")
@@ -357,53 +423,6 @@ namespace GAP.Migrations
                     b.HasKey("StockID");
 
                     b.ToTable("Stock");
-                });
-
-            modelBuilder.Entity("GAP.Models.Supplier", b =>
-                {
-                    b.Property<int>("SupplierID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierID"));
-
-                    b.Property<string>("Adresse")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<bool>("IsValid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<int?>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransactionNumber")
-                        .HasColumnType("int");
-
-                    b.HasKey("SupplierID");
-
-                    b.ToTable("Supplier");
                 });
 
             modelBuilder.Entity("GAP.Models.User", b =>
@@ -541,6 +560,37 @@ namespace GAP.Migrations
                     b.HasBaseType("GAP.Models.User");
 
                     b.HasDiscriminator().HasValue("QualityTestingDepartmentManager");
+                });
+
+            modelBuilder.Entity("GAP.Models.Supplier", b =>
+                {
+                    b.HasBaseType("GAP.Models.User");
+
+                    b.Property<string>("Adresse")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionNumber")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("Supplier");
                 });
 
             modelBuilder.Entity("GAP.Models.Bill", b =>

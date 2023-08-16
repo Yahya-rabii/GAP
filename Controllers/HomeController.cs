@@ -29,11 +29,13 @@ namespace GAP.Controllers
 
             var totalUsers = _context.User.Count();
                 var totalSuppliers = _context.Supplier.Count();
+                var TotalBugs = _context.Reclamation.Count();
 
-                var users = _context.User.Where(u=>u.Role != UserRole.Project_Manager).ToList();
-                var suppliers = _context.Supplier.ToList();
+            var users = _context.User.Where(u => u.Role != UserRole.Project_Manager && u.Role != UserRole.Supplier).ToList();
+            var suppliers = _context.Supplier.ToList();
                 var pmanagers = _context.ProjectManager.Where(u => u.Role == UserRole.Project_Manager).Include(u=>u.Projects).ToList();
                 ViewBag.TotalProducts = totalProducts;
+                ViewBag.TotalBugs = TotalBugs;
                 ViewBag.TotalUsers = totalUsers;
                 ViewBag.TotalSuppliers = totalSuppliers;
                 ViewBag.Users = users;

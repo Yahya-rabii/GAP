@@ -37,7 +37,7 @@ namespace GAP.Controllers
 
             ViewBag.RapportData = data;
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
 
             return View(await QualityTestReports.ToPagedListAsync(pageNumber, pageSize));
@@ -104,8 +104,8 @@ namespace GAP.Controllers
 
                     var PurchaseQuote = _context.PurchaseQuote.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
                     var Bill  = _context.Bill.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
-                    var Supplier  = _context.Supplier.Where(f=>f.SupplierID==PurchaseQuote.SupplierID).FirstOrDefault();
-                    var saleOffer = _context.SaleOffer.Include(so=>so.Products).Where(so=>so.SupplierId==Supplier.SupplierID).FirstOrDefault();   
+                    var Supplier  = _context.Supplier.Where(f=>f.UserID == PurchaseQuote.SupplierID).FirstOrDefault();
+                    var saleOffer = _context.SaleOffer.Include(so=>so.Products).Where(so=>so.SupplierId==Supplier.UserID).FirstOrDefault();   
                     var Products = saleOffer.Products.ToList();
 
                     var stock = new Stock();
@@ -209,8 +209,8 @@ namespace GAP.Controllers
                     {
                         var PurchaseQuote = _context.PurchaseQuote.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
                         var Bill = _context.Bill.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
-                        var Supplier = _context.Supplier.Where(f => f.SupplierID == PurchaseQuote.SupplierID).FirstOrDefault();
-                        var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.SupplierID).FirstOrDefault();
+                        var Supplier = _context.Supplier.Where(f => f.UserID == PurchaseQuote.SupplierID).FirstOrDefault();
+                        var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.UserID).FirstOrDefault();
                         var Products = saleOffer.Products.ToList();
 
                         if (Bill != null && Supplier != null)

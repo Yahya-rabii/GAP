@@ -35,7 +35,7 @@ namespace GAP.Controllers
                                              select p;
 
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
 
@@ -72,7 +72,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Unitprice,Name,ItemsNumber,Desc")] Product Product)
+        public async Task<IActionResult> Create([Bind("ProductID,Unitprice,CompanyName,ItemsNumber,Desc")] Product Product)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +110,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Unitprice,Name,ItemsNumber,Desc")] Product Product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,Unitprice,CompanyName,ItemsNumber,Desc")] Product Product)
         {
             if (id != Product.ProductID)
             {

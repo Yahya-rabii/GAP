@@ -33,7 +33,7 @@ namespace GAP.Controllers
                                              select f;
 
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
@@ -50,7 +50,7 @@ namespace GAP.Controllers
             }
 
             var Supplier = await _context.Supplier
-                .FirstOrDefaultAsync(m => m.SupplierID == id);
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (Supplier == null)
             {
                 return NotFound();
@@ -73,7 +73,7 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
 
-        public async Task<IActionResult> Create([Bind("SupplierID,Name,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
+        public async Task<IActionResult> Create([Bind("SupplierID,CompanyName,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
         {
             if (ModelState.IsValid)
             {
@@ -144,7 +144,7 @@ namespace GAP.Controllers
                 // Set the IsValid property to true and update the Supplier
                 existingSupplier.IsValid = true;
                 _context.Update(existingSupplier);
-                var notification = _context.NotificationAdmin.FirstOrDefault(d => d.SupplierID == existingSupplier.SupplierID);
+                var notification = _context.NotificationAdmin.FirstOrDefault(d => d.SupplierID == existingSupplier.UserID);
                 if (notification != null)
                 {
                     _context.Notification.Remove(notification);
@@ -178,9 +178,9 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
 
-        public async Task<IActionResult> Edit(int id, [Bind("SupplierID,Name,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
+        public async Task<IActionResult> Edit(int id, [Bind("SupplierID,CompanyName,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
         {
-            if (id != Supplier.SupplierID)
+            if (id != Supplier.UserID)
             {
                 return NotFound();
             }
@@ -194,7 +194,7 @@ namespace GAP.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SupplierExists(Supplier.SupplierID))
+                    if (!SupplierExists(Supplier.UserID))
                     {
                         return NotFound();
                     }
@@ -218,8 +218,8 @@ namespace GAP.Controllers
                 return NotFound();
             }
 
-            var Supplier = await _context.Supplier
-                .FirstOrDefaultAsync(m => m.SupplierID == id);
+            var Supplier = await _context.User
+                .FirstOrDefaultAsync(m => m.UserID == id);
             if (Supplier == null)
             {
                 return NotFound();
@@ -251,7 +251,7 @@ namespace GAP.Controllers
 
         private bool SupplierExists(int id)
         {
-          return (_context.Supplier?.Any(e => e.SupplierID == id)).GetValueOrDefault();
+          return (_context.Supplier?.Any(e => e.UserID == id)).GetValueOrDefault();
         }
 
 
@@ -268,9 +268,8 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(Supplier Supplier)
         {
-            if (ModelState.IsValid)
-            {
-                var preregisteredSupplier = _context.Supplier.FirstOrDefault(u => u.Email == Supplier.Email);
+           
+                var preregisteredSupplier = _context.User.FirstOrDefault(u => u.Email == Supplier.Email);
 
                 if (preregisteredSupplier != null)
                 {
@@ -280,14 +279,15 @@ namespace GAP.Controllers
                 else
                 {
                     Supplier.Password = HashPassword(Supplier?.Password);
+                    Supplier.Role = UserRole.Supplier;
 
-                    _context.Supplier.Add(Supplier);
+                _context.Supplier.Add(Supplier);
                     await _context.SaveChangesAsync();
 
                     var notificationAdminValidation = new NotificationAdmin
                     {
                         NotificationTitle = "Notification Activation Supplier account",
-                        SupplierID = Supplier.SupplierID,
+                        SupplierID = Supplier.UserID,
                     };
 
                     _context.NotificationAdmin.Add(notificationAdminValidation);
@@ -296,11 +296,7 @@ namespace GAP.Controllers
                     // Redirect to the login page after registration
                     return RedirectToAction("Login");
                 }
-            }
-            else
-            {
-                return RedirectToAction("Register");
-            }
+          
         }
 
 

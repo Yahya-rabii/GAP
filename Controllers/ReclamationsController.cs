@@ -57,9 +57,6 @@ namespace GAP.Controllers
             return View();
         }
 
-        // POST: Reclamations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReclamationTitle,Description,BugPicture")] Reclamation reclamation, IFormFile bugPicture)
@@ -84,14 +81,22 @@ namespace GAP.Controllers
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 reclamation.UserID = userId;
                 reclamation.CreationDate = DateTime.Now.Date;
-                
+
                 _context.Add(reclamation);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(); // Save the new Reclamation to get its ID
+
+                var reclamationsHistory = new ReclamationsHistory();
+                reclamationsHistory.ReclamationsID = reclamation.ReclamationID;
+
+                _context.Add(reclamationsHistory);
+                await _context.SaveChangesAsync(); // Save the new ReclamationsHistory
+
                 return RedirectToAction("Indexusers", "Reclamations");
             }
 
             return RedirectToAction("Indexusers", "Reclamations");
         }
+
 
 
 

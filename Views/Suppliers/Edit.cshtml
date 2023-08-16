@@ -12,11 +12,11 @@
                 <h1 class="form-header">EDIT Supplier</h1>
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="SupplierID" />
+            <input type="hidden" asp-for="UserID" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+                <label asp-for="CompanyName" class="control-label"></label>
+                <input asp-for="CompanyName" class="form-control" />
+                <span asp-validation-for="CompanyName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
@@ -56,7 +56,7 @@
                     <div class="BTNS">
 
                         <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
-                        <a asp-action="Delete" asp-route-id="@Model.SupplierID"><input type="button" class="DEL-button" value="Delete"> </a>
+                        <a asp-action="Delete" asp-route-id="@Model.UserID"><input type="button" class="DEL-button" value="Delete"> </a>
                         <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
 
                     </div>

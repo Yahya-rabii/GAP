@@ -33,7 +33,7 @@ namespace GAP.Controllers
                 PurchaseQuoteiq = _context.Project.Where(o => o.Name.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await PurchaseQuoteiq.ToPagedListAsync(pageNumber, pageSize));
 
@@ -69,7 +69,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProjectID,StartDate,EndDate,Name,Description,Budget")] Project project)
+        public async Task<IActionResult> Create([Bind("ProjectID,StartDate,EndDate,CompanyName,Description,Budget")] Project project)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +104,7 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,StartDate,EndDate,Name,Description,Budget")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("ProjectID,StartDate,EndDate,CompanyName,Description,Budget")] Project project)
         {
             if (id != project.ProjectID)
             {

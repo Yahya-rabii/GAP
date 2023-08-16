@@ -4,6 +4,7 @@ using GAP.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    partial class GAPContextModelSnapshot : ModelSnapshot
+    [Migration("20230816083103_Init1")]
+    partial class Init1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,8 +59,8 @@ namespace GAP.Migrations
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("nvarchar(34)");
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
 
                     b.Property<string>("NotificationTitle")
                         .IsRequired()
@@ -334,22 +337,6 @@ namespace GAP.Migrations
                     b.ToTable("ReclamationReply");
                 });
 
-            modelBuilder.Entity("GAP.Models.ReclamationsHistory", b =>
-                {
-                    b.Property<int>("ReclamationsHistoryID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReclamationsHistoryID"));
-
-                    b.Property<int>("ReclamationsID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReclamationsHistoryID");
-
-                    b.ToTable("ReclamationsHistory");
-                });
-
             modelBuilder.Entity("GAP.Models.SaleOffer", b =>
                 {
                     b.Property<int>("SaleOfferID")
@@ -500,13 +487,6 @@ namespace GAP.Migrations
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("NotificationInfo");
-                });
-
-            modelBuilder.Entity("GAP.Models.NotificationReclamation", b =>
-                {
-                    b.HasBaseType("GAP.Models.Notification");
-
-                    b.HasDiscriminator().HasValue("NotificationReclamation");
                 });
 
             modelBuilder.Entity("GAP.Models.NotificationSupplier", b =>

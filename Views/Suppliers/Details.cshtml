@@ -15,10 +15,10 @@
                 <hr />
         <dl class="row">
         <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.CompanyName)
         </dt>
         <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.CompanyName)
         </dd>
         <dt class = "col-sm-3">
             @Html.DisplayNameFor(model => model.Email)
@@ -65,11 +65,11 @@
     </dl>
 </div>
             <div class="BTNS">
-                <a asp-action="Edit" asp-route-id="@Model?.SupplierID">
+                <a asp-action="Edit" asp-route-id="@Model?.UserID">
                     <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
                 </a>
 
-                <a asp-action="Delete" asp-route-id="@Model?.SupplierID">
+                <a asp-action="Delete" asp-route-id="@Model?.UserID">
                     <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
                 </a>
                 <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>

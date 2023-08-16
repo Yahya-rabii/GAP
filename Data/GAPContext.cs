@@ -68,6 +68,10 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.ReclamationReply> ReclamationReply { get; set; } = default!;
 
+        public DbSet<GAP.Models.ReclamationsHistory> ReclamationsHistory { get; set; } = default!;
+
+        public DbSet<GAP.Models.NotificationReclamation> NotificationReclamation { get; set; } = default!;
+
 
     }
 }

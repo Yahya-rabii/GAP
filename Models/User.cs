@@ -11,7 +11,8 @@ namespace GAP.Models
         Purchasing_receptionist,
         Finance_department_manager,
         Quality_testing_department_manager,
-        Project_Manager
+        Project_Manager,
+        Supplier
     }
 
     public class User

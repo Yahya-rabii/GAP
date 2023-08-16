@@ -31,7 +31,7 @@ namespace GAP.Controllers
                 iseriq = _context.FinanceDepartmentManager.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
