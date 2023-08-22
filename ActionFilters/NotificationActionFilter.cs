@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using GAP.Models;
 using GAP.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GAP.ActionFilters
 {
@@ -16,6 +17,9 @@ namespace GAP.ActionFilters
         {
             _context = context;
         }
+
+
+
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {

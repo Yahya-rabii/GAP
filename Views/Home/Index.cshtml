@@ -1,7 +1,5 @@
-﻿
- 
-@if (!User.IsInRole("Admin"))
-    {
+﻿@if (!User.IsInRole("Admin") && Context.Request.Path != "/Home/AccessDenied" )
+{
 
 
 
@@ -165,8 +163,4 @@
 
 
     </div>
-}
-
-else{
-  
 }

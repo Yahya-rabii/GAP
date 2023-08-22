@@ -2,6 +2,7 @@
 using GAP.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,13 +24,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("isadmin", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
-    options.AddPolicy("Supplier", policy => policy.RequireClaim(ClaimTypes.Role, "Supplier"));
-    options.AddPolicy("ProjectManager", policy => policy.RequireClaim(ClaimTypes.Role, "ProjectManager"));
-    options.AddPolicy("PurchasingDepartmentManagerPolicy", policy => policy.RequireRole("PurchasingDepartmentManager"));
-    options.AddPolicy("PurchasingReceptionistPolicy", policy => policy.RequireRole("PurchasingReceptionist"));
-    options.AddPolicy("FinanceDepartmentManagerPolicy", policy => policy.RequireRole("FinanceDepartmentManager"));
-    options.AddPolicy("QualityTestingDepartmentManagerPolicy", policy => policy.RequireRole("QualityTestingDepartmentManager"));
+    // ... existing policy configurations ...
 });
 
 builder.Services.AddSession();
@@ -62,6 +57,9 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication(); // UseAuthentication should be called before UseAuthorization.
 app.UseAuthorization();
+
+
+app.UseStatusCodePagesWithReExecute("/Home/AccessDenied", "?statusCode={0}");
 
 app.Use(async (context, next) =>
 {

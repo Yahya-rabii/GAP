@@ -46,6 +46,13 @@ namespace GAP.Controllers
             
         }
 
+        public IActionResult AccessDenied()
+        {
+            // You can customize the view model or message here if needed
+            return View();
+        }
+      
+
 
         public IActionResult Privacy()
         {

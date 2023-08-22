@@ -15,9 +15,12 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (Context.Request.Path != "/Home/AccessDenied" && Context.Request.Path != "/Home/NotFound")
+    {
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css">
 
+    
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/cards.css" asp-append-version="true" />
@@ -34,7 +37,7 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-
+    }
 </head>
 
 
@@ -44,6 +47,8 @@
 
 <!-- body -->
 <body class="main-layout">
+    @if (Context.Request.Path != "/Home/AccessDenied" )
+    {
 
 
  @if (User.IsInRole("Admin"))
@@ -154,7 +159,6 @@
                 <div class="sidebar-button">
                     <i class="bx bx-menu sidebarBtn"></i>
                     <span class="dashboard">Admin Dashboard</span>
-
                 </div>
 
 
@@ -199,16 +203,8 @@
 
 
                 <div class="profile-details">
-
-
-
-
-
-
                     <div class="adaction">
                         <div class="adprofile">
-
-
                             @if (userProfilePicture != null)
                             {
                                 <img src="data:image/jpeg;base64,@Convert.ToBase64String(userProfilePicture)" alt="Profile Picture" />
@@ -217,8 +213,6 @@
                             {
                                 <img src="~/images/image-prof.png" alt="Default Profile Picture" />
                             }
-
-
                         </div>
 
                         <div class="admenu">
@@ -241,19 +235,9 @@
                             </ul>
                         </div>
                         <i class="bx bx-chevron-down iopen" onclick="menuToggle();"></i>
-
                     </div>
-
-
-              
-
                     <span class="admin_name">Admin</span>
                 </div>
-
-               
-
-                   
-
             </nav>
 
             @if (currentPageUrl == "/")
@@ -1019,7 +1003,15 @@ else{
 
 
 
-@await RenderSectionAsync("Scripts", required: false)
+            @await RenderSectionAsync("Scripts", required: false)
+        }
+
+    }
+    else
+    {
+        @RenderBody()
+        <script src="~/js/accessdenied.js"></script>
+
     }
 
 </body>
