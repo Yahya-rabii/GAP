@@ -72,21 +72,31 @@ namespace GAP.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductID,Unitprice,CompanyName,ItemsNumber,Desc")] Product Product)
+        public async Task<IActionResult> Create([Bind("ProductID,Unitprice,Name,ItemsNumber,Desc,ProductPicture")] Product product, IFormFile productPicture)
         {
             if (ModelState.IsValid)
             {
 
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-                Product.SupplierId = userId;
-                Product.Totalprice = (float)(Product.ItemsNumber * Product.Unitprice);
+                product.SupplierId = userId;
+                product.Totalprice = (float)(product.ItemsNumber * product.Unitprice);
 
-                _context.Add(Product);
+                if (productPicture != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await productPicture.CopyToAsync(memoryStream);
+                        product.ProductPicture = memoryStream.ToArray();
+                    }
+                }
+
+
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(Product);
+            return View(product);
         }
 
         // GET: Products1/Edit/5

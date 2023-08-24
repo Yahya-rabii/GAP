@@ -98,38 +98,4 @@ a.avatar {
 .glow {
    
     text-shadow: 0 0 50px #022e66, 0 0 100px, 0 0 150px, 0 0 200px;
-    animation: glitch 1s infinite;
-}
-
-.glitch {
-
-    transform: translate(-50%, -50%);
-    animation: glitch 1s infinite;
-}
-
-@keyframes glitch {
-    0%, 20%, 40%, 60%, 80%, 100% {
-        
-        text-shadow: 0 0 50px #022e66, 0 0 100px, 0 0 150px, 0 0 200px;
-    }
-
-    10% {
-        text-shadow: 10px 10px #022e66, 20px 20px #403, 30px 30px #404, 40px 40px #022e66;
-    }
-
-    30% {
-        text-shadow: -10px -10px #022e66, -20px -20px #403, -30px -30px #404, -40px -40px #022e66;
-    }
-
-    50% {
-        text-shadow: 5px 5px #022e66, 10px 10px #403, 15px 15px #404, 20px 20px #022e66;
-    }
-
-    70% {
-        text-shadow: -5px -5px #022e66, -10px -10px #403, -15px -15px #404, -20px -20px #022e66;
-    }
-
-    90% {
-        text-shadow: 0 0 #022e66, 0 0 #403, 0 0 #404, 0 0 #022e66;
-    }
 }

@@ -46,12 +46,7 @@ namespace GAP.Controllers
             
         }
 
-        public IActionResult AccessDenied()
-        {
-            // You can customize the view model or message here if needed
-            return View();
-        }
-      
+ 
 
 
         public IActionResult Privacy()
@@ -89,11 +84,56 @@ namespace GAP.Controllers
             return RedirectToAction("Index");
         }
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult AccessDenied(int? statusCode = null)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (statusCode.HasValue)
+            {
+                HttpContext.Response.StatusCode = statusCode.Value;
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = 500; // Internal Server Error
+            }
+
+            string errorTitle = "";
+            string errorDescription = "";
+
+            // Set error information based on the status code
+            switch (HttpContext.Response.StatusCode)
+            {
+                case 400:
+                    errorTitle = "HTTP 400 Bad Request";
+                    errorDescription = "The request could not be understood by the server due to malformed syntax.";
+                    break;
+                case 401:
+                    errorTitle = "HTTP 401 Unauthorized";
+                    errorDescription = "Authentication is required and has failed or has not been provided.";
+                    break;
+                case 403:
+                    errorTitle = "HTTP 403 Forbidden";
+                    errorDescription = "Access Denied. You Do Not Have The Permission To Access This Page On This Server.";
+                    break;
+                case 404:
+                    errorTitle = "HTTP 404 Not Found";
+                    errorDescription = "The requested page was not found on this server.";
+                    break;
+                case 500:
+                    errorTitle = "HTTP 500 Internal Server Error";
+                    errorDescription = "An unexpected condition was encountered by the server and no more specific message is suitable.";
+                    break;
+                default:
+                    errorTitle = "Unknown Error";
+                    errorDescription = "An unknown error occurred.";
+                    break;
+            }
+
+            ViewBag.ErrorTitle = errorTitle;
+            ViewBag.ErrorDescription = errorDescription;
+            ViewBag.StatusCode = HttpContext.Response.StatusCode;
+
+            return View();
         }
+
+
     }
 }

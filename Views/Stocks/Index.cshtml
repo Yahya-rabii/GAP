@@ -4,85 +4,151 @@
     ViewData["Title"] = "Index";
 }
 @if (User.IsInRole("Admin"))
-{
-    <main>
-        <article>
-            <div class="addatatable-container">
-                <h1 class="form-header">Products</h1>
-
-                <!-- ======= Header tools ======= -->
-                <div class="adheader-tools">
+{    
+     <div class="home-content">
 
 
+                <div class="overview-boxes">
 
-                    <div class="adtools">
-                        <!-- Pagination Links -->
-                        <div class="adpagination-container">
-                            <ul class="pagination">
-                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
-                                </li>
-                                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
-                                </li>
-                                <li class="page-item active">
-                                    <a class="page-link">@Model.PageNumber</a>
-                                </li>
-                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
-                                </li>
-                                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+            <div class="app-content-header">
+                <h1 class="app-content-headerText">Products</h1>
 
-                    <div class="adsearch">
-                        <form method="get" asp-action="Index">
-                            <input type="search" id="form1" class="adsearch-input" placeholder="Product Name..." name="SearchString" />
-                        </form>
+
+            </div>
+                <div class="app-content-actions">
+                    <div class="adpagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=1,
+                                    SearchString=ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageNumber - 1,
+                                    SearchString=ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageNumber + 1,
+                                    SearchString=ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageCount,
+                                    SearchString=ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+                <div class="app-content-actions">
+             
 
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Stock ID</th>
+                    <form method="get" asp-action="Index">
+                        <input type="search" id="form1" class="search-bar" placeholder="Product Name..."
+                               name="SearchString" />
+                    </form>
+                    <div class="app-content-actions-wrapper">
 
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Product Description</th>
-                            <th>Unit Price</th>
-                            <th>Total Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (@Model != null)
-                        {
-                            @foreach (var stock in Model)
-                            {
+                        <button class="action-button list active" title="List View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-list">
+                                <line x1="8" y1="6" x2="21" y2="6" />
+                                <line x1="8" y1="12" x2="21" y2="12" />
+                                <line x1="8" y1="18" x2="21" y2="18" />
+                                <line x1="3" y1="6" x2="3.01" y2="6" />
+                                <line x1="3" y1="12" x2="3.01" y2="12" />
+                                <line x1="3" y1="18" x2="3.01" y2="18" />
+                            </svg>
+                        </button>
+                        <button class="action-button grid" title="Grid View">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                 class="feather feather-grid">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+        
+        </div>
 
-                                @foreach (var product in stock.Products)
-                                {
-                                    <tr>
-                                        <td>@stock.StockID</td>
+            <div class="sales-boxes">
 
-                                        <td>@product.ProductID</td>
-                                        <td>@product.Name</td>
-                                        <td>@product.Desc</td>
-                                        <td>@product.Unitprice</td>
-                                        <td>@product.Totalprice</td>
-
-                                    </tr>
-                                }}
-                        }
-                    </tbody>
-
-                </table>
+        <div class="products-area-wrapper tableView">
+            <div class="products-header">
+                <div class="product-cell image">
+                    Items
+                 
+                </div>
+                <div class="product-cell category">
+                    Stock ID
+                </div>
+                <div class="product-cell status-cell">
+                    Product ID
+                </div>
+                <div class="product-cell sales">
+                    Product Name
+                </div>
+                <div class="product-cell stock">
+                    Product Description
+                </div>
+                <div class="product-cell price">
+                    Unit Price
+                </div>
+                <div class="product-cell price">
+                    Total Price
+                </div>
             </div>
-        </article>
-    </main>
+             
 
-}
+
+         
+                
+
+                @if (@Model != null)
+                {
+                    @foreach (var stock in Model)
+                    {
+
+                        @foreach (var product in stock.Products)
+                            {
+                                <div class="products-row">
+                                    <div class="product-cell image">
+
+                                    @if (product.ProductPicture != null)
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(product.ProductPicture)" alt="Profile Picture" />
+                                
+                                }
+                                else
+                                {
+                                    <img src="~/images/Product.png" alt="Default Profile Picture"  />
+                                }
+                                    <span>@product.Name</span>
+
+                                </div>
+                                
+
+
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@stock.StockID</div>
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@product.ProductID</div>
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@product.Name</div>
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@product.Desc</div>
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@product.Unitprice</div>
+                                    <div class="product-cell stock"><span class="cell-label">Stock:</span>@product.Totalprice</div>
+
+                                </div>
+
+
+                        }       }
+                }
+
+            </div>
+
+        </div>
+        </div>
+}           

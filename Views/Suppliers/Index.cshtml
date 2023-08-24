@@ -4,119 +4,170 @@
     ViewData["Title"] = "Index";
 }
 
-<main>
-    <article>
-
-        <div class="addatatable-container" style="width:1000px;">
-
-            <h1 class="form-header">Suppliers</h1>
-
-            <!-- ======= Header tools ======= -->
-            <div class="adheader-tools">
 
 
 
-                <div class="adtools">
-                    <!-- Pagination Links -->
-                    <div class="adpagination-container" style="right:5px;">
-                        <ul class="adpagination">
-                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+
+
+@if (User.IsInRole("Admin"))
+{    
+     <div class="home-content">
+
+
+                <div class="overview-boxes">
+
+            <div class="app-content-header">
+                <h1 class="app-content-headerText">Suppliers</h1>
+
+
+            </div>
+                <div class="app-content-actions">
+                    <div class="adpagination-container">
+                        <ul class="pagination">
+                            <li class="page-item @(Model.HasPreviousPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=1,
+                                    SearchString=ViewBag.CurrentFilter })">First</a>
                             </li>
-                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageNumber - 1,
+                                    SearchString=ViewBag.CurrentFilter })">Previous</a>
                             </li>
                             <li class="page-item active">
                                 <a class="page-link">@Model.PageNumber</a>
                             </li>
-                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            <li class="page-item @(Model.HasNextPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageNumber + 1,
+                                    SearchString=ViewBag.CurrentFilter })">Next</a>
                             </li>
-                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            <li class="page-item @(Model.HasNextPage ? "" : " disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page=Model.PageCount,
+                                    SearchString=ViewBag.CurrentFilter })">Last</a>
                             </li>
                         </ul>
                     </div>
                 </div>
+                <div class="app-content-actions">
+             
 
-                <div class="adsearch">
                     <form method="get" asp-action="Index">
-                        <input type="search" id="form1" class="adsearch-input" placeholder="Supplier Email..." name="SearchString" />
+                    <input type="search" id="form1" class="search-bar" placeholder="Supplier Email..."
+                               name="SearchString" />
                     </form>
+                  
                 </div>
-            </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Nom
-            </th>
-            <th>
-                Email
-            </th>
-           
-            <th>
-               Adresse
-            </th>
-            <th>
-                CodePostal
-            </th>
-            <th>
-                Numtele
-            </th>
-            <th>
-               NombreTransaction
-            </th>
-            <th>
-                IsValid
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CompanyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
+        
+        </div>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TransactionNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsValid)
-            </td>
-            <td>
-                                <div class="BTNS">
-                                    <a asp-action="Edit" asp-route-id="@item.UserID">
-                                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
-                                    </a>
-                                    <a asp-action="Details" asp-route-id="@item.UserID">
-                                        <input type="button" class="form-button DET-button" value="Details" style="margin-right: 5px;">
-                                    </a> 
-                                    <a asp-action="Delete" asp-route-id="@item.UserID">
-                                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
-                                    </a>
+            <div class="sales-boxes">
+
+        <div class="products-area-wrapper tableView">
+            <div class="products-header">
+                <div class="product-cell image">
+                    Profile Picture
+                 
+                </div>
+                <div class="product-cell category">
+                    Email
+                </div>
+                <div class="product-cell status-cell">
+                        Company Name
+                </div>
+                <div class="product-cell sales">
+                    Adresse
+                </div> 
+                <div class="product-cell sales">
+                        CodePostal
+                </div>
+                <div class="product-cell sales">
+                        Phone Number
+                </div>   
+                
+                <div class="product-cell sales">
+                        Transaction Number
+                </div>      
+                
+                <div class="product-cell sales">
+                        Validation Status
+                </div>    
+                <div class="product-cell sales">
+                       
+                </div>
+                
+            </div>
+             
+
+
+         
+                
+
+                @if (@Model != null)
+                {
+                        @foreach (var item in Model)
+                        {
+                        <div class="products-row">
+
+                                    <div class="product-cell image">
+
+                                    @if (item.ProfilePicture!= null)
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.ProfilePicture)" alt="Profile Picture" />
+                                
+                                }
+                                else
+                                {
+                                    <img src="~/images/supplier.png" alt="Default Profile Picture"  />
+                                }
+                                    <span></span>
 
                                 </div>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+                            <div class="product-cell stock"><span class="cell-label">Email:</span>@item.Email</div>
+                            <div class="product-cell stock"><span class="cell-label">Company Name:</span>@item.CompanyName</div>
+                            <div class="product-cell stock"><span class="cell-label">Adresse :</span>@item.Adresse</div>
+                            <div class="product-cell stock"><span class="cell-label">Postal Code :</span>@item.PostalCode</div>
+                            <div class="product-cell stock"><span class="cell-label">Phone Number :</span>@item.PhoneNumber</div>
+                            <div class="product-cell stock"><span class="cell-label">Transaction Numbers :</span>@item.TransactionNumber</div>
+                            <div class="product-cell stock"><span class="cell-label">Validation Status :</span>@item.IsValid</div>
+                            <div class="product-cell">
+                            <div class="BTNSad">
+
+
+                                <a class="EDIA-button" asp-action="Edit" asp-route-id="@item.UserID">
+                                    <svg class="svg-icon" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                        <g stroke="#0a2558" stroke-linecap="round" stroke-width="2">
+                                            <path d="m20 20h-16" />
+                                            <path clip-rule="evenodd" d="m14.5858 4.41422c.781-.78105 2.0474-.78105 2.8284 0 .7811.78105.7811 2.04738 0 2.82843l-8.28322 8.28325-3.03046.202.20203-3.0304z" fill-rule="evenodd" />
+                                        </g>
+                                    </svg>
+                                </a>
+
+                                <a class="EDIA-button" asp-action="Details" asp-route-id="@item.UserID">
+                                    <svg class="svg-icon" fill="#a649da" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" stroke="#0a2558" stroke-width="2" />
+                                    </svg>
+                                </a>
+
+
+                                <a class="EDIA-button" asp-action="Delete" asp-route-id="@item.UserID">
+                                    <svg class="svg-icon" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 5H4V19C4 20.1 4.9 21 6 21H18C19.1 21 20 20.1 20 19V5H21C21.6 5 22 4.6 22 4V3C22 2.4 21.6 2 21 2H15V1.7C15 1.3 14.7 1 14.3 1H9.7C9.3 1 9 1.3 9 1.7V2H3C2.4 2 2 2.4 2 3V4C2 4.6 2.4 5 3 5ZM7 7V17H8V7H7ZM11 7V17H12V7H11ZM15 7V17H16V7H15Z" stroke="#0a2558" stroke-width="2" fill="none" />
+                                    </svg>
+                                </a>
+
+
+                            </div>
+                            </div>
+
+
+                        </div>
+
+
+                        }      
+                }
+
+            </div>
 
         </div>
-    </article>
-</main>
+    </div>
+}           
+

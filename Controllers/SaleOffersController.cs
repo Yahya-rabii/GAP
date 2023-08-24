@@ -140,28 +140,23 @@ namespace GAP.Controllers
             }
 
             return View(SaleOffer);
-        }     
-        
+        }
+
 
 
 
 
         // GET: SaleOffers/Create
         [Authorize(Roles = "Supplier")]
-        // GET: SaleOffers/Create
         public async Task<IActionResult> Create(int PurchaseRequestId)
         {
-            // Store the PurchaseRequestId in ViewBag or ViewData so that it can be used in the view.
+            // Store the PurchaseRequestId in ViewBag so that it can be used in the view.
             ViewBag.PurchaseRequestId = PurchaseRequestId;
 
- 
-
-
-        var ProductsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
-            ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "CompanyName");
+            var productsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
+            ViewBag.ProductsWithoutSaleOffer = new SelectList(productsWithoutSaleOffer, "ProductID", "Name"); 
 
             return View();
-
         }
 
         // POST: SaleOffers/Create

@@ -147,7 +147,8 @@ nav .profile-details i{
   color: #333;
 }
 .home-section .home-content{
-  position: relative;
+  position: absolute;
+  width:100%;
   padding-top: 104px;
 }
 .home-content .overview-boxes{
@@ -230,7 +231,7 @@ nav .profile-details i{
 .home-content .sales-boxes{
   display: flex;
   justify-content: space-between;
-  /* padding: 0 20px; */
+  /*padding: 0 20px; */
 }
 
 /* left box */
@@ -239,6 +240,7 @@ nav .profile-details i{
   background: #fff;
   padding: 20px 30px;
   margin: 0 20px;
+  position:relative;
   border-radius: 12px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
 }
@@ -741,3 +743,56 @@ nav .profile-details i{
             .adaction .admenu ul li:hover a {
                 color: #0a62a6;
             }
+
+
+
+
+
+
+
+.BTNSad {
+    display: flex;
+    gap: 10px; /* Adjust the gap between buttons */
+}
+
+
+
+.EDIA-button {
+    margin: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 40px;
+    border: none;
+    background: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+    .EDIA-button:hover {
+        background: #c6c6c6;
+    }
+
+        .EDIA-button:hover .svg-icon {
+            animation: lr 1s linear infinite;
+        }    
+        
+     
+@keyframes lr {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-1px);
+    }
+
+    75% {
+        transform: translateX(1px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}

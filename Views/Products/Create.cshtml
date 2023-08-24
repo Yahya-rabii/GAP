@@ -8,42 +8,39 @@
     <div class="main-body">
         <div class="card uprofile-details">
             <div class="card-body">
-
                 <h1 class="form-header">ADD Product</h1>
-
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Unitprice" class="control-label"></label>
-                <input asp-for="Unitprice" class="form-control" />
-                <span asp-validation-for="Unitprice" class="text-danger"></span>
-            </div>
-          
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ItemsNumber" class="control-label"></label>
-                <input asp-for="ItemsNumber" class="form-control" />
-                <span asp-validation-for="ItemsNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Desc" class="control-label"></label>
-                <input asp-for="Desc" class="form-control" />
-                <span asp-validation-for="Desc" class="text-danger"></span>
-            </div>
-          
-
-                    <div class="BTNS">
-
-                        <a asp-for="ProductID"> <input type="submit" value="Save" class="SUB-button" /></a>
-
-
-                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
-
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Unitprice" class="control-label"></label>
+                        <input asp-for="Unitprice" class="form-control" />
+                        <span asp-validation-for="Unitprice" class="text-danger"></span>
                     </div>
+          
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ItemsNumber" class="control-label"></label>
+                        <input asp-for="ItemsNumber" class="form-control" />
+                        <span asp-validation-for="ItemsNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Desc" class="control-label"></label>
+                        <input asp-for="Desc" class="form-control" />
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProductPicture" class="control-label"></label>
+                        <input asp-for="ProductPicture" type="file" class="form-control" />
+                        <span asp-validation-for="ProductPicture" class="text-danger"></span>
+                    </div>
+                        <div class="BTNS">
+                         <a asp-for="ProductID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                         <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+                        </div>
                 </form>
             </div>
 

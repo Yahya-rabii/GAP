@@ -11,9 +11,9 @@ namespace GAP.Models
         public string? Name { get; set; }
         public int? ItemsNumber { get; set; }
         public string? Desc { get; set; }
-
         [ForeignKey("Supplier")]
         public int SupplierId { get; set; } // Foreign key property
+        public byte[]? ProductPicture { get; set; }
 
         public Product() {
         
@@ -24,9 +24,9 @@ namespace GAP.Models
             SupplierId = 0;
             Totalprice= 0;
 
-
+            ProductPicture = Array.Empty<byte>();
         }
-        public Product(int ID , float unitprice, string name, int itemsnum, string desc, int supplierId, float totalprice)
+        public Product(int ID , float unitprice, string name, int itemsnum, string desc, int supplierId, float totalprice, byte[] productPicture)
         {
             ProductID = ID;
             Unitprice = unitprice;
@@ -35,6 +35,7 @@ namespace GAP.Models
             ItemsNumber = itemsnum;
             SupplierId = supplierId;
             Totalprice = totalprice;
+            ProductPicture =productPicture;
         }
 
 

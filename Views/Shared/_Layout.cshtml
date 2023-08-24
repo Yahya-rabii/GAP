@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="~/css/adminforms.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admintables.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/responsive.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/stock.css" asp-append-version="true" />
+
     <link href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet" asp-append-version="true" />
 
     <link rel="icon" href="~/images/fevicon.png" type="image/gif" />
@@ -334,7 +336,7 @@
                                                 }
                                                 else
                                                 {
-                                                    <img src="~/images/image-prof.png" alt="Default Profile Picture" />
+                                                    <img src="~/images/supplier.png" alt="Default Profile Picture" />
                                                 }
 
                                                 <span class="product">@supplier.Email</span>
@@ -434,6 +436,7 @@
         <script src="~/js/adprofile.js"></script>
         <script src="~/js/ProfileEdit.js"></script>
         <script src="~/js/reply.js"></script>
+        <script src="~/js/stock.js"></script>
 
         @await RenderSectionAsync("Scripts", required: false)
 
@@ -996,7 +999,7 @@ else{
     <script src="~/js/customs.js"></script>
     <script src="~/js/profile.js"></script>
     <script src="~/js/ProfileEdit.js"></script>
-        <script src="~/js/reply.js"></script>
+    <script src="~/js/reply.js"></script>
 
     <!-- sidebar -->
     <script src="~/js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -1010,7 +1013,6 @@ else{
     else
     {
         @RenderBody()
-        <script src="~/js/accessdenied.js"></script>
 
     }
 

@@ -27,11 +27,14 @@ namespace GAP.Controllers
         [Authorize(Roles = "Admin")]
 
         // GET: Suppliers1
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string SearchString, int? page)
         {
             IQueryable<Supplier> iseriq = from f in _context.Supplier
                                              select f;
-
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                iseriq = _context.Supplier.Where(s => s.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);

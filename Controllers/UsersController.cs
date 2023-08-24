@@ -32,7 +32,7 @@ namespace GAP.Controllers
         // GET: Users
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
-            IQueryable<User> iseriq = from s in _context.User
+            IQueryable<User> iseriq = from s in _context.User.Where(u=>u.Role != UserRole.Supplier)
                                       select s;
 
             if (!string.IsNullOrEmpty(SearchString))

@@ -4,47 +4,34 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="pcontainer" style="width:600px;">
+<div class="pcontainer" style="width: 600px;">
     <div class="main-body">
         <div class="card uprofile-details">
             <div class="card-body">
-
                 <h1 class="form-header">ADD Sales Offer</h1>
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <!-- Add the hidden field to store the PurchaseRequestID -->
-            <input type="hidden" name="PurchaseRequestId" value="@ViewBag.PurchaseRequestId" />
-            <div class="form-group">
-                <label asp-for="UnitProfit" class="control-label" hidden></label>
-                        <input asp-for="UnitProfit" class="form-control" placeholder="unit_profit" />
-                <span asp-validation-for="UnitProfit" class="text-danger"></span>
-            </div>
-            <!-- Add the dropdown menu for selecting products -->
-                    <div class="form-group" style="display: flex; flex-direction: row;">
-                        <label asp-for="SelectedProductId" class="control-label" style="flex: 1;width:100px;"></label>
-                    </div>
-                    <div class="form-group" style="display: flex; flex-direction: row;">
-                        <select asp-for="SelectedProductId" asp-items="@ViewBag.ProductsWithoutSaleOffer" class="form-control" style="flex: 1; "></select>
-                    </div>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- Add the hidden field to store the PurchaseRequestID -->
+                    <input type="hidden" asp-for="PurchaseRequestId" />
                     <div class="form-group">
+                        <label asp-for="UnitProfit" class="control-label"></label>
+                        <input asp-for="UnitProfit" class="form-control" placeholder="unit_profit" />
+                        <span asp-validation-for="UnitProfit" class="text-danger"></span>
+                    </div>
+                    <!-- Add the dropdown menu for selecting products -->
+                    <div class="form-group">
+                        <label asp-for="SelectedProductId" class="control-label"></label>
+                        <select asp-for="SelectedProductId" asp-items="@ViewBag.ProductsWithoutSaleOffer" class="form-control"></select>
                         <span asp-validation-for="SelectedProductId" class="text-danger"></span>
                     </div>
-
-       
                     <div class="BTNS">
-
-                        <a asp-for="SaleOfferID"> <input type="submit" value="Save" class="SUB-button" /></a>
-
-
-                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
-
+                        <button type="submit" class="SUB-button">Save</button>
+                        <a asp-action="Index" class="BTL-button">Back to List</a>
                     </div>
                 </form>
             </div>
-
-
-</div>
-</div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
