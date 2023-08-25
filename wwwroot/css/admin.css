@@ -751,8 +751,11 @@ nav .profile-details i{
 
 
 .BTNSad {
+    margin-left:100px;
+    position:relative;
     display: flex;
     gap: 10px; /* Adjust the gap between buttons */
+    align-content:center;
 }
 
 

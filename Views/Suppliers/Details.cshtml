@@ -13,68 +13,78 @@
 
                 <h1 style="text-align:center;">Details </h1>
                 <hr />
-        <dl class="row">
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.CompanyName)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.Adresse)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.Adresse)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.PostalCode)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.TransactionNumber)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.TransactionNumber)
-        </dd>
-        <dt class = "col-sm-3">
-            @Html.DisplayNameFor(model => model.IsValid)
-        </dt>
-        <dd class = "col-sm-9">
-            @Html.DisplayFor(model => model.IsValid)
-        </dd>
-    </dl>
+                <dl class="row">
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.CompanyName)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.CompanyName)
+                        </dd>
+                    </div>
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                    </div>
+         
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.Adresse)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.Adresse)
+                        </dd>
+                    </div>
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.PostalCode)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.PostalCode)
+                        </dd>
+                    </div>
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+                    </div>
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.TransactionNumber)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.TransactionNumber)
+                        </dd>
+                    </div>
+                    <div class="row">
+                        <dt class="col-sm-6">
+                            @Html.DisplayNameFor(model => model.IsValid)
+                        </dt>
+                        <dd class="col-sm-6">
+                            @Html.DisplayFor(model => model.IsValid)
+                        </dd>
+                    </div>
+                </dl>
+                <div class="BTNS">
+                    <a asp-action="Edit" asp-route-id="@Model?.UserID">
+                        <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
+                    </a>
+
+                    <a asp-action="Delete" asp-route-id="@Model?.UserID">
+                        <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
+                    </a>
+                    <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                </div>
 </div>
-            <div class="BTNS">
-                <a asp-action="Edit" asp-route-id="@Model?.UserID">
-                    <input type="submit" value="Edit" class="form-button EDI-button" style="margin-right: 5px;" />
-                </a>
-
-                <a asp-action="Delete" asp-route-id="@Model?.UserID">
-                    <input type="button" class="form-button DEL-button" value="Delete" style="margin-right: 5px;">
-                </a>
-                <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
-
-            </div>
+    
 
 </div>
 </div>
