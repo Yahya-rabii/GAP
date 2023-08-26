@@ -58,78 +58,51 @@
         
         </div>
 
-            <div class="sales-boxes">
 
-        <div class="products-area-wrapper tableView">
-            <div class="products-header">
-                <div class="product-cell image">
-                    Profile Picture
-                 
-                </div>
-                <div class="product-cell category">
-                    Email
-                </div>
-                <div class="product-cell status-cell">
-                        Company Name
-                </div>
-                <div class="product-cell sales">
-                    Adresse
-                </div> 
-                <div class="product-cell sales">
-                        CodePostal
-                </div>
-                <div class="product-cell sales">
-                        Phone Number
-                </div>   
-                
-                <div class="product-cell sales">
-                        Transaction Number
-                </div>      
-                
-                <div class="product-cell sales">
-                        Validation Status
-                </div>    
-                <div class="product-cell sales">
-                       
-                </div>
-                
-            </div>
-             
+        <div class="sales-boxes">
 
-
-         
-                
-
-                @if (@Model != null)
-                {
+            <div class="products-area-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th class="profile-picture">Profile Picture</th>
+                        <th>Email</th>
+                        <th>Company Name</th>
+                        <th>Address</th>
+                        <th>Postal Code</th>
+                        <th>Phone Number</th>
+                        <th>Transaction Number</th>
+                        <th>Validation Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (@Model != null)
+                    {
                         @foreach (var item in Model)
                         {
-                        <div class="products-row">
+                            <tr>
+                                <td >
+                                        <div class ="profile-picture">
+                                    @if (item.ProfilePicture != null)
+                                    {
+                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.ProfilePicture)" alt="Profile Picture" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/supplier.png" alt="Default Profile Picture" />
+                                            }
+                                        </div>
 
-                                    <div class="product-cell image">
-
-                                    @if (item.ProfilePicture!= null)
-                                {
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(item.ProfilePicture)" alt="Profile Picture" />
-                                
-                                }
-                                else
-                                {
-                                    <img src="~/images/supplier.png" alt="Default Profile Picture"  />
-                                }
-                                    <span></span>
-
-                                </div>
-
-                            <div class="product-cell stock"><span class="cell-label">Email:</span>@item.Email</div>
-                            <div class="product-cell stock"><span class="cell-label">Company Name:</span>@item.CompanyName</div>
-                            <div class="product-cell stock"><span class="cell-label">Adresse :</span>@item.Adresse</div>
-                            <div class="product-cell stock"><span class="cell-label">Postal Code :</span>@item.PostalCode</div>
-                            <div class="product-cell stock"><span class="cell-label">Phone Number :</span>@item.PhoneNumber</div>
-                            <div class="product-cell stock"><span class="cell-label">Transaction Numbers :</span>@item.TransactionNumber</div>
-                            <div class="product-cell stock"><span class="cell-label">Validation Status :</span>@item.IsValid</div>
-                            <div class="product-cell">
-                            <div class="BTNSad">
+                                </td>
+                                <td>@item.Email</td>
+                                <td>@item.CompanyName</td>
+                                <td>@item.Adresse</td>
+                                <td>@item.PostalCode</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.TransactionNumber</td>
+                                <td>@item.IsValid</td>
+                                <td class="BTNS-container">
 
 
                                 <a class="EDIA-button" asp-action="Edit" asp-route-id="@item.UserID">
@@ -155,19 +128,18 @@
                                 </a>
 
 
-                            </div>
-                            </div>
+                            </td>
 
 
-                        </div>
+                        </tr>
 
 
                         }      
                 }
-
+                </tbody>
+            </table>
             </div>
-
-        </div>
+            </div>
     </div>
 }           
 

@@ -316,6 +316,8 @@ nav .profile-details i{
 }
 
 .prof {
+    min-height: 30px;
+    min-width: 30px; 
     height: 30px;
     width: 30px;
     object-fit: cover;
@@ -496,7 +498,7 @@ nav .profile-details i{
     }
 
     .user-table th {
-        background-color: #f4f4f4; /* Gray background for table headers */
+        background-color: #f3f6fd; /* Gray background for table headers */
     }
 
 
