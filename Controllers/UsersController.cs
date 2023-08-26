@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using OfficeOpenXml;
+using Humanizer;
+using iTextSharp.text.pdf.qrcode;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GAP.Controllers
 {
@@ -44,6 +48,81 @@ namespace GAP.Controllers
             int pageNumber = (page ?? 1);
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
+
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial
+
+            if (excelFile == null || excelFile.Length <= 0)
+            {
+                // Handle error: No file uploaded
+                return RedirectToAction("Index");
+            }
+
+            string[] duplicateEmails = new string[0]; // Initialize as an empty array
+
+            using (var package = new ExcelPackage(excelFile.OpenReadStream()))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+                int rowCount = worksheet.Dimension.Rows;
+
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    string email = worksheet.Cells[row, 1].Value?.ToString();
+
+                    if (string.IsNullOrEmpty(email))
+                    {
+                        // Skip empty rows
+                        continue;
+                    }
+
+                    if (_context.User.Any(u => u.Email == email))
+                    {
+                        Array.Resize(ref duplicateEmails, duplicateEmails.Length + 1);
+                        duplicateEmails[duplicateEmails.Length - 1] = email;
+                        continue;
+                    }
+
+                    string firstName = worksheet.Cells[row, 2].Value?.ToString();
+                    string lastName = worksheet.Cells[row, 3].Value?.ToString();
+                    string password = HashPassword(worksheet.Cells[row, 4].Value?.ToString());
+                    string roleString = worksheet.Cells[row, 5].Value?.ToString();
+
+                    if (Enum.TryParse<UserRole>(roleString, out var userRole))
+                    {
+                        var newUser = new User
+                        {
+                            Email = email,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Password = password,
+                            Role = userRole,
+                        };
+                        _context.User.Add(newUser);
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
+
+            if (duplicateEmails.Any())
+            {
+                TempData["DuplicateEmails"] = duplicateEmails;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
 
 
         // GET: Users1/Details/5

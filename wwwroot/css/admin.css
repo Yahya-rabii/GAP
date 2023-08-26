@@ -801,3 +801,82 @@ nav .profile-details i{
         transform: translateX(0);
     }
 }
+
+
+
+
+
+.custum-file-upload {
+    height:50px;
+    width: 150px;
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+    justify-content: left;
+    border: 2px dashed #cacaca;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 10px;
+    box-shadow: 0px 48px 35px -48px rgba(0,0,0,0.1);
+}
+
+    .custum-file-upload .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .custum-file-upload .icon svg {
+            height: 35px;
+            fill: rgba(75, 85, 99, 1);
+        }
+
+    .custum-file-upload .text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .custum-file-upload .text span {
+            font-weight: 900;
+            color: rgba(75, 85, 99, 1);
+            margin-right: 10px;
+        }
+
+        .custum-file-upload .text button {
+            display: flex;
+        }
+
+    .custum-file-upload input {
+        display: none;
+    }
+
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of everything */
+}
+
+.popup-content {
+    background-color: #fff3cd; 
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.popup-close {
+    position: absolute;
+    color: red;
+    top: 0px;
+    z-index:1;
+    right: 10px;
+    cursor: pointer;
+    font-size:30px;
+}

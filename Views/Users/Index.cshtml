@@ -42,16 +42,82 @@
                         </ul>
                     </div>
                 </div>
+
+
+            <form method="post" enctype="multipart/form-data" asp-action="ImportFromExcel">
+                <label class="custum-file-upload" for="excelFile">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path fill="green" d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6m1.8 18H14l-2-3.4l-2 3.4H8.2l2.9-4.5L8.2 11H10l2 3.4l2-3.4h1.8l-2.9 4.5l2.9 4.5M13 9V3.5L18.5 9H13Z" />
+                        </svg>
+                    </div>
+                    <div class="text">
+                        <span>Upload</span>
+                        <button type="submit"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="green" d="M9 16h6v-6h4l-7-7l-7 7h4v6zm3-10.17L14.17 8H13v6h-2V8H9.83L12 5.83zM5 18h14v2H5z" /></svg></button>
+                    </div>
+                    <input type="file" id="excelFile" name="excelFile" accept=".xlsx, .xls" style="display: none;">
+                </label>
+
+            </form>
+
                 <div class="app-content-actions">
-             
+
+
+
+
+
+ 
 
                     <form method="get" asp-action="Index">
-                    <input type="search" id="form1" class="search-bar" placeholder="user Email..."
+                        <input type="search" id="form1" class="search-bar" placeholder="user Email..."
                                name="SearchString" />
                     </form>
-                  
+
+                
+
                 </div>
-        
+            @if (TempData["DuplicateEmails"] != null)
+            {
+                <div class="popup-overlay" id="popupOverlay">
+                    <div class="popup-content">
+                        <span class="popup-close" id="popupClose">&times;</span>
+                        <div class="alert alert-warning">
+
+                            <h2>@((TempData["DuplicateEmails"] as string[]).Length) User(s) has been Rejected</h2>
+
+                            <ul>
+                                @foreach (var email in (string[])TempData["DuplicateEmails"])
+                                {
+                                    <li>@email</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+
+   
+            <script>
+
+                // JavaScript to control the popup behavior
+                const popupOverlay = document.getElementById('popupOverlay');
+                const popupClose = document.getElementById('popupClose');
+
+                // Show the popup and darken the background
+                if (popupOverlay) {
+                    popupOverlay.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+
+                // Close the popup and revert background
+                if (popupClose) {
+                    popupClose.addEventListener('click', () => {
+                        popupOverlay.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+
+            </script>
         </div>
 
 
