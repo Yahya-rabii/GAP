@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using X.PagedList;
+using OfficeOpenXml;
 
 namespace GAP.Controllers
 {
@@ -41,7 +42,107 @@ namespace GAP.Controllers
 
 
         }
-    
+
+
+
+
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial
+
+            if (excelFile == null || excelFile.Length <= 0)
+            {
+                // Handle error: No file uploaded
+                return RedirectToAction("Index");
+            }
+
+            List<string> duplicateProducts = new List<string>(); // Initialize as an empty list
+
+            using (var package = new ExcelPackage(excelFile.OpenReadStream()))
+            {
+                var worksheet = package.Workbook.Worksheets[0];
+                int rowCount = worksheet.Dimension.Rows;
+
+                List<Product> newProducts = new List<Product>();
+
+                for (int row = 2; row <= rowCount; row++)
+                {
+                    string name = worksheet.Cells[row, 1].Value?.ToString();
+
+                    if (string.IsNullOrEmpty(name))
+                    {
+                        // Skip empty rows
+                        continue;
+                    }
+
+                    string description = worksheet.Cells[row, 4].Value?.ToString();
+
+                    if (_context.Product.Any(p => p.Name == name && p.Desc == description))
+                    {
+                        // Handle duplicate products
+                        duplicateProducts.Add(name);
+                        continue;
+                    }
+
+                    string unitPriceString = worksheet.Cells[row, 2].Value?.ToString();
+                    if (!float.TryParse(unitPriceString, out float unitPrice))
+                    {
+                        // Handle invalid unit price if needed
+                        continue;
+                    }
+
+                    string itemsNumberString = worksheet.Cells[row, 3].Value?.ToString();
+                    if (!int.TryParse(itemsNumberString, out int itemsNumber))
+                    {
+                        // Handle invalid items number if needed
+                        continue;
+                    }
+
+                    // Rest of the code to create a new Product instance...
+                    var newProduct = new Product
+                    {
+                        Name = name,
+                        Unitprice = unitPrice,
+                        ItemsNumber = itemsNumber,
+                        Desc = description,
+                    };
+
+                    var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                    newProduct.SupplierId = userId;
+
+                    newProducts.Add(newProduct);
+                }
+
+                _context.Product.AddRange(newProducts);
+                await _context.SaveChangesAsync();
+            }
+
+            if (duplicateProducts.Any())
+            {
+                TempData["DuplicateProducts"] = duplicateProducts;
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Products1/Details/5
         public async Task<IActionResult> Details(int? id)
