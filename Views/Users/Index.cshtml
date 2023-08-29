@@ -78,28 +78,40 @@
                 </div>
             @if (TempData["DuplicateEmails"] != null)
             {
+                var duplicateEmails = TempData["DuplicateEmails"] as string[];
+                int itemsPerPage = 5; // Number of items to display per page
+                int pageCount = (int)Math.Ceiling((double)duplicateEmails.Length / itemsPerPage);
+
                 <div class="popup-overlay" id="popupOverlay">
                     <div class="popup-content">
                         <span class="popup-close" id="popupClose">&times;</span>
                         <div class="alert alert-warning">
+                            <h2>@duplicateEmails.Length User(s) has been Rejected</h2>
 
-                            <h2>@((TempData["DuplicateEmails"] as string[]).Length) User(s) has been Rejected</h2>
+                            @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+                            {
+                                <ul class="page-content" style="display: @(pageIndex == 0 ? "block" : "none");">
+                                    @for (int i = pageIndex * itemsPerPage; i < Math.Min((pageIndex + 1) * itemsPerPage, duplicateEmails.Length); i++)
+                                    {
+                                        <li>@duplicateEmails[i]</li>
+                                    }
+                                </ul>
+                            }
 
-                            <ul>
-                                @foreach (var email in (string[])TempData["DuplicateEmails"])
+                            <!-- Pagination buttons -->
+                            <div class="pagination">
+                                @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
                                 {
-                                    <li>@email</li>
+                                    <button class="page-link" onclick="showPage(@pageIndex)">@pageIndex</button>
                                 }
-                            </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             }
 
-   
             <script>
-
-                // JavaScript to control the popup behavior
+                // JavaScript to control the popup behavior and pagination
                 const popupOverlay = document.getElementById('popupOverlay');
                 const popupClose = document.getElementById('popupClose');
 
@@ -117,7 +129,15 @@
                     });
                 }
 
+                // Show the selected page
+                function showPage(pageIndex) {
+                    const pages = document.querySelectorAll('.popup-content .page-content');
+                    pages.forEach((page, index) => {
+                        page.style.display = index === pageIndex ? 'block' : 'none';
+                    });
+                }
             </script>
+
         </div>
 
 

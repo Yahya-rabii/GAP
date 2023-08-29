@@ -132,30 +132,49 @@
 </main>
 
 
+
+
+
+
+
+
+
 @if (TempData["DuplicateProducts"] != null)
 {
     var duplicateProductNames = TempData["DuplicateProducts"] as string[];
+    int itemsPerPage = 5; // Number of items to display per page
+    int pageCount = (int)Math.Ceiling((double)duplicateProductNames.Length / itemsPerPage);
+
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content">
             <span class="popup-close" id="popupClose">&times;</span>
             <div class="alert alert-warning">
-
                 <h2>@duplicateProductNames.Length Product(s) has been Rejected</h2>
 
-                <ul>
-                    @foreach (var duplicateName in duplicateProductNames)
+                @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
+                {
+                    <ul class="page-content" style="display: @(pageIndex == 0 ? "block" : "none");">
+                        @for (int i = pageIndex * itemsPerPage; i < Math.Min((pageIndex + 1) * itemsPerPage, duplicateProductNames.Length); i++)
+                        {
+                            <li>@duplicateProductNames[i]</li>
+                        }
+                    </ul>
+                }
+
+                <!-- Pagination buttons -->
+                <div class="pagination">
+                    @for (int pageIndex = 0; pageIndex < pageCount; pageIndex++)
                     {
-                        <li>@duplicateName</li>
+                        <button class="page-link" onclick="showPage(@pageIndex)">@pageIndex</button>
                     }
-                </ul>
+                </div>
             </div>
         </div>
     </div>
 }
 
 <script>
-
-    // JavaScript to control the popup behavior
+    // JavaScript to control the popup behavior and pagination
     const popupOverlay = document.getElementById('popupOverlay');
     const popupClose = document.getElementById('popupClose');
 
@@ -173,4 +192,11 @@
         });
     }
 
+    // Show the selected page
+    function showPage(pageIndex) {
+        const pages = document.querySelectorAll('.popup-content .page-content');
+        pages.forEach((page, index) => {
+            page.style.display = index === pageIndex ? 'block' : 'none';
+        });
+    }
 </script>
