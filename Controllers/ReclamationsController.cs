@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
 using System.Security.Claims;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -20,7 +21,13 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
         // GET: Reclamations
+        [HttpGet("/Reclamations/Indexusers")]
+        [SwaggerOperation(Summary = "Get user's reclamations", Description = "Retrieve a list of reclamations for the current user.")]
+        [SwaggerResponse(200, "List of reclamations retrieved successfully.")]
         public async Task<IActionResult> Indexusers()
         {
 
@@ -51,14 +58,28 @@ namespace GAP.Controllers
 
 
 
+
+
+
         // GET: Reclamations/Create
+        [HttpGet("/Reclamations/Create")]
+        [SwaggerOperation(Summary = "Show reclamation creation form", Description = "Display the reclamation creation form.")]
+        [SwaggerResponse(200, "Reclamation creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+
+
+
+
+        // GET: Reclamations/Create
+        [HttpPost("/Reclamations/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new reclamation", Description = "Create a new reclamation with the provided information.")]
+        [SwaggerResponse(200, "Reclamation created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("ReclamationTitle,Description,BugPicture")] Reclamation reclamation, IFormFile bugPicture)
         {
             if (ModelState.IsValid)
@@ -102,8 +123,10 @@ namespace GAP.Controllers
 
 
         // POST: ReclamationReplies/Delete/5
-        [HttpPost]
+        [HttpPost("/Reclamations/DeleteReclamation/{ReclamationID}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete reclamation", Description = "Delete a reclamation.")]
+        [SwaggerResponse(200, "Reclamation deleted successfully.")]
         public async Task<IActionResult> DeleteReclamation(int ReclamationID)
         {
             try
@@ -140,6 +163,18 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
         private bool ReclamationExists(int id)
         {
           return (_context.Reclamation?.Any(e => e.ReclamationID == id)).GetValueOrDefault();

@@ -9,6 +9,7 @@ using GAP.Data;
 using GAP.Models;
 using System.Security.Claims;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -21,7 +22,15 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
+
+
         // GET: Stocks
+        [HttpGet("/Stocks")]
+        [SwaggerOperation(Summary = "Get a list of stocks", Description = "Retrieve a list of stocks.")]
+        [SwaggerResponse(200, "List of stocks retrieved successfully.")]
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
             IQueryable<Stock> iseriq = from s in _context.Stock.Include(s=>s.Products)
@@ -41,6 +50,18 @@ namespace GAP.Controllers
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
+
+
+
+
+
+
+
+
+        // GET: Stocks
+        [HttpGet("/Stocks/IndexProjectManager")]
+        [SwaggerOperation(Summary = "Get stocks for project manager", Description = "Retrieve stocks for a project manager.")]
+        [SwaggerResponse(200, "Stocks retrieved successfully.")]
         public async Task<IActionResult> IndexProjectManager(int? page)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -80,8 +101,17 @@ namespace GAP.Controllers
 
 
 
-        [HttpPost]
+
+
+
+
+
+        // Post: Add
+        [HttpPost("/Stocks/Add")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Add product to project", Description = "Add a product to a project.")]
+        [SwaggerResponse(302, "Product added to project.")]
+        [SwaggerResponse(404, "Product or project not found.")]
         public async Task<IActionResult> Add(int productId, int projectId)
         {
             var product = _context.Product.FirstOrDefault(p => p.ProductID == productId);
@@ -99,7 +129,17 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+
+
+
         // GET: Stocks/Details/5
+        [HttpGet("/Stocks/Details/{id}")]
+        [SwaggerOperation(Summary = "Get stock details", Description = "Retrieve details of a stock.")]
+        [SwaggerResponse(200, "Stock details retrieved successfully.")]
+        [SwaggerResponse(404, "Stock not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Stock == null)
@@ -117,17 +157,35 @@ namespace GAP.Controllers
             return View(stock);
         }
 
+
+
+
+
+
+
+
         // GET: Stocks/Create
+        [HttpGet("/Stocks/Create")]
+        [SwaggerOperation(Summary = "Show stock creation form", Description = "Display the stock creation form.")]
+        [SwaggerResponse(200, "Stock creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
+
+
+
+
         // POST: Stocks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Stocks/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new stock", Description = "Create a new stock with the provided information.")]
+        [SwaggerResponse(200, "Stock created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("StockID")] Stock stock)
         {
             if (ModelState.IsValid)
@@ -139,7 +197,19 @@ namespace GAP.Controllers
             return View(stock);
         }
 
+
+
+
+
+
+
+
+
         // GET: Stocks/Edit/5
+        [HttpGet("/Stocks/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show stock editing form", Description = "Display the form for editing a stock's information.")]
+        [SwaggerResponse(200, "Stock editing form displayed successfully.")]
+        [SwaggerResponse(404, "Stock not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Stock == null)
@@ -155,11 +225,21 @@ namespace GAP.Controllers
             return View(stock);
         }
 
+
+
+
+
+
+
+
+
         // POST: Stocks/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Stocks/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit stock information", Description = "Edit the information of a stock.")]
+        [SwaggerResponse(200, "Stock information edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Stock not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("StockID")] Stock stock)
         {
             if (id != stock.StockID)
@@ -190,7 +270,18 @@ namespace GAP.Controllers
             return View(stock);
         }
 
+
+
+
+
+
+
+
         // GET: Stocks/Delete/5
+        [HttpGet("/Stocks/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show stock deleting form", Description = "Display the form for deleting a stock's information.")]
+        [SwaggerResponse(200, "Stock deleting form displayed successfully.")]
+        [SwaggerResponse(404, "Stock not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Stock == null)
@@ -208,9 +299,17 @@ namespace GAP.Controllers
             return View(stock);
         }
 
+
+
+
+
+
         // POST: Stocks/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/Stocks/Delete/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete stock", Description = "Delete a stock.")]
+        [SwaggerResponse(200, "Stock deleted successfully.")]
+        [SwaggerResponse(404, "Stock not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Stock == null)
@@ -227,6 +326,15 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+        // Helper: no route
         private bool StockExists(int id)
         {
           return (_context.Stock?.Any(e => e.StockID == id)).GetValueOrDefault();

@@ -9,6 +9,7 @@ using GAP.Data;
 using GAP.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -24,7 +25,14 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
         // GET: ReclamationReplies
+        [HttpGet("/ReclamationReplies/Indexadmin")]
+        [SwaggerOperation(Summary = "Get admin's reclamation replies", Description = "Retrieve a list of reclamation replies for all reclamations.")]
+        [SwaggerResponse(200, "List of reclamation replies retrieved successfully.")]
+
         public async Task<IActionResult> Indexadmin()
         {
             var reclamations = _context.Reclamation.ToList();
@@ -51,19 +59,26 @@ namespace GAP.Controllers
         }
 
 
-  
+
 
         // GET: ReclamationReplies/Create
+        [HttpGet("/ReclamationReplies/Create")]
+        [SwaggerOperation(Summary = "Show reclamation reply creation form", Description = "Display the reclamation reply creation form.")]
+        [SwaggerResponse(200, "Reclamation reply creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
         // POST: ReclamationReplies/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/ReclamationReplies/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new reclamation reply", Description = "Create a new reclamation reply with the provided information.")]
+        [SwaggerResponse(200, "Reclamation reply created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("ReclamationReplyID,ReclamationID,Answer")] ReclamationReply reclamationReply)
         {
             if (ModelState.IsValid)
@@ -76,12 +91,17 @@ namespace GAP.Controllers
             return RedirectToAction("Indexadmin", "ReclamationReplies");
         }
 
-      
+
+
+
+
 
 
         // POST: ReclamationReplies/Delete/5
-        [HttpPost]
+        [HttpPost("/ReclamationReplies/DeleteReply")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete reclamation reply", Description = "Delete a reclamation reply.")]
+        [SwaggerResponse(200, "Reclamation reply deleted successfully.")]
         public async Task<IActionResult> DeleteReply(int ReclamationReplyID)
         {
             if (_context.ReclamationReply == null)
@@ -99,9 +119,16 @@ namespace GAP.Controllers
 
         }
 
+
+
+
+
+
         // POST: ReclamationReplies/Delete/5
-        [HttpPost]
+        [HttpPost("/ReclamationReplies/DeleteReclamationAD")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete reclamation and its replies", Description = "Delete a reclamation and its associated replies.")]
+        [SwaggerResponse(200, "Reclamation and its replies deleted successfully.")]
         public async Task<IActionResult> DeleteReclamationAD(int ReclamationID)
         {
             try
@@ -140,6 +167,17 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
         private bool ReclamationReplyExists(int id)
         {
           return (_context.ReclamationReply?.Any(e => e.ReclamationReplyID == id)).GetValueOrDefault();

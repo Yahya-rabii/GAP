@@ -9,6 +9,7 @@ using GAP.Data;
 using GAP.Models;
 using System.Security.Claims;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -20,6 +21,13 @@ namespace GAP.Controllers
         {
             _context = context;
         }
+
+
+
+        // GET: QualityTestReports/Index
+        [HttpGet("/QualityTestReports")]
+        [SwaggerOperation(Summary = "Get quality test reports", Description = "Retrieve a list of quality test reports.")]
+        [SwaggerResponse(200, "List of quality test reports retrieved successfully.")]
         public async Task<IActionResult> Index(int? page)
         {
             IQueryable<QualityTestReport> QualityTestReports = from rq in _context.QualityTestReport
@@ -47,7 +55,14 @@ namespace GAP.Controllers
 
 
 
+
+
+
         // GET: QualityTestReports/Details/5
+        [HttpGet("/QualityTestReports/Details/{id}")]
+        [SwaggerOperation(Summary = "Get details of a quality test report", Description = "Retrieve the details of a quality test report.")]
+        [SwaggerResponse(200, "Quality test report details retrieved successfully.")]
+        [SwaggerResponse(404, "Quality test report not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.QualityTestReport == null)
@@ -65,7 +80,14 @@ namespace GAP.Controllers
             return View(QualityTestReport);
         }
 
+
+
+
+
         // GET: QualityTestReport/Create
+        [HttpGet("/QualityTestReports/Create")]
+        [SwaggerOperation(Summary = "Show quality test report creation form", Description = "Display the quality test report creation form.")]
+        [SwaggerResponse(200, "Quality test report creation form displayed successfully.")]
         public IActionResult Create(int PurchaseQuoteId)
         {
             // Fetch the list of all PurchaseQuote with corresponding product and supplier names
@@ -85,9 +107,16 @@ namespace GAP.Controllers
             return View();
         }
 
+
+
+
+
         // POST: QualityTestReport/Create
-        [HttpPost]
+        [HttpPost("/QualityTestReports/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new quality test report", Description = "Create a new quality test report with the provided information.")]
+        [SwaggerResponse(200, "Quality test report created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public IActionResult Create(int PurchaseQuoteId,  QualityTestReport QualityTestReport)
         {
             if (ModelState.IsValid)
@@ -173,7 +202,16 @@ namespace GAP.Controllers
             return View(QualityTestReport);
         }
 
+
+
+
+
+
         // GET: QualityTestReports/Edit/5
+        [HttpGet("/QualityTestReports/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show quality test report edit form", Description = "Display the quality test report edit form.")]
+        [SwaggerResponse(200, "Quality test report edit form displayed successfully.")]
+        [SwaggerResponse(404, "Quality test report not found.")]
         public async Task<IActionResult> Edit( int? id)
         {
             if (id == null || _context.QualityTestReport == null)
@@ -189,11 +227,18 @@ namespace GAP.Controllers
             return View(QualityTestReport);
         }
 
+
+
+
+
+
         // POST: QualityTestReports/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/QualityTestReports/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a quality test report", Description = "Edit an existing quality test report with the provided information.")]
+        [SwaggerResponse(200, "Quality test report edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Quality test report not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("QualityTestReportID,StateValidity,CntItemsValidity,OperationValidity,QualityTestingDepartmentManagerId,PurchaseQuoteId")] QualityTestReport QualityTestReport)
         {
             if (id != QualityTestReport.QualityTestReportID)
@@ -256,7 +301,14 @@ namespace GAP.Controllers
         }
 
 
+
+
+
         // GET: QualityTestReports/Delete/5
+        [HttpGet("/QualityTestReports/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show quality test report delete confirmation", Description = "Display the quality test report delete confirmation.")]
+        [SwaggerResponse(200, "Quality test report delete confirmation displayed successfully.")]
+        [SwaggerResponse(404, "Quality test report not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.QualityTestReport == null)
@@ -274,9 +326,16 @@ namespace GAP.Controllers
             return View(QualityTestReport);
         }
 
+
+
+
+
         // POST: QualityTestReports/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/QualityTestReports/DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a quality test report", Description = "Delete an existing quality test report.")]
+        [SwaggerResponse(200, "Quality test report deleted successfully.")]
+        [SwaggerResponse(404, "Quality test report not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.QualityTestReport == null)
@@ -293,6 +352,16 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
         private bool QualityTestReportExists(int id)
         {
           return (_context.QualityTestReport?.Any(e => e.QualityTestReportID == id)).GetValueOrDefault();

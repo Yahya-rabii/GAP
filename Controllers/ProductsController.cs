@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using X.PagedList;
 using OfficeOpenXml;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -27,7 +28,13 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
         // GET: Products1
+        [HttpGet("/Products")]
+        [SwaggerOperation(Summary = "Get products", Description = "Retrieve a list of products.")]
+        [SwaggerResponse(200, "List of products retrieved successfully.")]
         public async Task<IActionResult> Index(int? page)
         {            
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -49,8 +56,12 @@ namespace GAP.Controllers
 
 
 
-
-        [HttpPost]
+        // post: Products1
+        [HttpPost("/Products/ImportFromExcel")]
+        [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Import products from Excel", Description = "Import products from an Excel file.")]
+        [SwaggerResponse(200, "Products imported successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial
@@ -137,14 +148,11 @@ namespace GAP.Controllers
 
 
 
-
-
-
-
-
-
-
         // GET: Products1/Details/5
+        [HttpGet("/Products/Details/{id}")]
+        [SwaggerOperation(Summary = "Get details of a product", Description = "Retrieve the details of a product.")]
+        [SwaggerResponse(200, "Product details retrieved successfully.")]
+        [SwaggerResponse(404, "Product not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Product == null)
@@ -162,17 +170,30 @@ namespace GAP.Controllers
             return View(Product);
         }
 
+
+
+
+
+
+
         // GET: Products1/Create
+        [HttpGet("/Products/Create")]
+        [SwaggerOperation(Summary = "Show product creation form", Description = "Display the product creation form.")]
+        [SwaggerResponse(200, "Product creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
         // POST: Products1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Products/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new product", Description = "Create a new product.")]
+        [SwaggerResponse(200, "Product created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("ProductID,Unitprice,Name,ItemsNumber,Desc,ProductPicture")] Product product, IFormFile productPicture)
         {
             if (ModelState.IsValid)
@@ -200,7 +221,16 @@ namespace GAP.Controllers
             return View(product);
         }
 
+
+
+
+
+
         // GET: Products1/Edit/5
+        [HttpGet("/Products/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show product edit form", Description = "Display the product edit form.")]
+        [SwaggerResponse(200, "Product edit form displayed successfully.")]
+        [SwaggerResponse(404, "Product not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Product == null)
@@ -216,11 +246,19 @@ namespace GAP.Controllers
             return View(Product);
         }
 
+
+
+
+
+
+
         // POST: Products1/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Products/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a product", Description = "Edit an existing product.")]
+        [SwaggerResponse(200, "Product edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Product not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("ProductID,Unitprice,CompanyName,ItemsNumber,Desc")] Product Product)
         {
             if (id != Product.ProductID)
@@ -254,12 +292,19 @@ namespace GAP.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(Product);
-        } 
-        
-        
-      
+        }
+
+
+
+
+
+
 
         // GET: Products1/Delete/5
+        [HttpGet("/Products/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show product delete confirmation", Description = "Display the product delete confirmation.")]
+        [SwaggerResponse(200, "Product delete confirmation displayed successfully.")]
+        [SwaggerResponse(404, "Product not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Product == null)
@@ -277,9 +322,18 @@ namespace GAP.Controllers
             return View(Product);
         }
 
+
+
+
+
+
+
         // POST: Products1/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/Products/DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a product", Description = "Delete an existing product.")]
+        [SwaggerResponse(200, "Product deleted successfully.")]
+        [SwaggerResponse(404, "Product not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Product == null)
@@ -296,9 +350,28 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+
+        // Helper: no route
         private bool ProductExists(int id)
         {
           return (_context.Product?.Any(e => e.ProductID == id)).GetValueOrDefault();
         }
+
+
+
     }
 }

@@ -2,6 +2,7 @@
 using GAP.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics;
 using System.Security.Claims;
 
@@ -19,6 +20,11 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+        [HttpGet("/")]
+        [SwaggerOperation(Summary = "Home page", Description = "Display the home page.")]
+        [SwaggerResponse(200, "Home page displayed successfully.")]
         public IActionResult Index()
         {
 
@@ -46,15 +52,29 @@ namespace GAP.Controllers
             
         }
 
- 
 
 
+
+
+        [HttpGet("/Privacy")]
+        [SwaggerOperation(Summary = "Privacy policy page", Description = "Display the privacy policy page.")]
+        [SwaggerResponse(200, "Privacy policy page displayed successfully.")]
         public IActionResult Privacy()
         {
             return View();
         }
 
+
+
+
+
+
+
         // Action method to handle the "Reply" button click
+        [HttpGet("/HandleNotification")]
+        [SwaggerOperation(Summary = "Handle notifications", Description = "Handle notifications based on user roles.")]
+        [SwaggerResponse(302, "Notification handled successfully.")]
+        [SwaggerResponse(200, "Default behavior if user is not in the specified roles.")]
         public IActionResult HandleNotification(int PurchaseQuoteId , int SupplierID , int SaleOfferID)
         {
 
@@ -84,6 +104,21 @@ namespace GAP.Controllers
             return RedirectToAction("Index");
         }
 
+
+
+
+
+
+
+        // Action method to handle the "AccessDenied" button click
+        [HttpGet("/AccessDenied/{statusCode}")]
+        [SwaggerOperation(Summary = "Access denied page", Description = "Display the access denied page.")]
+        [SwaggerResponse(200, "Access denied page displayed successfully.")]
+        [SwaggerResponse(400, "HTTP 400 Bad Request page displayed.")]
+        [SwaggerResponse(401, "HTTP 401 Unauthorized page displayed.")]
+        [SwaggerResponse(403, "HTTP 403 Forbidden page displayed.")]
+        [SwaggerResponse(404, "HTTP 404 Not Found page displayed.")]
+        [SwaggerResponse(500, "HTTP 500 Internal Server Error page displayed.")]
         public IActionResult AccessDenied(int? statusCode = null)
         {
             if (statusCode.HasValue)

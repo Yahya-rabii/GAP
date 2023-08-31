@@ -12,6 +12,7 @@ using Xceed.Document.NET;
 using Xceed.Words.NET;
 using X.PagedList;
 using iTextSharp.text.pdf;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -21,13 +22,17 @@ namespace GAP.Controllers
     public class BillsController : Controller
     {
         private readonly GAPContext _context;
-
         public BillsController(GAPContext context)
         {
             _context = context;
         }
 
+
+
         // GET: Bills
+        [HttpGet("/Bills")]
+        [SwaggerOperation(Summary = "View list of bills", Description = "Display a list of bills.")]
+        [SwaggerResponse(200, "List of bills displayed successfully.")]
         public async Task<IActionResult> Index(int? page)
         {
             IQueryable<Bill> iseriq = from f in _context.Bill
@@ -41,6 +46,15 @@ namespace GAP.Controllers
            
         }
 
+
+
+
+
+        // GET: Bills/Details
+        [HttpGet("/Bills/Details/{id}")]
+        [SwaggerOperation(Summary = "View bill details", Description = "Display details of a bill.")]
+        [SwaggerResponse(200, "Bill details displayed successfully.")]
+        [SwaggerResponse(404, "Bill not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Bill == null)
@@ -127,6 +141,13 @@ namespace GAP.Controllers
             // Return the file for download or other processing (e.g., you can use a FileResult)
             return View(Bill);
         }
+
+
+
+
+        [HttpGet("/Bills/ViewPdf/{filename}")]
+        [SwaggerOperation(Summary = "View PDF file", Description = "Display a PDF file.")]
+        [SwaggerResponse(200, "PDF file displayed successfully.")]
         public IActionResult ViewPdf(string filename)
         {
             // Load the DOCX document
@@ -172,6 +193,9 @@ namespace GAP.Controllers
 
 
         // GET: Bills/Create
+        [HttpGet("/Bills/Create")]
+        [SwaggerOperation(Summary = "Create a new bill", Description = "Display the form to create a new bill.")]
+        [SwaggerResponse(200, "Form to create a new bill displayed successfully.")]
         public IActionResult Create(int PurchaseQuoteId)
         {
             // Store the PurchaseRequestId in ViewBag or ViewData so that it can be used in the view.
@@ -184,11 +208,15 @@ namespace GAP.Controllers
             return View();
         }
 
+
+
+
+
         // POST: Bills/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Bills/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new bill", Description = "Handle the creation of a new bill.")]
+        [SwaggerResponse(200, "Bill created successfully.")]
         public async Task<IActionResult> Create(int PurchaseQuoteId, [Bind("BillID")] Bill Bill)
         {
 
@@ -226,7 +254,16 @@ namespace GAP.Controllers
             return View(Bill);
         }
 
+
+
+
+
+
         // GET: Bills/Edit/5
+        [HttpGet("/Bills/Edit/{id}")]
+        [SwaggerOperation(Summary = "Edit a bill", Description = "Display the form to edit a bill.")]
+        [SwaggerResponse(200, "Form to edit a bill displayed successfully.")]
+        [SwaggerResponse(404, "Bill not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Bill == null)
@@ -242,11 +279,18 @@ namespace GAP.Controllers
             return View(Bill);
         }
 
+
+
+
+
+
+
+
         // POST: Bills/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Bills/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a bill", Description = "Handle the editing of a bill.")]
+        [SwaggerResponse(200, "Bill edited successfully.")]
         public async Task<IActionResult> Edit(int id, [Bind("BillID,Prix,SupplierEmail,Validity,FinanceDepartmentManagerId,PurchaseQuoteID")] Bill Bill)
         {
             if (id != Bill.BillID)
@@ -277,7 +321,15 @@ namespace GAP.Controllers
             return View(Bill);
         }
 
+
+
+
+
         // GET: Bills/Delete/5
+        [HttpGet("/Bills/Delete/{id}")]
+        [SwaggerOperation(Summary = "Delete a bill", Description = "Display the confirmation form to delete a bill.")]
+        [SwaggerResponse(200, "Confirmation form to delete a bill displayed successfully.")]
+        [SwaggerResponse(404, "Bill not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Bill == null)
@@ -295,9 +347,19 @@ namespace GAP.Controllers
             return View(Bill);
         }
 
+
+
+
+
+
+
+
         // POST: Bills/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/Bills/Delete/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a bill", Description = "Handle the deletion of a bill.")]
+        [SwaggerResponse(200, "Bill deleted successfully.")]
+        [SwaggerResponse(400, "Entity set 'GAPContext.Bill' is null.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Bill == null)
@@ -313,6 +375,8 @@ namespace GAP.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
 
         private bool BillExists(int id)
         {

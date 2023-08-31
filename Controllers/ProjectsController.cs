@@ -9,6 +9,7 @@ using GAP.Data;
 using GAP.Models;
 using X.PagedList;
 using System.Security.Claims;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -21,7 +22,14 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
+
         // GET: Projects1
+        [HttpGet("/Projects")]
+        [SwaggerOperation(Summary = "Get projects", Description = "Retrieve a list of projects.")]
+        [SwaggerResponse(200, "List of projects retrieved successfully.")]
         public async Task<IActionResult> Index(int? page, string SearchString)
         {
 
@@ -39,8 +47,17 @@ namespace GAP.Controllers
 
 
         }
-
+        
+        
+        
+        
+        
+        
         // GET: Projects1/Details/5
+        [HttpGet("/Projects/Details/{id}")]
+        [SwaggerOperation(Summary = "Get details of a project", Description = "Retrieve the details of a project.")]
+        [SwaggerResponse(200, "Project details retrieved successfully.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Project == null)
@@ -58,17 +75,29 @@ namespace GAP.Controllers
             return View(project);
         }
 
+
+
+
+
         // GET: Projects1/Create
+        [HttpGet("/Projects/Create")]
+        [SwaggerOperation(Summary = "Show project creation form", Description = "Display the project creation form.")]
+        [SwaggerResponse(200, "Project creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
+
         // POST: Projects1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Projects/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new project", Description = "Create a new project.")]
+        [SwaggerResponse(200, "Project created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("ProjectID,StartDate,EndDate,Name,Description,Budget")] Project project)
         {
             if (ModelState.IsValid)
@@ -83,7 +112,16 @@ namespace GAP.Controllers
             return View(project);
         }
 
+
+
+
+
+
         // GET: Projects1/Edit/5
+        [HttpGet("/Projects/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show project edit form", Description = "Display the project edit form.")]
+        [SwaggerResponse(200, "Project edit form displayed successfully.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Project == null)
@@ -99,11 +137,19 @@ namespace GAP.Controllers
             return View(project);
         }
 
+
+
+
+
+
+
         // POST: Projects1/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Projects/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a project", Description = "Edit an existing project.")]
+        [SwaggerResponse(200, "Project edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("ProjectID,StartDate,EndDate,Name,Description,Budget")] Project project)
         {
             if (id != project.ProjectID)
@@ -134,7 +180,16 @@ namespace GAP.Controllers
             return View(project);
         }
 
+
+
+
+
+
         // GET: Projects1/Delete/5
+        [HttpGet("/Projects/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show project delete confirmation", Description = "Display the project delete confirmation.")]
+        [SwaggerResponse(200, "Project delete confirmation displayed successfully.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Project == null)
@@ -152,9 +207,19 @@ namespace GAP.Controllers
             return View(project);
         }
 
+
+
+
+
+
+
+
         // POST: Projects1/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/Projects/DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a project", Description = "Delete an existing project.")]
+        [SwaggerResponse(200, "Project deleted successfully.")]
+        [SwaggerResponse(404, "Project not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Project == null)
@@ -171,6 +236,20 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+
+        // Helper: no route
         private bool ProjectExists(int id)
         {
           return (_context.Project?.Any(e => e.ProjectID == id)).GetValueOrDefault();

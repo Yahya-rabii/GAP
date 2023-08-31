@@ -18,9 +18,11 @@ using OfficeOpenXml;
 using Humanizer;
 using iTextSharp.text.pdf.qrcode;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
+
 
     public class UsersController : Controller
     {
@@ -31,12 +33,15 @@ namespace GAP.Controllers
             _context = context;
         }
 
-      
+
 
         // GET: Users
+        [HttpGet("/Users")]
+        [SwaggerOperation(Summary = "Get a list of users", Description = "Retrieve a list of users.")]
+        [SwaggerResponse(200, "List of users retrieved successfully.")]
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
-            IQueryable<User> iseriq = from s in _context.User.Where(u=>u.Role != UserRole.Supplier)
+            IQueryable<User> iseriq = from s in _context.User.Where(u => u.Role != UserRole.Supplier)
                                       select s;
 
             if (!string.IsNullOrEmpty(SearchString))
@@ -52,12 +57,10 @@ namespace GAP.Controllers
 
 
 
-
-
-
-
-
-        [HttpPost]
+        // Post: ImportFromExcel
+        [HttpPost("/Users/ImportFromExcel")]
+        [SwaggerOperation(Summary = "Import users from Excel", Description = "Import users from an Excel file.")]
+        [SwaggerResponse(200, "Users imported successfully.")]
         public async Task<IActionResult> ImportFromExcel(IFormFile excelFile)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial
@@ -126,6 +129,10 @@ namespace GAP.Controllers
 
 
         // GET: Users1/Details/5
+        [HttpGet("/Users/Details/{id}")]
+        [SwaggerOperation(Summary = "Get user details", Description = "Retrieve details of a user.")]
+        [SwaggerResponse(200, "User details retrieved successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -153,6 +160,13 @@ namespace GAP.Controllers
         }
 
 
+
+
+        // GET: User/SupplierProfile
+        [HttpGet("/Users/Profile")]
+        [SwaggerOperation(Summary = "Show user deletion confirmation", Description = "Display the user Profile page for login a user.")]
+        [SwaggerResponse(200, "user Profile page displayed successfully.")]
+        [SwaggerResponse(404, "user not found.")]
         public async Task<IActionResult> Profile(int? id)
         {
             if (id == null)
@@ -181,7 +195,14 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        
+
+
+
+        // GET: User/SupplierProfile
+        [HttpGet("/Users/SupplierProfile")]
+        [SwaggerOperation(Summary = "Show Supplier deletion confirmation", Description = "Display the Supplier Profile page for login a user.")]
+        [SwaggerResponse(200, "Supplier Profile page displayed successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> SupplierProfile(int? id)
         {
             if (id == null)
@@ -214,16 +235,23 @@ namespace GAP.Controllers
 
 
         // GET: Users1/Create
+        [HttpGet("/Users/Create")]
+        [SwaggerOperation(Summary = "Show user creation form", Description = "Display the user creation form.")]
+        [SwaggerResponse(200, "User creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
         // POST: Users1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Users/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new user", Description = "Create a new user with the provided information.")]
+        [SwaggerResponse(200, "User created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] User user)
         {
             if (ModelState.IsValid)
@@ -244,7 +272,14 @@ namespace GAP.Controllers
             return View(user);
         }
 
+
+
+
         // GET: Users1/Edit/5
+        [HttpGet("/Users/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show user editing form", Description = "Display the form for editing a user's information.")]
+        [SwaggerResponse(200, "User editing form displayed successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
 
@@ -271,62 +306,74 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        [HttpPost]
+
+
+
+        [HttpPost("/Users/Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,User updatedUser, IFormFile profilePicture)
+        [SwaggerOperation(Summary = "Update user information", Description = "Update a user's information with the provided data.")]
+        [SwaggerResponse(200, "User information updated successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "User not found.")]
+        public async Task<IActionResult> Edit(int id, User updatedUser, IFormFile profilePicture)
         {
             if (id != updatedUser.UserID)
             {
                 return NotFound();
             }
 
-        
-                try
+
+            try
+            {
+                var existingUser = await _context.User.FirstOrDefaultAsync(u => u.UserID == id);
+
+                if (existingUser == null)
                 {
-                    var existingUser = await _context.User.FirstOrDefaultAsync(u => u.UserID == id);
-
-                    if (existingUser == null)
-                    {
-                        return NotFound();
-                    }
-
-                    existingUser.Email = updatedUser.Email;
-                    existingUser.Password = updatedUser.Password;
-                    existingUser.FirstName = updatedUser.FirstName;
-                    existingUser.LastName = updatedUser.LastName;
-
-                    if (profilePicture != null)
-                    {
-                        using (var memoryStream = new MemoryStream())
-                        {
-                            await profilePicture.CopyToAsync(memoryStream);
-                            existingUser.ProfilePicture = memoryStream.ToArray();
-                            existingUser.ProfilePictureFileName = profilePicture.FileName;
-                            existingUser.HasCustomProfilePicture = true;
-                        }
-                    }
-
-                    _context.Update(existingUser);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                existingUser.Email = updatedUser.Email;
+                existingUser.Password = HashPassword(updatedUser.Password);
+                existingUser.FirstName = updatedUser.FirstName;
+                existingUser.LastName = updatedUser.LastName;
+
+                if (profilePicture != null)
                 {
-                    if (!UserExists(updatedUser.UserID))
+                    using (var memoryStream = new MemoryStream())
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        await profilePicture.CopyToAsync(memoryStream);
+                        existingUser.ProfilePicture = memoryStream.ToArray();
+                        existingUser.ProfilePictureFileName = profilePicture.FileName;
+                        existingUser.HasCustomProfilePicture = true;
                     }
                 }
+
+                _context.Update(existingUser);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(updatedUser.UserID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
             return RedirectToAction("Details", "Users", new { id = id });
 
         }
 
 
 
-        // GET: Users1/Edit/5
+
+        // GET: Users1/ProfileEdit/5
+        [HttpGet("/Users/ProfileEdit/{id}")]
+        [SwaggerOperation(Summary = "Show user profile editing form", Description = "Display the form for editing a user's own profile.")]
+        [SwaggerResponse(200, "User profile editing form displayed successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> ProfileEdit(int? id)
         {
             if (id == null || _context.User == null)
@@ -352,8 +399,16 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        [HttpPost]
+
+
+
+        // POST: Users1/ProfileEdit/5
+        [HttpPost("/Users/ProfileEdit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Update user profile", Description = "Update the user's own profile information.")]
+        [SwaggerResponse(200, "User profile updated successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> ProfileEdit(int id, User updatedUser, IFormFile profilePicture)
         {
             if (id != updatedUser.UserID)
@@ -402,9 +457,16 @@ namespace GAP.Controllers
 
             return RedirectToAction("Profile", "Users", new { id = id });
         }
-        
-        
-        // GET: Users1/Edit/5
+
+
+
+
+
+        // GET: Users1/SupplierProfileEdit/5
+        [HttpGet("/Users/SupplierProfileEdit/{id}")]
+        [SwaggerOperation(Summary = "Show supplier profile editing form", Description = "Display the form for editing a supplier's profile.")]
+        [SwaggerResponse(200, "Supplier profile editing form displayed successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> SupplierProfileEdit(int? id)
         {
             if (id == null || _context.User == null)
@@ -430,8 +492,16 @@ namespace GAP.Controllers
             return View(user);
         }
 
-        [HttpPost]
+
+
+
+        // POST: Users1/SupplierProfileEdit/5
+        [HttpPost("/Users/SupplierProfileEdit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Update supplier profile", Description = "Update a supplier's profile information.")]
+        [SwaggerResponse(200, "Supplier profile updated successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> SupplierProfileEdit(int id, Supplier updatedUser, IFormFile profilePicture)
         {
             if (id != updatedUser.UserID)
@@ -485,6 +555,10 @@ namespace GAP.Controllers
 
 
         // GET: Users1/Delete/5
+        [HttpGet("/Users/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show user deletion confirmation", Description = "Display the confirmation page for deleting a user.")]
+        [SwaggerResponse(200, "User deletion confirmation page displayed successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.User == null)
@@ -502,9 +576,15 @@ namespace GAP.Controllers
             return View(user);
         }
 
+
+
+
         // POST: Users1/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/Users/Delete/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a user", Description = "Delete the specified user.")]
+        [SwaggerResponse(200, "User deleted successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.User == null)
@@ -516,35 +596,35 @@ namespace GAP.Controllers
             {
                 _context.User.Remove(user);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
-        {
-          return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
-        }
 
 
-
-
-
-
-
-        /*---------------------------------------------------------------*/
 
 
 
 
         // GET: User/Login
+        [HttpGet("/Users/Login")]
+        [SwaggerOperation(Summary = "Show user deletion confirmation", Description = "Display the confirmation page for login a user.")]
+        [SwaggerResponse(200, "User login confirmation page displayed successfully.")]
+        [SwaggerResponse(404, "User not found.")]
         public ActionResult Login()
         {
             return View();
         }
 
+
+
+
         // POST: User/Login
-        [HttpPost]
+        [HttpPost("/Users/Login")]
+        [SwaggerOperation(Summary = "User login", Description = "Authenticate a user.")]
+        [SwaggerResponse(200, "User authenticated successfully.")]
+        [SwaggerResponse(302, "Redirect to appropriate action after login.")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string password)
         {
@@ -596,7 +676,7 @@ namespace GAP.Controllers
                         registeredUser.Role = UserRole.Project_Manager;
                         redirectAction = "Index";
                         redirectController = "Projects";
-                        break; 
+                        break;
                     case Supplier _:
                         if (((Supplier)registeredUser).IsValid == true)
                         {
@@ -623,7 +703,7 @@ namespace GAP.Controllers
                         return RedirectToAction("Login", "Users");
                 }
                 _context.User.Update(registeredUser);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
                 return await SignInAndRedirectToAction(claims, redirectAction, redirectController);
             }
             else
@@ -634,22 +714,13 @@ namespace GAP.Controllers
 
         }
 
-        private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)
-        {
-            var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            return RedirectToAction(actionName, controllerName);
-        }
 
 
-        private string HashPassword(string password)
-        {
-            // use a library like BCrypt or Argon2 to hash the password
-            // here's an example using BCrypt
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
+    
 
-
+        [HttpGet("/Users/Logout")]
+        [SwaggerOperation(Summary = "User logout", Description = "Log out a user.")]
+        [SwaggerResponse(302, "User logged out and redirected to login page.")]
         public async Task<IActionResult> Logout()
         {
 
@@ -670,10 +741,42 @@ namespace GAP.Controllers
 
 
 
-        /////////////////////////////////////////////////////////////////////
 
 
 
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
+        private bool UserExists(int id)
+        {
+            return (_context.User?.Any(e => e.UserID == id)).GetValueOrDefault();
+        }
+
+
+
+
+        // Helper: no route
+        private async Task<IActionResult> SignInAndRedirectToAction(List<Claim> claims, string actionName, string controllerName)
+        {
+            var claimsIdentity = new ClaimsIdentity(claims, "Cookie");
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            return RedirectToAction(actionName, controllerName);
+        }
+
+
+
+
+        // Helper: no route
+        private string HashPassword(string password)
+        {
+            // use a library like BCrypt or Argon2 to hash the password
+            // here's an example using BCrypt
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
 
     }
 }

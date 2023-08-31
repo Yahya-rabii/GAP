@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Data;
 using System.Linq;
 using System.Security.Claims;
@@ -21,10 +22,12 @@ namespace GAP.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Supplier")]
 
         // GET: SaleOffers
-        // GET: SaleOffers
+        [HttpGet("/SaleOffers")]
+        [Authorize(Roles = "Supplier")]
+        [SwaggerOperation(Summary = "Get a list of sale offers", Description = "Retrieve a list of sale offers.")]
+        [SwaggerResponse(200, "List of sale offers retrieved successfully.")]
         public async Task<IActionResult> Index(int? page, string SearchString)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
@@ -96,9 +99,12 @@ namespace GAP.Controllers
 
 
 
-        [Authorize(Roles = "PurchasingDepartmentManager")]
 
         // GET: SaleOffers
+        [HttpGet("/SaleOffers/IndexRespSA")]
+        [SwaggerOperation(Summary = "Get sale offers for purchasing department manager", Description = "Retrieve sale offers for the purchasing department manager.")]
+        [SwaggerResponse(200, "Sale offers retrieved successfully.")]
+        [Authorize(Roles = "PurchasingDepartmentManager")]
         public async Task<IActionResult> IndexRespSA(int? page, string SearchString)
         {
 
@@ -118,9 +124,15 @@ namespace GAP.Controllers
 
         }
 
-        [Authorize(Roles = "Supplier,PurchasingDepartmentManager")]
+
+
 
         // GET: SaleOffers/Details/5
+        [HttpGet("/SaleOffers/Details/{id}")]
+        [SwaggerOperation(Summary = "Get sale offer details", Description = "Retrieve details of a sale offer.")]
+        [SwaggerResponse(200, "Sale offer details retrieved successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
+        [Authorize(Roles = "Supplier,PurchasingDepartmentManager")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.SaleOffer == null)
@@ -146,8 +158,12 @@ namespace GAP.Controllers
 
 
 
+
         // GET: SaleOffers/Create
         [Authorize(Roles = "Supplier")]
+        [HttpGet("/SaleOffers/Create")]
+        [SwaggerOperation(Summary = "Show sale offer creation form", Description = "Display the sale offer creation form.")]
+        [SwaggerResponse(200, "Sale offer creation form displayed successfully.")]
         public async Task<IActionResult> Create(int PurchaseRequestId)
         {
             // Store the PurchaseRequestId in ViewBag so that it can be used in the view.
@@ -159,9 +175,17 @@ namespace GAP.Controllers
             return View();
         }
 
+
+
+
+
         // POST: SaleOffers/Create
-        [HttpPost]
+        [HttpPost("/SaleOffers/Create")]
+        [Authorize(Roles = "Supplier")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new sale offer", Description = "Create a new sale offer with the provided information.")]
+        [SwaggerResponse(200, "Sale offer created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create(int PurchaseRequestId, SaleOffer SaleOffer, int selectedProductId)
         {
             if (PurchaseRequestId == 0)
@@ -214,7 +238,14 @@ namespace GAP.Controllers
 
 
 
+
+        // POST: SaleOffers/ValidateOffre
         [Authorize(Roles = "PurchasingDepartmentManager")]
+        [HttpPost("/SaleOffers/ValidateOffre/{id}")]
+        [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Validate sale offer", Description = "Validate a sale offer.")]
+        [SwaggerResponse(200, "Sale offer validated successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public async Task<IActionResult> ValidateOffre(int? id)
         {
             if (id == null || _context.SaleOffer == null)
@@ -242,22 +273,21 @@ namespace GAP.Controllers
  
 
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////
 
-        private async Task<List<Product>> GetProductsWithoutSaleOffer()
-        {
+        
 
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-            // Use ExecuteSqlRawAsync to get products without SaleOfferId and with SupplierId equal to userId
-            return await _context.Product.FromSqlRaw("SELECT * FROM Product WHERE SaleOfferId IS NULL AND SupplierId = {0}", userId).ToListAsync();
-        }
-  
+
+
 
 
 
 
         [Authorize(Roles = "Supplier")]
+        [HttpGet("/SaleOffers/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show sale offer editing form", Description = "Display the form for editing a sale offer's information.")]
+        [SwaggerResponse(200, "Sale offer editing form displayed successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -276,10 +306,16 @@ namespace GAP.Controllers
 
             ViewData["SupplierId"] = new SelectList(_context.Supplier, "SupplierID", "Email", SaleOffer.SupplierId);
 
-            var ProductsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
-            if (ProductsWithoutSaleOffer.Count() > 0)
+
+
+            var productsWithoutSaleOffer = await GetProductsWithoutSaleOffer();
+
+
+
+
+            if (productsWithoutSaleOffer.Count() > 0)
             {
-                ViewData["ProductsWithoutSaleOffer"] = new SelectList(ProductsWithoutSaleOffer, "ProductID", "CompanyName");
+                ViewBag.ProductsWithoutSaleOffer = new SelectList(productsWithoutSaleOffer, "ProductID", "Name");
             }
             else
             {
@@ -288,15 +324,28 @@ namespace GAP.Controllers
     {
         new Product { ProductID = 0, Name = "No products in your stock" }
     };
-                ViewData["ProductsWithoutSaleOffer"] = new SelectList(emptyList, "ProductID", "CompanyName");
+                ViewBag.ProductsWithoutSaleOffer = new SelectList(emptyList, "ProductID", "CompanyName");
             }
 
             return View(SaleOffer);
         }
 
-        [HttpPost]
+
+
+
+
+
+
+
+
+
+        [HttpPost("/SaleOffers/Edit/{id}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Supplier")]
+        [SwaggerOperation(Summary = "Edit sale offer information", Description = "Edit the information of a sale offer.")]
+        [SwaggerResponse(200, "Sale offer information edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("SaleOfferID, UnitProfit, SelectedProductId")] SaleOffer updatedSaleOffer)
         {
             // Remove the ModelState check, as it might be causing issues
@@ -344,15 +393,15 @@ namespace GAP.Controllers
 
 
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
 
 
 
 
         // GET: SaleOffers/Delete/5
+        [HttpGet("/SaleOffers/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show sale offer deleting form", Description = "Display the form for deleting a sale offer's information.")]
+        [SwaggerResponse(200, "Sale offer deleting form displayed successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.SaleOffer == null)
@@ -371,10 +420,21 @@ namespace GAP.Controllers
             return View(SaleOffer);
         }
 
+
+
+
+
+
+
+
+
         // POST: SaleOffers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/SaleOffers/Delete/{id}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Supplier")]
+        [SwaggerOperation(Summary = "Delete sale offer", Description = "Delete a sale offer.")]
+        [SwaggerResponse(200, "Sale offer deleted successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.SaleOffer == null)
@@ -401,6 +461,28 @@ namespace GAP.Controllers
         }
 
 
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
+        private async Task<List<Product>> GetProductsWithoutSaleOffer()
+        {
+
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            // Use ExecuteSqlRawAsync to get products without SaleOfferId and with SupplierId equal to userId
+            return await _context.Product.FromSqlRaw("SELECT * FROM Product WHERE SaleOfferId IS NULL AND SupplierId = {0}", userId).ToListAsync();
+        }
+
+
+
+
+        // Helper: no route
         private bool SaleOfferExists(int id)
         {
           return (_context.SaleOffer?.Any(e => e.SaleOfferID == id)).GetValueOrDefault();

@@ -12,6 +12,7 @@ using System.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -24,9 +25,13 @@ namespace GAP.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Admin")]
+
 
         // GET: Suppliers1
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/Suppliers")]
+        [SwaggerOperation(Summary = "Get a list of suppliers", Description = "Retrieve a list of suppliers.")]
+        [SwaggerResponse(200, "List of suppliers retrieved successfully.")]
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
             IQueryable<Supplier> iseriq = from f in _context.Supplier
@@ -42,9 +47,16 @@ namespace GAP.Controllers
         }
 
 
-        [Authorize(Roles = "Admin,Supplier")]
+
+
+
 
         // GET: Suppliers1/Details/5
+        [Authorize(Roles = "Admin,Supplier")]
+        [HttpGet("/Suppliers/Details/{id}")]
+        [SwaggerOperation(Summary = "Get supplier details", Description = "Retrieve details of a supplier.")]
+        [SwaggerResponse(200, "Supplier details retrieved successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Supplier == null)
@@ -61,21 +73,35 @@ namespace GAP.Controllers
 
             return View(Supplier);
         }
-        [Authorize(Roles = "Admin")]
+
+
+
+
+
+
+
 
         // GET: Suppliers1/Create
+        [Authorize(Roles = "Admin")]
+        [HttpGet("/Suppliers/Create")]
+        [SwaggerOperation(Summary = "Show supplier creation form", Description = "Display the supplier creation form.")]
+        [SwaggerResponse(200, "Supplier creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
+
         // POST: Suppliers1/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Suppliers/Create")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-
+        [SwaggerOperation(Summary = "Create a new supplier", Description = "Create a new supplier with the provided information.")]
+        [SwaggerResponse(200, "Supplier created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("SupplierID,CompanyName,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
         {
             if (ModelState.IsValid)
@@ -88,29 +114,18 @@ namespace GAP.Controllers
         }
 
 
-        [Authorize(Roles = "Supplier")]
-
-        // GET: Suppliers1/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Supplier == null)
-            {
-                return NotFound();
-            }
-
-            var Supplier = await _context.Supplier.FindAsync(id);
-            if (Supplier == null)
-            {
-                return NotFound();
-            }
-            return View(Supplier);
-        }
 
 
 
 
+
+
+        // GET: Suppliers1/Validate/5
         [Authorize(Roles = "Admin")]
-
+        [HttpGet("/Suppliers/Validate/{id}")]
+        [SwaggerOperation(Summary = "Show supplier Validation form", Description = "Display the form for Validation a supplier's information.")]
+        [SwaggerResponse(200, "Supplier Validation form displayed successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> Validate(int? id)
         {
             if (id == null || _context.Supplier == null)
@@ -126,10 +141,17 @@ namespace GAP.Controllers
             return View(Supplier);
         }
 
-       
-        [HttpPost]
+
+
+
+
+        // POST: Suppliers1/Validate/5
+        [HttpPost("/Suppliers/Validate/{id}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [SwaggerOperation(Summary = "Validate a new supplier", Description = "Validate a new supplier with the provided information.")]
+        [SwaggerResponse(200, "Supplier Validated successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Validate(int id)
         {
          
@@ -174,13 +196,46 @@ namespace GAP.Controllers
 
 
 
+
+
+
+
+        // GET: Suppliers1/Edit/5
+        [Authorize(Roles = "Supplier,Admin")]
+        [HttpGet("/Suppliers/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show supplier editing form", Description = "Display the form for editing a supplier's information.")]
+        [SwaggerResponse(200, "Supplier editing form displayed successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Supplier == null)
+            {
+                return NotFound();
+            }
+
+            var Supplier = await _context.Supplier.FindAsync(id);
+            if (Supplier == null)
+            {
+                return NotFound();
+            }
+            return View(Supplier);
+        }
+
+
+
+
+
+
+
+
         // POST: Suppliers1/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/Suppliers/Edit/{id}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Supplier")]
-
+        [SwaggerOperation(Summary = "Edit supplier information", Description = "Edit the information of a supplier.")]
+        [SwaggerResponse(200, "Supplier information edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("SupplierID,CompanyName,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
         {
             if (id != Supplier.UserID)
@@ -211,9 +266,17 @@ namespace GAP.Controllers
             return View(Supplier);
         }
 
+
+
+
+
+
         // GET: Suppliers1/Delete/5
         [Authorize(Roles = "Admin,Supplier")]
-
+        [HttpGet("/Suppliers/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show supplier Deleting form", Description = "Display the form for Deleting a supplier's information.")]
+        [SwaggerResponse(200, "Supplier Deleting form displayed successfully.")]
+        [SwaggerResponse(404, "Supplier not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Supplier == null)
@@ -231,11 +294,16 @@ namespace GAP.Controllers
             return View(Supplier);
         }
 
-        // POST: Suppliers1/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Supplier")]
 
+
+
+
+        // POST: Suppliers1/Delete/5
+        [HttpPost("/Suppliers/Delete/{id}")]
+        [Authorize(Roles = "Admin,Supplier")]
+        [SwaggerOperation(Summary = "Show supplier Deleting confirmation", Description = "Display the confirmation page for deleting a supplier.")]
+        [SwaggerResponse(200, "supplier deletion confirmation page displayed successfully.")]
+        [SwaggerResponse(404, "supplier not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Supplier == null)
@@ -252,23 +320,31 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SupplierExists(int id)
-        {
-          return (_context.Supplier?.Any(e => e.UserID == id)).GetValueOrDefault();
-        }
 
 
+
+     
 
 
 
         // GET: User/Register
+        [HttpGet("/Suppliers/Register")]
+        [SwaggerOperation(Summary = "Show supplier registration form", Description = "Display the supplier registration form.")]
+        [SwaggerResponse(200, "Supplier registration form displayed successfully.")]
         public ActionResult Register()
         {
             return View();
         }
 
-        [HttpPost]
+
+
+
+        // Post: User/Register
+        [HttpPost("/Suppliers/Register")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Register a new supplier", Description = "Register a new supplier with the provided information.")]
+        [SwaggerResponse(302, "Supplier registered successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Register(Supplier Supplier)
         {
            
@@ -304,14 +380,13 @@ namespace GAP.Controllers
 
 
 
-        private string HashPassword(string password)
-        {
-            // use a library like BCrypt or Argon2 to hash the password
-            // here's an example using BCrypt
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
 
 
+
+        // Post: Suppliers/Logout
+        [HttpGet("/Suppliers/Logout")]
+        [SwaggerOperation(Summary = "Supplier logout", Description = "Log out a Supplier.")]
+        [SwaggerResponse(302, "Supplier logged out and redirected to login page.")]
         public async Task<IActionResult> Logout()
         {
 
@@ -331,6 +406,31 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
+        private string HashPassword(string password)
+        {
+            // use a library like BCrypt or Argon2 to hash the password
+            // here's an example using BCrypt
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+
+
+
+        // Helper: no route
+        private bool SupplierExists(int id)
+        {
+            return (_context.Supplier?.Any(e => e.UserID == id)).GetValueOrDefault();
+        }
 
 
     }

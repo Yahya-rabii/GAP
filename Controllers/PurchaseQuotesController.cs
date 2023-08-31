@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using System.Security.Claims;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -25,7 +26,13 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
+
         // GET: PurchaseQuote
+        [HttpGet("/PurchaseQuotes")]
+        [SwaggerOperation(Summary = "Get purchase quotes", Description = "Retrieve a list of purchase quotes for purchasing department managers.")]
+        [SwaggerResponse(200, "List of purchase quotes for purchasing department managers retrieved successfully.")]
         public async Task<IActionResult> Index(int? page, string SearchString)
         {
 
@@ -44,7 +51,15 @@ namespace GAP.Controllers
 
         }
 
+
+
+
+
         // GET: PurchaseQuote/Details/5
+        [HttpGet("/PurchaseQuotes/Details/{id}")]
+        [SwaggerOperation(Summary = "Get details of a purchase quote", Description = "Retrieve the details of a purchase quote for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote details retrieved successfully.")]
+        [SwaggerResponse(404, "Purchase quote not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.PurchaseQuote == null)
@@ -72,8 +87,14 @@ namespace GAP.Controllers
 
 
 
-        // GET: PurchaseQuote/Create
 
+
+
+        // GET: PurchaseQuote/Create
+        [HttpGet("/PurchaseQuotes/Create")]
+        [SwaggerOperation(Summary = "Show purchase quote creation form", Description = "Display the purchase quote creation form.")]
+        [SwaggerResponse(200, "Purchase quote creation form displayed successfully.")]
+        [SwaggerResponse(404, "Sale offer not found.")]
         public IActionResult Create(int SaleOfferID)
         {
             // Retrieve the SaleOffer object based on the received SaleOfferID
@@ -97,9 +118,15 @@ namespace GAP.Controllers
 
 
 
+
+
+
         // POST: PurchaseQuote/Create
-        [HttpPost]
+        [HttpPost("/PurchaseQuotes/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new purchase quote", Description = "Create a new purchase quote for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create(int SaleOfferID, [Bind("PurchaseQuoteID,ReceptionDate")] PurchaseQuote PurchaseQuote)
         {
             if (ModelState.IsValid)
@@ -158,7 +185,13 @@ namespace GAP.Controllers
 
 
 
-        // GET: PurchaseQuote/Edit/5
+
+
+
+        [HttpGet("/PurchaseQuotes/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show purchase quote edit form", Description = "Display the purchase quote edit form for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote edit form displayed successfully.")]
+        [SwaggerResponse(404, "Purchase quote not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.PurchaseQuote == null)
@@ -175,11 +208,18 @@ namespace GAP.Controllers
             return View(PurchaseQuote);
         }
 
+
+
+
+
+
         // POST: PurchaseQuote/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/PurchaseQuotes/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a purchase quote", Description = "Edit an existing purchase quote for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Purchase quote not found.")]
         public async Task<IActionResult> Edit(int id, [Bind("PurchaseQuoteID,CreationDate,ReceptionDate,ProductID,UnitProfit,typeCntProducts,SupplierID,PurchasingDepartmentManagerId")] PurchaseQuote PurchaseQuote)
         {
             if (id != PurchaseQuote.PurchaseQuoteID)
@@ -211,7 +251,16 @@ namespace GAP.Controllers
             return View(PurchaseQuote);
         }
 
+
+
+
+
+
         // GET: PurchaseQuote/Delete/5
+        [HttpGet("/PurchaseQuotes/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show purchase quote delete confirmation", Description = "Display the purchase quote delete confirmation for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote delete confirmation displayed successfully.")]
+        [SwaggerResponse(404, "Purchase quote not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.PurchaseQuote == null)
@@ -230,9 +279,18 @@ namespace GAP.Controllers
             return View(PurchaseQuote);
         }
 
+
+
+
+
+
+
         // POST: PurchaseQuote/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/PurchaseQuotes/DeleteConfirmed/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a purchase quote", Description = "Delete an existing purchase quote for purchasing department managers.")]
+        [SwaggerResponse(200, "Purchase quote deleted successfully.")]
+        [SwaggerResponse(404, "Purchase quote not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.PurchaseQuote == null)
@@ -249,6 +307,19 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+
+        // Helper: no route
         private bool PurchaseQuoteExists(int id)
         {
           return (_context.PurchaseQuote?.Any(e => e.PurchaseQuoteID == id)).GetValueOrDefault();

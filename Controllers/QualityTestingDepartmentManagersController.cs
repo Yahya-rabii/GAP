@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -20,7 +21,12 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
         // GET: QualityTestingDepartmentManagers
+        [HttpGet("/QualityTestingDepartmentManagers")]
+        [SwaggerOperation(Summary = "Get quality testing department managers", Description = "Retrieve a list of quality testing department managers.")]
+        [SwaggerResponse(200, "List of quality testing department managers retrieved successfully.")]
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
             IQueryable<QualityTestingDepartmentManager> iseriq = from s in _context.QualityTestingDepartmentManager
@@ -36,7 +42,15 @@ namespace GAP.Controllers
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
+
+
+
+
         // GET: QualityTestingDepartmentManagers/Details/5
+        [HttpGet("/QualityTestingDepartmentManagers/Details/{id}")]
+        [SwaggerOperation(Summary = "Get details of a quality testing department manager", Description = "Retrieve the details of a quality testing department manager.")]
+        [SwaggerResponse(200, "Quality testing department manager details retrieved successfully.")]
+        [SwaggerResponse(404, "Quality testing department manager not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.QualityTestingDepartmentManager == null)
@@ -54,17 +68,30 @@ namespace GAP.Controllers
             return View(QualityTestingDepartmentManager);
         }
 
+
+
+
+
         // GET: QualityTestingDepartmentManagers/Create
+        [HttpGet("/QualityTestingDepartmentManagers/Create")]
+        [SwaggerOperation(Summary = "Show quality testing department manager creation form", Description = "Display the quality testing department manager creation form.")]
+        [SwaggerResponse(200, "Quality testing department manager creation form displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
+
+
         // POST: QualityTestingDepartmentManagers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/QualityTestingDepartmentManagers/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new quality testing department manager", Description = "Create a new quality testing department manager with the provided information.")]
+        [SwaggerResponse(200, "Quality testing department manager created successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] QualityTestingDepartmentManager QualityTestingDepartmentManager)
         {
             if (ModelState.IsValid)
@@ -88,7 +115,16 @@ namespace GAP.Controllers
             return RedirectToAction("Index", "Users");
         }
 
+
+
+
+
         // GET: QualityTestingDepartmentManagers/Edit/5
+        [HttpGet("/QualityTestingDepartmentManagers/Edit/{id}")]
+        [SwaggerOperation(Summary = "Show quality testing department manager edit form", Description = "Display the quality testing department manager edit form.")]
+        [SwaggerResponse(200, "Quality testing department manager edit form displayed successfully.")]
+        [SwaggerResponse(404, "Quality testing department manager not found.")]
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.QualityTestingDepartmentManager == null)
@@ -104,12 +140,16 @@ namespace GAP.Controllers
             return View(QualityTestingDepartmentManager);
         }
 
+
+
         // POST: QualityTestingDepartmentManagers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] QualityTestingDepartmentManager QualityTestingDepartmentManager)
+        [HttpPost("/QualityTestingDepartmentManagers/Edit/{id}")]
+        [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a quality testing department manager", Description = "Edit an existing quality testing department manager with the provided information.")]
+        [SwaggerResponse(200, "Quality testing department manager edited successfully.")]
+        [SwaggerResponse(400, "Invalid input data.")]
+        [SwaggerResponse(404, "Quality testing department manager not found.")]
+        public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] QualityTestingDepartmentManager QualityTestingDepartmentManager)
     {
         if (id != QualityTestingDepartmentManager.UserID)
         {
@@ -149,8 +189,16 @@ namespace GAP.Controllers
     }
 
 
-    // GET: QualityTestingDepartmentManagers/Delete/5
-    public async Task<IActionResult> Delete(int? id)
+
+
+
+
+        // GET: QualityTestingDepartmentManagers/Delete/5
+        [HttpGet("/QualityTestingDepartmentManagers/Delete/{id}")]
+        [SwaggerOperation(Summary = "Show quality testing department manager delete confirmation", Description = "Display the quality testing department manager delete confirmation.")]
+        [SwaggerResponse(200, "Quality testing department manager delete confirmation displayed successfully.")]
+        [SwaggerResponse(404, "Quality testing department manager not found.")]
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.QualityTestingDepartmentManager == null)
             {
@@ -167,9 +215,15 @@ namespace GAP.Controllers
             return View(QualityTestingDepartmentManager);
         }
 
+
+
+
         // POST: QualityTestingDepartmentManagers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/QualityTestingDepartmentManagers/Delete/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a quality testing department manager", Description = "Delete an existing quality testing department manager.")]
+        [SwaggerResponse(200, "Quality testing department manager deleted successfully.")]
+        [SwaggerResponse(404, "Quality testing department manager not found.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.QualityTestingDepartmentManager == null)
@@ -186,6 +240,18 @@ namespace GAP.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+        // Helper: no route
         private bool QualityTestingDepartmentManagerExists(int id)
         {
           return (_context.QualityTestingDepartmentManager?.Any(e => e.UserID == id)).GetValueOrDefault();
@@ -193,12 +259,15 @@ namespace GAP.Controllers
 
 
 
-
+        // Helper: no route
         private string HashPassword(string password)
         {
             // use a library like BCrypt or Argon2 to hash the password
             // here's an example using BCrypt
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
+
+
     }
 }

@@ -1,9 +1,14 @@
 ﻿using GAP.ActionFilters;
 using GAP.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System;
+using System.Reflection;
+using System.Reflection.PortableExecutable;
 using System.Security.Claims;
+using Xceed.Document.NET;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +17,9 @@ builder.Services.AddControllersWithViews(options =>
 {
     // Add the NotificationActionFilter as a global filter
     options.Filters.Add<NotificationActionFilter>();
+}).AddMvcOptions(options =>
+{
+    options.EnableEndpointRouting = false; // Disable endpoint routing for attribute routing
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -27,12 +35,34 @@ builder.Services.AddAuthorization(options =>
     // ... existing policy configurations ...
 });
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "ToDo API",
+        Description = "An ASP.NET Core Web API for managing ToDo items",
+        TermsOfService = new Uri("https://example.com/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "Example Contact",
+            Url = new Uri("https://example.com/contact")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
+});
+builder.Services.AddControllers();
 builder.Services.AddSession();
 
 // Add the DbContext to the container.
 builder.Services.AddDbContext<GAPContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
+
 
 var app = builder.Build();
 
@@ -76,6 +106,16 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger(options =>
+    {
+        options.SerializeAsV2 = true;
+    });
+
+    app.UseSwaggerUI();
+}
 
 app.UseSession();
 

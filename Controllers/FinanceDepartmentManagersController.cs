@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GAP.Data;
 using GAP.Models;
 using X.PagedList;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Controllers
 {
@@ -20,7 +21,12 @@ namespace GAP.Controllers
             _context = context;
         }
 
+
+
         // GET: FinanceDepartmentManagers
+        [HttpGet("/FinanceDepartmentManagers")]
+        [SwaggerOperation(Summary = "View list of finance department managers", Description = "Display a list of finance department managers.")]
+        [SwaggerResponse(200, "List of finance department managers displayed successfully.")]
         public async Task<IActionResult> Index(string SearchString, int? page)
         {
             IQueryable<FinanceDepartmentManager> iseriq = from s in _context.FinanceDepartmentManager
@@ -36,7 +42,15 @@ namespace GAP.Controllers
             return View(await iseriq.ToPagedListAsync(pageNumber, pageSize));
         }
 
+
+
+
+
         // GET: FinanceDepartmentManagers/Details/5
+        [HttpGet("/FinanceDepartmentManagers/Details/{id}")]
+        [SwaggerOperation(Summary = "View finance department manager details", Description = "Display details of a finance department manager.")]
+        [SwaggerResponse(200, "Finance department manager details displayed successfully.")]
+        [SwaggerResponse(404, "Finance department manager not found.")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.FinanceDepartmentManager == null)
@@ -54,17 +68,32 @@ namespace GAP.Controllers
             return View(FinanceDepartmentManager);
         }
 
+
+
+
+
+
+
         // GET: FinanceDepartmentManagers/Create
+        [HttpGet("/FinanceDepartmentManagers/Create")]
+        [SwaggerOperation(Summary = "Create a new finance department manager", Description = "Display the form to create a new finance department manager.")]
+        [SwaggerResponse(200, "Form to create a new finance department manager displayed successfully.")]
         public IActionResult Create()
         {
             return View();
         }
 
+
+
+
+
+
         // POST: FinanceDepartmentManagers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/FinanceDepartmentManagers/Create")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Create a new finance department manager", Description = "Handle the creation of a new finance department manager.")]
+        [SwaggerResponse(200, "Finance department manager created successfully.")]
+        [SwaggerResponse(400, "Bad request. User with this email already exists.")]
         public async Task<IActionResult> Create([Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] FinanceDepartmentManager FinanceDepartmentManager)
         {
             if (ModelState.IsValid)
@@ -87,7 +116,15 @@ namespace GAP.Controllers
             return RedirectToAction("Index", "Users");
         }
 
+
+
+
+
         // GET: FinanceDepartmentManagers/Edit/5
+        [HttpGet("/FinanceDepartmentManagers/Edit/{id}")]
+        [SwaggerOperation(Summary = "Edit a finance department manager", Description = "Display the form to edit a finance department manager.")]
+        [SwaggerResponse(200, "Form to edit a finance department manager displayed successfully.")]
+        [SwaggerResponse(404, "Finance department manager not found.")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.FinanceDepartmentManager == null)
@@ -103,11 +140,17 @@ namespace GAP.Controllers
             return View(FinanceDepartmentManager);
         }
 
+
+
+
+
+
         // POST: FinanceDepartmentManagers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost("/FinanceDepartmentManagers/Edit/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Edit a finance department manager", Description = "Handle the editing of a finance department manager.")]
+        [SwaggerResponse(200, "Finance department manager edited successfully.")]
+        [SwaggerResponse(400, "Bad request. Another user with this email already exists.")]
         public async Task<IActionResult> Edit(int id, [Bind("UserID,Email,Password,FirstName,LastName,IsAdmin")] FinanceDepartmentManager FinanceDepartmentManager)
         {
             if (id != FinanceDepartmentManager.UserID)
@@ -147,7 +190,17 @@ namespace GAP.Controllers
             return View(FinanceDepartmentManager);
         }
 
+
+
+
+
+
+
         // GET: FinanceDepartmentManagers/Delete/5
+        [HttpGet("/FinanceDepartmentManagers/Delete/{id}")]
+        [SwaggerOperation(Summary = "Delete a finance department manager", Description = "Display the confirmation form to delete a finance department manager.")]
+        [SwaggerResponse(200, "Confirmation form to delete a finance department manager displayed successfully.")]
+        [SwaggerResponse(404, "Finance department manager not found.")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.FinanceDepartmentManager == null)
@@ -165,9 +218,16 @@ namespace GAP.Controllers
             return View(FinanceDepartmentManager);
         }
 
+
+
+
+
         // POST: FinanceDepartmentManagers/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("/FinanceDepartmentManagers/Delete/{id}")]
         [ValidateAntiForgeryToken]
+        [SwaggerOperation(Summary = "Delete a finance department manager", Description = "Handle the deletion of a finance department manager.")]
+        [SwaggerResponse(200, "Finance department manager deleted successfully.")]
+        [SwaggerResponse(400, "Entity set 'GAPContext.FinanceDepartmentManager' is null.")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.FinanceDepartmentManager == null)
@@ -183,6 +243,11 @@ namespace GAP.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
+
 
         private bool FinanceDepartmentManagerExists(int id)
         {
@@ -208,22 +273,20 @@ namespace GAP.Controllers
 
 
 
+        /*---------------------------------------------------------------*/
+
+
+
+
+
+
+
+        // Helper: no route
         public IActionResult Home()
         {
             // Implementation for creating an Offre
             return View();
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
