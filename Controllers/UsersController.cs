@@ -518,7 +518,7 @@ namespace GAP.Controllers
                     return NotFound();
                 }
 
-                existingUser.Password = updatedUser.Password;
+                existingUser.Password = HashPassword(updatedUser.Password);
                 existingUser.Email = updatedUser.Email;
                 existingUser.CompanyName = updatedUser.CompanyName;
 
