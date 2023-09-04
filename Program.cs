@@ -34,7 +34,7 @@ builder.Services.AddAuthorization(options =>
 {
     // ... existing policy configurations ...
 });
-
+/*
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -54,7 +54,7 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
-});
+});*/
 builder.Services.AddControllers();
 builder.Services.AddSession();
 
@@ -117,7 +117,7 @@ app.Use(async (context, next) =>
         await next();
     }
 });
-
+/*
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger(options =>
@@ -126,7 +126,7 @@ if (app.Environment.IsDevelopment())
     });
 
     app.UseSwaggerUI();
-}
+}*/
 
 app.UseSession();
 
