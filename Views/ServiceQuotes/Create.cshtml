@@ -1,0 +1,41 @@
+﻿@model GAP.Models.ServiceQuote
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+
+                <h1 class="form-header">ADD Service Quote</h1>
+        <form asp-action="Create">
+                    <input type="hidden" asp-for="ServiceOfferID" value="@ViewBag.ServiceOfferID" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+ 
+
+ 
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+</div>
+</div>
+</div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

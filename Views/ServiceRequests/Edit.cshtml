@@ -1,0 +1,61 @@
+﻿@model GAP.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+
+                <h1 class="form-header">EDIT Service Request</h1>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ServiceRequestID" />
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsValid" /> @Html.DisplayNameFor(model => model.IsValid)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServiceRequestPicture" class="control-label"></label>
+                <input asp-for="ServiceRequestPicture" class="form-control" />
+                <span asp-validation-for="ServiceRequestPicture" class="text-danger"></span>
+            </div>
+                    <div class="BTNS">
+
+                        <a asp-for="UserID"> <input type="submit" value="Save" class="SUB-button" /></a>
+                        <a asp-action="Delete" asp-route-id="@Model.ServiceRequestID"><input type="button" class="DEL-button" value="Delete"> </a>
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,10 +1,12 @@
 ﻿using GAP.Data;
 using GAP.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics;
 using System.Security.Claims;
+using X.PagedList;
 
 namespace GAP.Controllers
 {
@@ -21,6 +23,91 @@ namespace GAP.Controllers
         }
 
 
+
+
+
+
+        // GET: PurchaseRequests for Supplier, this method will be allowed for the Supplier role
+        [HttpGet("/PurchaseRequestsOut")]
+        [SwaggerOperation(Summary = "Get purchase requests for suppliers", Description = "Retrieve a list of purchase requests for suppliers.")]
+        [SwaggerResponse(200, "List of purchase requests for suppliers retrieved successfully.")]
+        public async Task<IActionResult> PurchaseRequestsOut(int? page, string SearchString)
+        {
+
+
+            IQueryable<PurchaseRequest> PurchaseRequestiq = from s in _context.PurchaseRequest
+                                                            select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                PurchaseRequestiq = _context.PurchaseRequest.Where(d => d.Description.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await PurchaseRequestiq.ToPagedListAsync(pageNumber, pageSize));
+        }
+
+
+
+        // GET: PurchaseRequests for Supplier, this method will be allowed for the Supplier role
+        [HttpGet("/ServicesRequestsOut")]
+        [SwaggerOperation(Summary = "Get purchase requests for suppliers", Description = "Retrieve a list of purchase requests for suppliers.")]
+        [SwaggerResponse(200, "List of purchase requests for suppliers retrieved successfully.")]
+        public async Task<IActionResult> ServicesRequestsOut(int? page, string SearchString)
+        {
+
+
+            IQueryable<ServiceRequest> ServicesRequestiq = from s in _context.ServiceRequest
+                                                           select s;
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                ServicesRequestiq = _context.ServiceRequest.Where(d => d.Title.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(await ServicesRequestiq.ToPagedListAsync(pageNumber, pageSize));
+        }
+
+
+
+
+
+
+
+        [HttpGet("/OutIndex")]
+        [SwaggerOperation(Summary = "Home page", Description = "Display the home page.")]
+        [SwaggerResponse(200, "Home page displayed successfully.")]
+        public IActionResult OutIndex()
+        {
+
+
+            var totalProducts = _context.Stock
+           .SelectMany(s => s.Products)
+           .Count();
+
+
+            var totalUsers = _context.User.Count();
+            var totalSuppliers = _context.Supplier.Count();
+            var TotalBugs = _context.Reclamation.Count();
+
+            var users = _context.User.Where(u => u.Role != UserRole.Project_Manager && u.Role != UserRole.Supplier).ToList();
+            var suppliers = _context.Supplier.ToList();
+            var pmanagers = _context.ProjectManager.Where(u => u.Role == UserRole.Project_Manager).Include(u => u.Projects).ToList();
+            ViewBag.TotalProducts = totalProducts;
+            ViewBag.TotalBugs = TotalBugs;
+            ViewBag.TotalUsers = totalUsers;
+            ViewBag.TotalSuppliers = totalSuppliers;
+            ViewBag.Users = users;
+            ViewBag.PManagers = pmanagers;
+            ViewBag.Supplier = suppliers;
+            return View();
+
+
+
+        }
 
         [HttpGet("/")]
         [SwaggerOperation(Summary = "Home page", Description = "Display the home page.")]
@@ -75,19 +162,40 @@ namespace GAP.Controllers
         [SwaggerOperation(Summary = "Handle notifications", Description = "Handle notifications based on user roles.")]
         [SwaggerResponse(302, "Notification handled successfully.")]
         [SwaggerResponse(200, "Default behavior if user is not in the specified roles.")]
-        public IActionResult HandleNotification(int PurchaseQuoteId , int SupplierID , int SaleOfferID)
+        public IActionResult HandleNotification(int PurchaseQuoteId ,int ServiceQuoteId , int SupplierID , int SaleOfferID)
         {
 
             // Get the user's role and handle the redirection accordingly
             if (User.IsInRole("QualityTestingDepartmentManager"))
             {
                 // Redirect to the Create action in QualityTestReport controller with the PurchaseQuoteId parameter
-                return RedirectToAction("Create", "QualityTestReports", new { PurchaseQuoteId });
+
+                if (ServiceQuoteId != 0)
+                {
+                    return RedirectToAction("Create", "QualityTestReports", new { ServiceQuoteId });
+
+
+                }
+               else
+                {
+                    return RedirectToAction("Create", "QualityTestReports", new { PurchaseQuoteId });
+
+                }
             }
             else if (User.IsInRole("FinanceDepartmentManager"))
             {
                 // Redirect to the Create action in Bill controller with the PurchaseQuoteId parameter
-                return RedirectToAction("Create", "Bills", new { PurchaseQuoteId });
+                if(ServiceQuoteId != 0)
+                {
+                return RedirectToAction("Create", "Bills", new { ServiceQuoteId });
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Create", "Bills", new { PurchaseQuoteId });
+
+                }
             }
             else if (User.IsInRole("Supplier"))
             {

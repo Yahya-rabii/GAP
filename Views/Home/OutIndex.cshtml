@@ -1,0 +1,155 @@
+﻿@if (!User.IsInRole("Admin") && Context.Request.Path != "/Home/AccessDenied" )
+{
+
+
+
+
+<div class="main-content ">
+
+    <div class="col-md-6">
+
+    <section class="welcome">
+    
+                 
+               
+
+    </section>
+    </div>
+    <!-- business -->
+    <div class="business">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <span>Increase your clients for</span>
+                        <h2>Better position of Business</h2>
+                        <p>Using the GAP - tech Solution </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="business_box ">
+                                    <div class="gridd">
+
+                                        <div class="gridcontainer">
+                                            <div class="griditem gridheader" >More than @ViewBag.TotalSuppliers Supplier</div> 
+                                            <div class="griditem gridsidebar" >Gap - Tech</div>
+                                            <div class="griditem gridcontent-1" >Manage @ViewBag.TotalProducts Product</div>
+                                            <div class="griditem gridfooter" >Used by @ViewBag.TotalUsers User</div>
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end business -->
+    <!-- Projects -->
+    <div class="projects">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <span>Previous Projects</span>
+                            <h2>Better management of Business</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-10 offset-md-1">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="projects_box ">
+                                <figure><img src="~/images/projects_img.png" alt="#" /></figure>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end projects -->
+    <!-- Testimonial -->
+    <div class="section">
+        <div class="container">
+            <div id="" class="Testimonial">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="titlepage">
+                            <h2>About the Creator</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="Testimonial_box">
+                            <i><a href="https://yahya.rabii.me/">
+
+                               <img src="~/images/profile.png" alt="#" class="icon-profile" /></a> </i>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="Testimonial_box">
+                            <h4> Yahya RABII </h4>
+                            <p>
+                                    Meet Yahya, an enthusiastic Moroccan software engineering student at EMSI school, deeply captivated by the tech world. With an unquenchable thirst for knowledge, he spends endless hours mastering new technologies, driven by the exciting blend of business and tech. Yahya acknowledges the challenges of the engineering path, but his dedication and passion promise a significant impact in the dynamic realm of technology.
+                                </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end Testimonial -->
+
+
+    <!-- contact -->
+    <div id="contact" class="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="titlepage">
+                        <h2>Contact us</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ">
+                    <form class="main_form ">
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <input class="form_contril" placeholder="Name " type="text" name="Name ">
+                            </div>
+                            <div class="col-md-12">
+                                <input class="form_contril" placeholder="Phone Number" type="text" name=" Phone Number">
+                            </div>
+                            <div class="col-md-12">
+                                <input class="form_contril" placeholder="Email" type="text" name="Email">
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="textarea" placeholder="Message" type="text" name="Message"></textarea>
+                            </div>
+                            <div class="col-sm-12">
+                                <button class="send_btn">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    </div>
+}

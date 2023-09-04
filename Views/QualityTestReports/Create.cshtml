@@ -14,6 +14,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="PurchaseQuoteId" value="@ViewBag.PurchaseQuoteId" />
+            <input type="hidden" name="ServiceQuoteId" value="@ViewBag.ServiceQuoteId" />
 
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -30,11 +31,7 @@
                     <input class="form-check-input" asp-for="OperationValidity" /> @Html.DisplayNameFor(model => model.OperationValidity)
                 </label>
             </div>
-            <div class="form-group">
-                        <label asp-for="PurchaseQuoteId" class="control-label"></label>
-                        <select asp-for="PurchaseQuoteId" class="form-control" asp-items="@ViewBag.PurchaseQuoteList"></select>
-                        <span asp-validation-for="PurchaseQuoteId" class="text-danger"></span>
-            </div>
+
                     <div class="BTNS">
 
                         <a asp-for="QualityTestReportID"> <input type="submit" value="Save" class="SUB-button" /></a>

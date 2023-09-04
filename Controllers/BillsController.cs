@@ -62,7 +62,7 @@ namespace GAP.Controllers
                 return NotFound();
             }
 
-            var Bill = await _context.Bill
+            var Bill = await _context.BillPurchase
                 .FirstOrDefaultAsync(m => m.BillID == id);
 
             var PurchaseQuote = await _context.PurchaseQuote.Include(d=>d.Products).Include(d => d.Supplier)
@@ -196,10 +196,11 @@ namespace GAP.Controllers
         [HttpGet("/Bills/Create")]
         [SwaggerOperation(Summary = "Create a new bill", Description = "Display the form to create a new bill.")]
         [SwaggerResponse(200, "Form to create a new bill displayed successfully.")]
-        public IActionResult Create(int PurchaseQuoteId)
+        public IActionResult Create(int PurchaseQuoteId, int ServiceQuoteId)
         {
             // Store the PurchaseRequestId in ViewBag or ViewData so that it can be used in the view.
             ViewBag.PurchaseQuoteId = PurchaseQuoteId;
+            ViewBag.ServiceQuoteId = ServiceQuoteId;
 
  
 
@@ -217,25 +218,26 @@ namespace GAP.Controllers
         [ValidateAntiForgeryToken]
         [SwaggerOperation(Summary = "Create a new bill", Description = "Handle the creation of a new bill.")]
         [SwaggerResponse(200, "Bill created successfully.")]
-        public async Task<IActionResult> Create(int PurchaseQuoteId, [Bind("BillID")] Bill Bill)
+        public async Task<IActionResult> Create(int PurchaseQuoteId, int ServiceQuoteId, [Bind("BillID")] Bill Bill)
         {
 
-            if (PurchaseQuoteId == 0)
+            if (PurchaseQuoteId == 0 && ServiceQuoteId == 0)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            else { 
 
-            {
-                
+      
+                if(PurchaseQuoteId != 0) {
+                   var BillPurchase = new BillPurchase();
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 var PurchaseQuote = _context.PurchaseQuote.Include(d=>d.Supplier).FirstOrDefault(d => d.PurchaseQuoteID == PurchaseQuoteId) ;
 
-
-                Bill.PurchaseQuoteID = PurchaseQuoteId;
-                Bill.FinanceDepartmentManagerId = userId;
-                Bill.Validity = false;
+                    BillPurchase.BillID = Bill.BillID;
+                    BillPurchase.PurchaseQuoteID = PurchaseQuoteId;
+                    BillPurchase.FinanceDepartmentManagerId = userId;
+                    BillPurchase.Validity = false;
 
 
 
@@ -247,11 +249,42 @@ namespace GAP.Controllers
                 }
 
 
-                _context.Add(Bill);
+                _context.Add(BillPurchase);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+
+                } 
+                
+                if(ServiceQuoteId != 0) { 
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                var ServiceQuote = _context.ServiceQuote.Include(d=>d.Supplier).FirstOrDefault(d => d.ServiceQuoteID == ServiceQuoteId) ;
+                    var BillService = new BillService();
+
+                    BillService.BillID = Bill.BillID;
+                    BillService.ServiceQuoteID = ServiceQuoteId;
+                    BillService.FinanceDepartmentManagerId = userId;
+                    BillService.Validity = false;
+
+
+
+
+                var notification = _context.NotificationInfo.FirstOrDefault(d => d.UserID == userId);
+                if (notification != null)
+                {
+                    _context.Notification.Remove(notification);
+                }
+
+
+                _context.Add(BillService);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+
+                }
+
+
+                return View();
+
             }
-            return View(Bill);
         }
 
 

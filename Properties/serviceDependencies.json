@@ -1,8 +1,12 @@
 {
   "dependencies": {
+    "apis1": {
+      "type": "apis"
+    },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:GAPContext"
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "dynamicId": null
     }
   }
 }

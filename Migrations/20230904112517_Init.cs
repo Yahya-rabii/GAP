@@ -22,8 +22,10 @@ namespace GAP.Migrations
                     SupplierID = table.Column<int>(type: "int", nullable: true),
                     UserID = table.Column<int>(type: "int", nullable: true),
                     PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
+                    ServiceQuoteID = table.Column<int>(type: "int", nullable: true),
                     NotificationSupplier_SupplierID = table.Column<int>(type: "int", nullable: true),
-                    SaleOfferID = table.Column<int>(type: "int", nullable: true)
+                    SaleOfferID = table.Column<int>(type: "int", nullable: true),
+                    ServiceOfferID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -91,6 +93,23 @@ namespace GAP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ServiceRequest",
+                columns: table => new
+                {
+                    ServiceRequestID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false),
+                    ServiceRequestPicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceRequest", x => x.ServiceRequestID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stock",
                 columns: table => new
                 {
@@ -139,7 +158,9 @@ namespace GAP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Validity = table.Column<bool>(type: "bit", nullable: false),
                     FinanceDepartmentManagerId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: true)
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
+                    ServiceQuoteID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,7 +228,8 @@ namespace GAP.Migrations
                     CntItemsValidity = table.Column<bool>(type: "bit", nullable: false),
                     OperationValidity = table.Column<bool>(type: "bit", nullable: false),
                     QualityTestingDepartmentManagerId = table.Column<int>(type: "int", nullable: true),
-                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false)
+                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false),
+                    ServiceQuoteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -227,7 +249,8 @@ namespace GAP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PurchasingReceptionistId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false)
+                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false),
+                    ServiceQuoteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -235,6 +258,34 @@ namespace GAP.Migrations
                     table.ForeignKey(
                         name: "FK_ReceptionReport_User_PurchasingReceptionistId",
                         column: x => x.PurchasingReceptionistId,
+                        principalTable: "User",
+                        principalColumn: "UserID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceOffer",
+                columns: table => new
+                {
+                    ServiceOfferID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Validity = table.Column<bool>(type: "bit", nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: false),
+                    ServiceRequestId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceOffer", x => x.ServiceOfferID);
+                    table.ForeignKey(
+                        name: "FK_ServiceOffer_ServiceRequest_ServiceRequestId",
+                        column: x => x.ServiceRequestId,
+                        principalTable: "ServiceRequest",
+                        principalColumn: "ServiceRequestID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ServiceOffer_User_SupplierId",
+                        column: x => x.SupplierId,
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
@@ -267,6 +318,34 @@ namespace GAP.Migrations
                         principalTable: "User",
                         principalColumn: "UserID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServiceQuote",
+                columns: table => new
+                {
+                    ServiceQuoteID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: true),
+                    SupplierID = table.Column<int>(type: "int", nullable: true),
+                    PurchasingDepartmentManagerId = table.Column<int>(type: "int", nullable: true),
+                    ServiceOfferID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceQuote", x => x.ServiceQuoteID);
+                    table.ForeignKey(
+                        name: "FK_ServiceQuote_ServiceOffer_ServiceOfferID",
+                        column: x => x.ServiceOfferID,
+                        principalTable: "ServiceOffer",
+                        principalColumn: "ServiceOfferID");
+                    table.ForeignKey(
+                        name: "FK_ServiceQuote_User_SupplierID",
+                        column: x => x.SupplierID,
+                        principalTable: "User",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -415,6 +494,26 @@ namespace GAP.Migrations
                 name: "IX_SaleOffer_SupplierId",
                 table: "SaleOffer",
                 column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceOffer_ServiceRequestId",
+                table: "ServiceOffer",
+                column: "ServiceRequestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceOffer_SupplierId",
+                table: "ServiceOffer",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceQuote_ServiceOfferID",
+                table: "ServiceQuote",
+                column: "ServiceOfferID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServiceQuote_SupplierID",
+                table: "ServiceQuote",
+                column: "SupplierID");
         }
 
         /// <inheritdoc />
@@ -448,6 +547,9 @@ namespace GAP.Migrations
                 name: "Sanction");
 
             migrationBuilder.DropTable(
+                name: "ServiceQuote");
+
+            migrationBuilder.DropTable(
                 name: "Project");
 
             migrationBuilder.DropTable(
@@ -457,7 +559,13 @@ namespace GAP.Migrations
                 name: "Stock");
 
             migrationBuilder.DropTable(
+                name: "ServiceOffer");
+
+            migrationBuilder.DropTable(
                 name: "SaleOffer");
+
+            migrationBuilder.DropTable(
+                name: "ServiceRequest");
 
             migrationBuilder.DropTable(
                 name: "PurchaseRequest");

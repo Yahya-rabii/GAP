@@ -1,0 +1,37 @@
+﻿@model GAP.Models.ServiceOffer
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="pcontainer" style="width: 600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+                <h1 class="form-header">ADD Service Offer</h1>
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <!-- Add the hidden field to store the PurchaseRequestID -->
+                    <input type="hidden" asp-for="ServiceRequestId" />
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" placeholder="Price" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                    <!-- Add the dropdown menu for selecting products -->
+                  
+                    <div class="BTNS">
+                        <button type="submit" class="SUB-button">Save</button>
+                        <a asp-action="Index" class="BTL-button">Back to List</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

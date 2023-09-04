@@ -1,0 +1,57 @@
+﻿@model GAP.Models.ServiceRequest
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<div class="pcontainer" style="width:600px;">
+    <div class="main-body">
+        <div class="card uprofile-details">
+            <div class="card-body">
+                <h1 class="form-header">ADD Purchase Request</h1>
+
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ServiceRequestPicture" class="control-label"></label>
+                <input asp-for="ServiceRequestPicture" type="file" class="form-control" />
+                <span asp-validation-for="ServiceRequestPicture" class="text-danger"></span>
+            </div>
+                    <div class="BTNS">
+
+                        <a asp-for="ServiceRequestID"> <input type="submit" value="Save" class="SUB-button" /></a>
+
+
+                        <a asp-action="Index"> <input type="button" class="BTL-button" value="Back to List" /></a>
+
+                    </div>
+        </form>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

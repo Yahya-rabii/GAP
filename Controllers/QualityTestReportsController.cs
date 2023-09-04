@@ -88,21 +88,14 @@ namespace GAP.Controllers
         [HttpGet("/QualityTestReports/Create")]
         [SwaggerOperation(Summary = "Show quality test report creation form", Description = "Display the quality test report creation form.")]
         [SwaggerResponse(200, "Quality test report creation form displayed successfully.")]
-        public IActionResult Create(int PurchaseQuoteId)
+        public IActionResult Create(int PurchaseQuoteId , int ServiceQuoteId)
         {
-            // Fetch the list of all PurchaseQuote with corresponding product and supplier names
-            var PurchaseQuoteList = _context.PurchaseQuote.Where(d => d.PurchaseQuoteID == PurchaseQuoteId)
-               .Include(d => d.Supplier)
-               .Select(d => new SelectListItem
-               {
-                   Value = d.PurchaseQuoteID.ToString(),
-                   Text = $"PurchaseQuote: {d.PurchaseQuoteID} | provider id : {d.Supplier.Email}" // Combine product name and supplier email
-               })
-               .ToList();
+            
 
-            // Create the select list for dropdown menu
-            ViewBag.PurchaseQuoteList = new SelectList(PurchaseQuoteList, "Value", "Text");
+           
             ViewBag.PurchaseQuoteId = PurchaseQuoteId;
+           
+            ViewBag.ServiceQuoteId = ServiceQuoteId;
 
             return View();
         }
@@ -117,59 +110,120 @@ namespace GAP.Controllers
         [SwaggerOperation(Summary = "Create a new quality test report", Description = "Create a new quality test report with the provided information.")]
         [SwaggerResponse(200, "Quality test report created successfully.")]
         [SwaggerResponse(400, "Invalid input data.")]
-        public IActionResult Create(int PurchaseQuoteId,  QualityTestReport QualityTestReport)
+        public IActionResult Create(QualityTestReport QualityTestReport, int PurchaseQuoteId, int ServiceQuoteId)
         {
-            if (ModelState.IsValid)
-            {
+           
 
                 var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
 
-                QualityTestReport.PurchaseQuoteId = PurchaseQuoteId;
-                QualityTestReport.QualityTestingDepartmentManagerId = userId;
 
 
-                if (QualityTestReport.CntItemsValidity && QualityTestReport.StateValidity && QualityTestReport.OperationValidity)
+                if (PurchaseQuoteId != 0)
                 {
 
-                    var PurchaseQuote = _context.PurchaseQuote.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
-                    var Bill  = _context.Bill.Where(f=>f.PurchaseQuoteID ==  PurchaseQuoteId).FirstOrDefault();
-                    var Supplier  = _context.Supplier.Where(f=>f.UserID == PurchaseQuote.SupplierID).FirstOrDefault();
-                    var saleOffer = _context.SaleOffer.Include(so=>so.Products).Where(so=>so.SupplierId==Supplier.UserID).FirstOrDefault();   
-                    var Products = saleOffer.Products.ToList();
 
-                    var stock = new Stock();
-                    if (Bill != null && Supplier !=null)
+                    QualityTestReport.PurchaseQuoteId = PurchaseQuoteId;
+                    QualityTestReport.QualityTestingDepartmentManagerId = userId;
+
+
+                    if (QualityTestReport.CntItemsValidity && QualityTestReport.StateValidity && QualityTestReport.OperationValidity)
                     {
-                        Bill.Validity =  true;
-                        Supplier.TransactionNumber++;
-                        foreach (var product in Products)
+
+                        var PurchaseQuote = _context.PurchaseQuote.Where(f => f.PurchaseQuoteID == PurchaseQuoteId).FirstOrDefault();
+                        var Bill = _context.BillPurchase.Where(f => f.PurchaseQuoteID == PurchaseQuoteId).FirstOrDefault();
+                        var Supplier = _context.Supplier.Where(f => f.UserID == PurchaseQuote.SupplierID).FirstOrDefault();
+                        var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.UserID).FirstOrDefault();
+                        var Products = saleOffer.Products.ToList();
+
+                        var stock = new Stock();
+                        if (Bill != null && Supplier != null)
                         {
-                            stock.Products.Add(product);
+                            Bill.Validity = true;
+                            Supplier.TransactionNumber++;
+                            foreach (var product in Products)
+                            {
+                                stock.Products.Add(product);
+
+                            }
+
+                            _context.Stock.Add(stock);
+                            _context.Update(Bill);
+                            _context.Update(Supplier);
 
                         }
 
-                        _context.Stock.Add(stock);
-                        _context.Update(Bill);
-                        _context.Update(Supplier);
+                    }
+                    else
+                    {
+                        var PurchaseQuote = _context.PurchaseQuote.Include(d => d.Supplier).Where(d => d.PurchaseQuoteID == PurchaseQuoteId).FirstOrDefault();
+                        Sanction sanction = new Sanction();
+
+                        sanction.SanctionTitle = "Unvalalid Rapport Test Qualite";
+                        sanction.SanctionDescription = "un des normes de qualites de Product est invalid";
+                        sanction.SupplierId = PurchaseQuote.SupplierID;
+                        _context.Sanction.Add(sanction);
+
+
+
+
 
                     }
 
+
+
                 }
-                else
+
+                if (ServiceQuoteId != 0)
                 {
-                    var PurchaseQuote = _context.PurchaseQuote.Include(d=>d.Supplier).Where(d=>d.PurchaseQuoteID==PurchaseQuoteId).FirstOrDefault();
-                    Sanction sanction = new Sanction();
-
-                    sanction.SanctionTitle = "Unvalalid Rapport Test Qualite";
-                    sanction.SanctionDescription = "un des normes de qualites de Product est invalid";
-                    sanction.SupplierId = PurchaseQuote.SupplierID;
-                    _context.Sanction.Add(sanction);
 
 
+                    QualityTestReport.ServiceQuoteId = ServiceQuoteId;
+                    QualityTestReport.QualityTestingDepartmentManagerId = userId;
+
+
+                    if (QualityTestReport.CntItemsValidity && QualityTestReport.StateValidity && QualityTestReport.OperationValidity)
+                    {
+
+                        var ServiceQuote = _context.ServiceQuote.Where(f => f.ServiceQuoteID == ServiceQuoteId).FirstOrDefault();
+                        var Bill = _context.BillService.Where(f => f.ServiceQuoteID == ServiceQuoteId).FirstOrDefault();
+                        var Supplier = _context.Supplier.Where(f => f.UserID == ServiceQuote.SupplierID).FirstOrDefault();
+                        var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.UserID).FirstOrDefault();
+
+                        var stock = new Stock();
+                        if (Bill != null && Supplier != null)
+                        {
+                            Bill.Validity = true;
+                            Supplier.TransactionNumber++;
+                           
+
+
+                            _context.Stock.Add(stock);
+                            _context.Update(Bill);
+                            _context.Update(Supplier);
+
+                        }
+
+                    }
+                    else
+                    {
+                        var ServiceQuote = _context.ServiceQuote.Include(d => d.Supplier).Where(d => d.ServiceQuoteID == ServiceQuoteId).FirstOrDefault();
+                        Sanction sanction = new Sanction();
+
+                        sanction.SanctionTitle = "Unvalalid Rapport Test Qualite";
+                        sanction.SanctionDescription = "un des normes de qualites de Product est invalid";
+                        sanction.SupplierId = ServiceQuote.SupplierID;
+                        _context.Sanction.Add(sanction);
+
+
+
+
+
+                    }
 
 
 
                 }
+
 
 
 
@@ -183,22 +237,9 @@ namespace GAP.Controllers
                 // Save the QualityTestReport object to the database
                 _context.QualityTestReport.Add(QualityTestReport);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
+            
 
-            // If the model state is not valid, refill the dropdown list and return the view with validation errors.
-            var PurchaseQuoteList = _context.PurchaseQuote
-                .Include(d => d.Supplier)
-                .Select(d => new
-                {
-                    PurchaseQuoteID = d.PurchaseQuoteID,
-                    PurchaseQuoteSupplierName = d.Supplier.Email
-                })
-                .ToList();
-
-            // Create the select list for dropdown menu
-            ViewBag.PurchaseQuoteList = new SelectList(PurchaseQuoteList, "PurchaseQuoteID", "PurchaseQuoteSupplierName");
-
+          
             return View(QualityTestReport);
         }
 
@@ -253,7 +294,7 @@ namespace GAP.Controllers
                     if (QualityTestReport.CntItemsValidity && QualityTestReport.StateValidity && QualityTestReport.OperationValidity)
                     {
                         var PurchaseQuote = _context.PurchaseQuote.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
-                        var Bill = _context.Bill.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
+                        var Bill = _context.BillPurchase.Where(f => f.PurchaseQuoteID == QualityTestReport.PurchaseQuoteId).FirstOrDefault();
                         var Supplier = _context.Supplier.Where(f => f.UserID == PurchaseQuote.SupplierID).FirstOrDefault();
                         var saleOffer = _context.SaleOffer.Include(so => so.Products).Where(so => so.SupplierId == Supplier.UserID).FirstOrDefault();
                         var Products = saleOffer.Products.ToList();

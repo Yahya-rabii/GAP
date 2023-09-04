@@ -13,12 +13,20 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" name="PurchaseQuoteId" value="@ViewBag.PurchaseQuoteId" />
+            <input type="hidden" name="ServiceQuoteId" value="@ViewBag.ServiceQuoteId" />
 
-            <p>
+                        @if (@ViewBag.PurchaseQuoteId !=0)
+                        {
+                            <p> create a Bill for the PurchaseQuote N° = @ViewBag.PurchaseQuoteId            </p>
 
-                create a Bill for the PurchaseQuote N° = @ViewBag.PurchaseQuoteId
+                        }
 
-            </p>
+                    @if (@ViewBag.ServiceQuoteId != 0)
+                        {
+                        <p> create a Bill for the ServiceQuote N° = @ViewBag.ServiceQuoteId            </p>
+
+                        }
+
    
                     <div class="BTNS">
 

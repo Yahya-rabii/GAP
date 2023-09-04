@@ -64,7 +64,7 @@ namespace GAP.Controllers
             ViewBag.RespServiceQaliteUsers = await _context.QualityTestingDepartmentManager.ToListAsync();
 
             // Materialize the factiq query into a list to avoid the DataReader conflict
-            List<Bill> BillsList = await _context.Bill.ToListAsync();
+            List<BillPurchase> BillsList = await _context.BillPurchase.ToListAsync();
             List<Sanction> sanctions = await _context.Sanction.ToListAsync();
 
             // Iterate through the PurchaseQuote items and check if a corresponding Bill exists
@@ -80,6 +80,56 @@ namespace GAP.Controllers
                     s.SanctionDescription = "L'arrivage de Product est en retard";
                     s.SupplierId = PurchaseQuoteItem.SupplierID;
                     s.PurchaseQuoteID = PurchaseQuoteItem.PurchaseQuoteID;
+                    _context.Sanction.Add(s);
+                }
+            }
+
+            ViewBag.Bills = BillsList;
+
+            // Save the changes to the database
+            await _context.SaveChangesAsync();
+
+            return View(await PurchaseQuoteiq.ToPagedListAsync(pageNumber, pageSize));
+        }
+
+
+
+
+                public async Task<IActionResult> IndexServiceQuote(int? page, string SearchString)
+        {
+            // Query to retrieve PurchaseQuotes that are not added to the reception report
+            IQueryable<ServiceQuote> PurchaseQuoteiq = _context.ServiceQuote.Include(o => o.Supplier)
+                                                        .Where(pq => !_context.ReceptionReport.Any(rr => rr.ServiceQuoteId == pq.ServiceQuoteID));
+
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                PurchaseQuoteiq = PurchaseQuoteiq.Where(o => o.Supplier.Email.ToLower().Contains(SearchString.ToLower().Trim()));
+            }
+
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+
+            // Load RespServiceFinnance and RespServiceQalite users and store them in ViewBag
+            ViewBag.RespServiceFinnanceUsers = await _context.FinanceDepartmentManager.ToListAsync();
+            ViewBag.RespServiceQaliteUsers = await _context.QualityTestingDepartmentManager.ToListAsync();
+
+            // Materialize the factiq query into a list to avoid the DataReader conflict
+            List<BillPurchase> BillsList = await _context.BillPurchase.ToListAsync();
+            List<Sanction> sanctions = await _context.Sanction.ToListAsync();
+
+            // Iterate through the PurchaseQuote items and check if a corresponding Bill exists
+            foreach (var PurchaseQuoteItem in PurchaseQuoteiq)
+            {
+                // Check if a Bill exists for the current PurchaseQuote item and if the ReceptionDate is less than the current date
+                if (!BillsList.Any(f => f.PurchaseQuoteID == PurchaseQuoteItem.ServiceQuoteID) && PurchaseQuoteItem.EndDate.Date < DateTime.Now.Date && !sanctions.Any(f => f.PurchaseQuoteID == PurchaseQuoteItem.ServiceQuoteID))
+                {
+                    // A Bill does not exist, and ReceptionDate is less than the current date, so create a new Sanction
+                    Sanction s = new Sanction();
+
+                    s.SanctionTitle = "Delay Report";
+                    s.SanctionDescription = "L'arrivage de Product est en retard";
+                    s.SupplierId = PurchaseQuoteItem.SupplierID;
+                    s.PurchaseQuoteID = PurchaseQuoteItem.ServiceQuoteID;
                     _context.Sanction.Add(s);
                 }
             }
@@ -128,6 +178,61 @@ namespace GAP.Controllers
                     CreationDate = DateTime.Now,
                     PurchasingReceptionistId = userId,
                     PurchaseQuoteId = PurchaseQuoteId,
+                    
+
+                };
+                _context.ReceptionReport.Add(ReceptionReport);
+
+
+
+
+
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction(nameof(IndexPurchaseQuote));
+        }
+
+        
+
+
+
+
+        [HttpPost]
+        public IActionResult CreateserviceNotification(int ServiceQuoteId, string respFinnanceEmail, string respQaliteEmail)
+        {
+            // Find the user IDs based on the selected emails
+            var respFinnanceUser = _context.User.FirstOrDefault(u => u.Email == respFinnanceEmail);
+            var respQaliteUser = _context.User.FirstOrDefault(u => u.Email == respQaliteEmail);
+
+            if (respFinnanceUser != null && respQaliteUser != null)
+            {
+                // Create and save notification for RespServiceFinnance
+                var notificationFinnance = new NotificationInfo
+                {
+                    ServiceQuoteID = ServiceQuoteId,
+                    UserID = respFinnanceUser.UserID,
+                    NotificationTitle = "Reclamation Notification Finnanciere"
+                };
+                _context.Notification.Add(notificationFinnance);
+
+                // Create and save notification for RespServiceQalite
+                var notificationQalite = new NotificationInfo
+                {
+                    ServiceQuoteID = ServiceQuoteId,
+                    UserID = respQaliteUser.UserID,
+                    NotificationTitle = "Reclamation Notification Qalite"
+                };
+                _context.Notification.Add(notificationQalite);
+
+                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+                var ReceptionReport = new ReceptionReport
+                {
+                    CreationDate = DateTime.Now,
+                    PurchasingReceptionistId = userId,
+                    ServiceQuoteId = ServiceQuoteId,
                     
 
                 };

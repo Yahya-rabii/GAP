@@ -30,10 +30,12 @@ namespace GAP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BillID"));
 
-                    b.Property<int>("FinanceDepartmentManagerId")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
-                    b.Property<int?>("PurchaseQuoteID")
+                    b.Property<int>("FinanceDepartmentManagerId")
                         .HasColumnType("int");
 
                     b.Property<bool>("Validity")
@@ -44,6 +46,10 @@ namespace GAP.Migrations
                     b.HasIndex("FinanceDepartmentManagerId");
 
                     b.ToTable("Bill");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Bill");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("GAP.Models.Notification", b =>
@@ -253,6 +259,9 @@ namespace GAP.Migrations
                     b.Property<int?>("QualityTestingDepartmentManagerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ServiceQuoteId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("StateValidity")
                         .HasColumnType("bit");
 
@@ -278,6 +287,9 @@ namespace GAP.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("PurchasingReceptionistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceQuoteId")
                         .HasColumnType("int");
 
                     b.HasKey("ReceptionReportID");
@@ -412,6 +424,102 @@ namespace GAP.Migrations
                     b.ToTable("Sanction");
                 });
 
+            modelBuilder.Entity("GAP.Models.ServiceOffer", b =>
+                {
+                    b.Property<int>("ServiceOfferID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceOfferID"));
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ServiceRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Validity")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ServiceOfferID");
+
+                    b.HasIndex("ServiceRequestId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("ServiceOffer");
+                });
+
+            modelBuilder.Entity("GAP.Models.ServiceQuote", b =>
+                {
+                    b.Property<int>("ServiceQuoteID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceQuoteID"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PurchasingDepartmentManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SupplierID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ServiceQuoteID");
+
+                    b.HasIndex("ServiceOfferID");
+
+                    b.HasIndex("SupplierID");
+
+                    b.ToTable("ServiceQuote");
+                });
+
+            modelBuilder.Entity("GAP.Models.ServiceRequest", b =>
+                {
+                    b.Property<int>("ServiceRequestID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ServiceRequestID"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("ServiceRequestPicture")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("ServiceRequestID");
+
+                    b.ToTable("ServiceRequest");
+                });
+
             modelBuilder.Entity("GAP.Models.Stock", b =>
                 {
                     b.Property<int>("StockID")
@@ -482,6 +590,26 @@ namespace GAP.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("GAP.Models.BillPurchase", b =>
+                {
+                    b.HasBaseType("GAP.Models.Bill");
+
+                    b.Property<int>("PurchaseQuoteID")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("BillPurchase");
+                });
+
+            modelBuilder.Entity("GAP.Models.BillService", b =>
+                {
+                    b.HasBaseType("GAP.Models.Bill");
+
+                    b.Property<int>("ServiceQuoteID")
+                        .HasColumnType("int");
+
+                    b.HasDiscriminator().HasValue("BillService");
+                });
+
             modelBuilder.Entity("GAP.Models.NotificationAdmin", b =>
                 {
                     b.HasBaseType("GAP.Models.Notification");
@@ -497,6 +625,9 @@ namespace GAP.Migrations
                     b.HasBaseType("GAP.Models.Notification");
 
                     b.Property<int?>("PurchaseQuoteID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceQuoteID")
                         .HasColumnType("int");
 
                     b.Property<int?>("UserID")
@@ -517,6 +648,9 @@ namespace GAP.Migrations
                     b.HasBaseType("GAP.Models.Notification");
 
                     b.Property<int?>("SaleOfferID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceOfferID")
                         .HasColumnType("int");
 
                     b.Property<int?>("SupplierID")
@@ -692,6 +826,40 @@ namespace GAP.Migrations
                         .IsRequired();
 
                     b.Navigation("PurchaseRequest");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("GAP.Models.ServiceOffer", b =>
+                {
+                    b.HasOne("GAP.Models.ServiceRequest", "ServiceRequest")
+                        .WithMany()
+                        .HasForeignKey("ServiceRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GAP.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServiceRequest");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("GAP.Models.ServiceQuote", b =>
+                {
+                    b.HasOne("GAP.Models.ServiceOffer", "ServiceOffer")
+                        .WithMany()
+                        .HasForeignKey("ServiceOfferID");
+
+                    b.HasOne("GAP.Models.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierID");
+
+                    b.Navigation("ServiceOffer");
 
                     b.Navigation("Supplier");
                 });

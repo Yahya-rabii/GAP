@@ -93,9 +93,20 @@ app.UseStatusCodePagesWithReExecute("/Home/AccessDenied", "?statusCode={0}");
 
 app.Use(async (context, next) =>
 {
-    if (!context.User.Identity.IsAuthenticated && context.Request.Path.Value != "/Users/Login" && context.Request.Path.Value != "/Suppliers/Register")
+    if (!context.User.Identity.IsAuthenticated)
     {
-        context.Response.Redirect("/Users/Login");
+        if (context.Request.Path.Value == "/Users/Login" || context.Request.Path.Value == "/Suppliers/Register")
+        {
+            await next();
+        }
+        else if (context.Request.Path.Value == "/OutIndex" || context.Request.Path.Value == "/PurchaseRequestsOut" || context.Request.Path.Value == "/ServicesRequestsOut")
+        {
+            await next();
+        }
+        else
+        {
+            context.Response.Redirect("/OutIndex");
+        }
     }
     else if (context.User.Identity.IsAuthenticated && context.User.IsInRole("Admin") && context.Request.Path.Value == "/Users/Login")
     {

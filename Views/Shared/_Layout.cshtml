@@ -49,7 +49,83 @@
 
 <!-- body -->
 <body class="main-layout">
-    @if (Context.Request.Path != "/Home/AccessDenied" )
+
+
+
+    @if (Context.Request.Path == "/OutIndex")
+    {
+       
+
+        <div class="main-content ">
+
+
+            <div class="hdr">
+                <div class="logo">
+                    <a onclick="location.href='@Url.Action("Index", "Home")'"><img src="~/images/logo.png" alt="#" /></a>
+                </div>
+                <div class="nav">
+                    <ul class="liks">
+                        <li class="naveitem">
+                            <a class="lik" href="#">Assets disposal</a>
+                            <a class="lik" href="@Url.Action("PurchaseRequestsOut", "Home")">Purchase Requests</a>
+                            <a class="lik" href="@Url.Action("ServicesRequestsOut", "Home")">Service Requests</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="@Url.Action("Login", "Users")" class="cta">
+                    <button class="cta__button">Login</button>
+                </a>
+            </div>
+
+            <div class="bodycontainer">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+
+
+
+        </div>
+
+        <footer>
+            <div class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <div class="cont">
+                                <h3>
+                                    <strong class="multi"> GAP - Tech </strong><br>
+                                    Follow US ON
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <ul class="social_icon">
+                                <li><a href="https://yahya.rabii.me/"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                                <li><a href="https://github.com/Yahya-rabii"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                                <li><a href="https://www.linkedin.com/in/rabii-yahya-1b093a20b/"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="copyright">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>Copyright 2023 All Right Reserved By <a href="https://www.finatech.com/"> Finatech Group</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    }
+
+        else{
+        
+        
+        @if (Context.Request.Path != "/Home/AccessDenied" )
     {
 
 
@@ -601,7 +677,8 @@
                             {
 
                                 <a class="link" onclick="location.href='@Url.Action("Index", "SaleOffers")'">Offres Ventes</a>
-                                <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Demandes Achats</a>
+                                <a class="link" onclick="location.href='@Url.Action("Indexfour", "PurchaseRequests")'">Purchase Requests</a>
+                                        <a class="link" onclick="location.href='@Url.Action("Indexfour", "ServiceRequests")'">Service Requests</a>
                                 <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
 
                             }
@@ -678,7 +755,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <p>Copyright 2023 All Right Reserved By <a href="https://html.design/"> Finatech Group</a></p>
+                                        <p>Copyright 2023 All Right Reserved By <a href="https://www.finatech.com/"> Finatech Group</a></p>
                             </div>
                         </div>
                     </div>
@@ -767,9 +844,15 @@ else{
                                                                 {
                                                                     <li>
                                                                         @notification.NotificationTitle
-                                                                        @if (notification.PurchaseQuoteID.HasValue)
+                                                                        @if (notification.PurchaseQuoteID != 0)
                                                                         {
                                                                             <a href="@Url.Action("HandleNotification", "Home", new { PurchaseQuoteId = notification.PurchaseQuoteID })">
+                                                                                <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                                            </a>
+                                                                        }
+                                                                                @if (notification.ServiceQuoteID != 0)
+                                                                        {
+                                                                                    <a href="@Url.Action("HandleNotification", "Home", new { ServiceQuoteId = notification.ServiceQuoteID })">
                                                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
                                                                             </a>
                                                                         }
@@ -861,9 +944,11 @@ else{
                         @if (User.IsInRole("PurchasingDepartmentManager"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "SaleOffers")'">Offre Ventes</a>
-                                <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuotes")'">PurchaseQuote</a>
-                            <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseRequests")'">Demande Achats</a>
+                                        <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "SaleOffers")'">Sale Offers</a>
+                                        <a class="link" onclick="location.href='@Url.Action("IndexRespSA", "ServiceOffers")'">Service Offers</a>
+                                <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuotes")'">Purchase Quotes</a>
+                                        <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseRequests")'">Purchase Requests</a>
+                                        <a class="link" onclick="location.href='@Url.Action("Index", "ServiceRequests")'">Service Requests</a>
                             <a class="link" onclick="location.href='@Url.Action("Index", "Sanctions")'">Sanctions</a>
                                 <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
 
@@ -884,6 +969,7 @@ else{
 
                             <a class="link" onclick="location.href='@Url.Action("Index", "ReceptionReports")'">ReceptionReports</a>
                                 <a class="link" onclick="location.href='@Url.Action("IndexPurchaseQuote", "PurchasingReceptionists")'">Current Arrivals</a>
+                                <a class="link" onclick="location.href='@Url.Action("IndexServiceQuote", "PurchasingReceptionists")'">Validate Service</a>
                                 <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
 
 
@@ -891,8 +977,7 @@ else{
                         else if (User.IsInRole("QualityTestingDepartmentManager"))
                         {
 
-                            <a class="link" onclick="location.href='@Url.Action("Index", "Products")'">Products</a>
-                            <a class="link" onclick="location.href='@Url.Action("Index", "PurchaseQuote")'">PurchaseQuote</a>
+                                        <a class="link" onclick="location.href='@Url.Action("Index", "QualityServiceTestReports")'">Quality Service Test</a>
                                 <a class="link" onclick="location.href='@Url.Action("Indexusers", "Reclamations")'">Report Bug</a>
 
 
@@ -978,7 +1063,7 @@ else{
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <p>Copyright 2023 All Right Reserved By <a href="https://html.design/"> Finatech Group</a></p>
+                                        <p>Copyright 2023 All Right Reserved By <a href="https://www.finatech.com/"> Finatech Group</a></p>
                         </div>
                     </div>
                 </div>
@@ -1014,6 +1099,6 @@ else{
         @RenderBody()
 
     }
-
+    }
 </body>
 </html>

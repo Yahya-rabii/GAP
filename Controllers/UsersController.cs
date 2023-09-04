@@ -716,7 +716,14 @@ namespace GAP.Controllers
 
 
 
-    
+
+
+
+
+
+
+
+
 
         [HttpGet("/Users/Logout")]
         [SwaggerOperation(Summary = "User logout", Description = "Log out a user.")]

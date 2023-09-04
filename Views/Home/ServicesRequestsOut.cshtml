@@ -1,0 +1,92 @@
+﻿@model X.PagedList.IPagedList<GAP.Models.ServiceRequest>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<main>
+    <article>
+        <div class="datatable-container" >
+            <h1 class="form-header">Services Requests</h1>
+
+            <!-- ======= Header tools ======= -->
+            <div class="header-tools">
+
+
+
+                <div class="tools">
+                    <!-- Pagination Links -->
+                    <div class="pagination-container">
+                        <ul class="pagination" >
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = 1, SearchString = ViewBag.CurrentFilter })">First</a>
+                            </li>
+                            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, SearchString = ViewBag.CurrentFilter })">Previous</a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link">@Model.PageNumber</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, SearchString = ViewBag.CurrentFilter })">Next</a>
+                            </li>
+                            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = Model.PageCount, SearchString = ViewBag.CurrentFilter })">Last</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="search">
+                    <form method="get" asp-action="IndexFour">
+                        <input type="search" id="form1" class="search-input" placeholder="Description..." name="SearchString" />
+                    </form>
+                </div>
+            </div>
+
+            <!-- Add a CSS class to the table for styling -->
+            <table class="table custom-table-style">
+                <thead>
+                    <tr>
+
+                        <th></th>
+                        <th>
+                            Title
+                        </th>  
+                        
+                        <th>
+                            Description
+                        </th>
+                   
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+
+                                
+
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                      
+                            <td>
+                           
+                                    <div class="BTNS" style="right:100%;" >
+                                        <a asp-controller="Users" class="SUB-button" asp-action="Login" >Reply</a>
+                                    </div>
+                              
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </article>
+</main>
+

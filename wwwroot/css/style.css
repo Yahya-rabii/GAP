@@ -1569,3 +1569,61 @@ details.comment:not([open]) .comment-heading::after {
     cursor: pointer;
     font-size: 30px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.hdr {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 10%;
+    background-color: #0891f8;
+}
+
+.logo {
+    cursor: pointer;
+    margin-right: auto;
+}
+
+.liks {
+    list-style: none;
+    
+}
+
+.naveitem {
+    display: inline-block;
+
+}
+
+.lik {
+    transition: all 0.3s ease 0s;
+    padding: 0 20px;
+    color: white;
+}
+
+    .lik:hover {
+        color: #04365e;
+    }
+
+.cta__button {
+    padding: 9px 25px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+    margin-left: 20px;
+}
+
+    .cta__button:hover {
+        color: #0564ab;
+    }

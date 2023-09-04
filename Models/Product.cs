@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace GAP.Models
 {
+    [SwaggerSchema("Product", Title = "Product")]
     public class Product
     {
         public int ProductID { get; set; }
         public float Unitprice { get; set; }
         public float Totalprice { get; set; }
-
         public string? Name { get; set; }
         public int? ItemsNumber { get; set; }
         public string? Desc { get; set; }
@@ -15,18 +17,18 @@ namespace GAP.Models
         public int SupplierId { get; set; } // Foreign key property
         public byte[]? ProductPicture { get; set; }
 
-        public Product() {
-        
+        public Product()
+        {
             Unitprice = 0;
             ItemsNumber = 0;
             Name = string.Empty;
             Desc = string.Empty;
             SupplierId = 0;
-            Totalprice= 0;
-
+            Totalprice = 0;
             ProductPicture = Array.Empty<byte>();
         }
-        public Product(int ID , float unitprice, string name, int itemsnum, string desc, int supplierId, float totalprice, byte[] productPicture)
+
+        public Product(int ID, float unitprice, string name, int itemsnum, string desc, int supplierId, float totalprice, byte[] productPicture)
         {
             ProductID = ID;
             Unitprice = unitprice;
@@ -35,11 +37,7 @@ namespace GAP.Models
             ItemsNumber = itemsnum;
             SupplierId = supplierId;
             Totalprice = totalprice;
-            ProductPicture =productPicture;
+            ProductPicture = productPicture;
         }
-
-
-
     }
-
 }

@@ -72,6 +72,16 @@ namespace GAP.Data
 
         public DbSet<GAP.Models.NotificationReclamation> NotificationReclamation { get; set; } = default!;
 
+        public DbSet<GAP.Models.ServiceRequest> ServiceRequest { get; set; } = default!;
+
+        public DbSet<GAP.Models.ServiceOffer> ServiceOffer { get; set; } = default!;
+
+        public DbSet<GAP.Models.ServiceQuote> ServiceQuote { get; set; } = default!;
+
+        public DbSet<GAP.Models.BillService> BillService { get; set; } = default!;
+
+        public DbSet<GAP.Models.BillPurchase> BillPurchase { get; set; } = default!;
+
 
     }
 }
