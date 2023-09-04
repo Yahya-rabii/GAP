@@ -216,6 +216,31 @@ namespace GAP.Controllers
 
 
 
+        
+        // Action method to handle the "Reply" button click
+        [HttpGet("/DeleteConfirmed")]
+        [SwaggerOperation(Summary = "Handle notifications", Description = "Handle notifications based on user roles.")]
+        [SwaggerResponse(302, "Notification handled successfully.")]
+        [SwaggerResponse(200, "Default behavior if user is not in the specified roles.")]
+        public IActionResult DeleteNotification(int SupplierID )
+        {
+
+           
+            if (User.IsInRole("Admin"))
+            {
+                var ID = SupplierID;
+                // Redirect to the Create action in Bill controller with the PurchaseQuoteId parameter
+                return RedirectToAction("Deletenot", "Notifications", new { ID });
+            }
+
+            // Default behavior if user is not in the specified roles
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
 
 
         // Action method to handle the "AccessDenied" button click

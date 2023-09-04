@@ -266,6 +266,11 @@
                                             <a href="@Url.Action("HandleNotification", "Home", new { SupplierID = notification.SupplierID })">
                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
                                             </a>
+
+
+                                                    <a href="@Url.Action("DeleteNotification", "Home", new { SupplierID = notification.SupplierID })">
+                                                        <i class="fa fa-trash" style="font-size:22px;color:#2e428b;background:none"></i>
+                                                    </a>
                                         }
                                     </li>
                                 }
@@ -577,7 +582,8 @@
                                                                         {
                                                                             <a href="@Url.Action("HandleNotification", "Home", new { SaleOfferID = notification.SaleOfferID })">
                                                                                 <i class="fa fa-mail-reply" style="font-size:22px;color:#2e428b;background:none"></i>
-                                                                            </a>
+                                                                            </a> 
+                                                                  
                                                                         }
                                                                     </li>
                                                                 }
