@@ -230,7 +230,12 @@ namespace GAP.Controllers
             {
                 var ID = SupplierID;
                 // Redirect to the Create action in Bill controller with the PurchaseQuoteId parameter
-                return RedirectToAction("Deletenot", "Notifications", new { ID });
+              var not = _context.NotificationAdmin.Where(n=>n.SupplierID == ID).FirstOrDefault();
+                if (not != null)
+                {
+                    _context.NotificationAdmin.Remove(not);
+                    _context.SaveChanges();
+                }
             }
 
             // Default behavior if user is not in the specified roles
