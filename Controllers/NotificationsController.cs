@@ -219,62 +219,6 @@ namespace GAP.Controllers
 
 
 
-        // GET: Notifications/Delete/5
-        [HttpGet("/Notifications/Deletenot/{id}")]
-        [SwaggerOperation(Summary = "Show notification delete confirmation", Description = "Display the notification delete confirmation.")]
-        [SwaggerResponse(200, "Notification delete confirmation displayed successfully.")]
-        [SwaggerResponse(404, "Notification not found.")]
-        public async Task<IActionResult> Deletenot(int? id)
-        {
-            if (id == null || _context.Notification == null)
-            {
-                return NotFound();
-            }
-
-            var notification = await _context.NotificationAdmin
-                .FirstOrDefaultAsync(m => m.SupplierID == id);
-            if (notification == null)
-            {
-                return NotFound();
-            }
-
-            return View(notification);
-        }
-
-
-
-
-
-
-
-        // POST: Notifications/Delete/5
-        [HttpPost("/Notifications/Deletenot/{id}")]
-        [ValidateAntiForgeryToken]
-        [SwaggerOperation(Summary = "Delete a notification", Description = "Delete an existing notification.")]
-        [SwaggerResponse(200, "Notification deleted successfully.")]
-        [SwaggerResponse(404, "Notification not found.")]
-        public async Task<IActionResult> Deletenot(int id)
-        {
-
-            var not =  _context.NotificationAdmin.Where(n=>n.SupplierID==id).FirstOrDefault();
-            if (_context.Notification == null)
-            {
-                return Problem("Entity set 'GAPContext.Notification'  is null.");
-            }
-            if (not != null)
-            {
-                _context.Notification.Remove(not);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-
-
-
-
-
         /*---------------------------------------------------------------*/
 
 

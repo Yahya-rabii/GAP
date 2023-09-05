@@ -108,7 +108,7 @@ namespace GAP.Controllers
                 }
 
                 FinanceDepartmentManager.Password = HashPassword(FinanceDepartmentManager?.Password);
-
+                FinanceDepartmentManager.Role = UserRole.Finance_department_manager;
                 _context.Add(FinanceDepartmentManager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Users");

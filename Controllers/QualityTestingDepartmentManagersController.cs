@@ -107,7 +107,7 @@ namespace GAP.Controllers
                 }
 
                 QualityTestingDepartmentManager.Password = HashPassword(QualityTestingDepartmentManager?.Password);
-
+                QualityTestingDepartmentManager.Role = UserRole.Quality_testing_department_manager;
                 _context.Add(QualityTestingDepartmentManager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Users");

@@ -70,7 +70,7 @@ namespace GAP.Controllers
                     return View(ProjectManager);
                 }
                 ProjectManager.Password = HashPassword(ProjectManager?.Password);
-
+                ProjectManager.Role = UserRole.Project_Manager;
                 _context.Add(ProjectManager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Users");

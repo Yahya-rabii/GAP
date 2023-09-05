@@ -236,17 +236,18 @@ namespace GAP.Controllers
         [SwaggerResponse(200, "Supplier information edited successfully.")]
         [SwaggerResponse(400, "Invalid input data.")]
         [SwaggerResponse(404, "Supplier not found.")]
-        public async Task<IActionResult> Edit(int id, [Bind("SupplierID,CompanyName,Email,Password,Adresse,PostalCode,PhoneNumber,TransactionNumber,IsValid")] Supplier Supplier)
+        public async Task<IActionResult> Edit(int id, Supplier Supplier)
         {
-            if (id != Supplier.UserID)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            Supplier.UserID = _context.Supplier
+                          .Where(s => s.UserID == id)
+                          .Select(s => s.UserID)
+                          .FirstOrDefault();
+
+
+
+            try
             {
-                try
-                {
                     _context.Update(Supplier);
                     await _context.SaveChangesAsync();
                 }
@@ -261,9 +262,8 @@ namespace GAP.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(Supplier);
+
+            return RedirectToAction("Index", "Suppliers");
         }
 
 
@@ -359,7 +359,6 @@ namespace GAP.Controllers
                 {
                     Supplier.Password = HashPassword(Supplier?.Password);
                     Supplier.Role = UserRole.Supplier;
-
                 _context.Supplier.Add(Supplier);
                     await _context.SaveChangesAsync();
 

@@ -80,7 +80,7 @@ namespace GAP.Controllers
                     return View(PurchasingDepartmentManager);
                 }
                 PurchasingDepartmentManager.Password = HashPassword(PurchasingDepartmentManager?.Password);
-
+                PurchasingDepartmentManager.Role = UserRole.Purchasing_department_manager;
                 _context.Add(PurchasingDepartmentManager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Users");

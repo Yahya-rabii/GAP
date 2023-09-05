@@ -296,6 +296,8 @@ namespace GAP.Controllers
 
                 // If the user does not exist, proceed with adding them to the database
                 PurchasingReceptionist.Password = HashPassword(PurchasingReceptionist?.Password);
+                PurchasingReceptionist.Role = UserRole.Purchasing_receptionist;
+                _context.Add(PurchasingReceptionist);
                 _context.Add(PurchasingReceptionist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", "Users");
