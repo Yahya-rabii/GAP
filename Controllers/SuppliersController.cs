@@ -239,16 +239,32 @@ namespace GAP.Controllers
         public async Task<IActionResult> Edit(int id, Supplier Supplier)
         {
 
-            Supplier.UserID = _context.Supplier
+            var Sup = _context.Supplier
                           .Where(s => s.UserID == id)
-                          .Select(s => s.UserID)
                           .FirstOrDefault();
+
+            Supplier.UserID = Sup.UserID;   
 
 
 
             try
             {
-                    _context.Update(Supplier);
+
+
+                if (Sup.Password.Equals(Supplier.Password))
+                {
+
+                    Supplier.Password = Sup.Password;
+
+                }
+                else
+                {
+                    Supplier.Password = HashPassword(Supplier.Password);
+
+                }
+
+
+                _context.Update(Supplier);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

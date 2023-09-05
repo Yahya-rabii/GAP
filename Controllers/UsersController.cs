@@ -333,7 +333,20 @@ namespace GAP.Controllers
                 }
 
                 existingUser.Email = updatedUser.Email;
+
+
+                if (existingUser.Password.Equals(updatedUser.Password))
+                {
+
+                    existingUser.Password = updatedUser.Password;
+
+                }
+                else
+                {
                 existingUser.Password = HashPassword(updatedUser.Password);
+
+                }
+
                 existingUser.FirstName = updatedUser.FirstName;
                 existingUser.LastName = updatedUser.LastName;
 
