@@ -9,6 +9,13 @@
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrationsold\**" />
+    <Content Remove="Migrationsold\**" />
+    <EmbeddedResource Remove="Migrationsold\**" />
+    <None Remove="Migrationsold\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net" Version="0.1.0" />
