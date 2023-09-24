@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GAP.Migrations
 {
     [DbContext(typeof(GAPContext))]
-    [Migration("20230918114818_Init")]
+    [Migration("20230924164318_Init")]
     partial class Init
     {
         /// <inheritdoc />

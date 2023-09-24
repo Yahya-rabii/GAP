@@ -1,16 +1,16 @@
-name: Build and deploy .NET Core application to Web App GAP20230904111714 with API Management Service GAP-tech-api-GAP
+name: Build and deploy .NET Core application to Web App GAP20230924182506 with API Management Service GAP-yahyapfa-api-GAP
 on:
   push:
     branches:
     - master
 env:
-  AZURE_WEBAPP_NAME: GAP20230904111714
+  AZURE_WEBAPP_NAME: GAP20230924182506
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   AZURE_APIM_RESOURCE_PATH: /
-  AZURE_APIM_RESOURCEGROUP: cloud-shell-storage-westeurope
-  AZURE_APIM_SERVICENAME: GAP-tech-api
+  AZURE_APIM_RESOURCEGROUP: yahya-pfa
+  AZURE_APIM_SERVICENAME: GAP-yahyapfa-api
   AZURE_APIM_API_ID: GAP
-  AZURE_APIM_APPSERVICEURL: https://gap20230904111714.azurewebsites.net
+  AZURE_APIM_APPSERVICEURL: https://gap20230924182506.azurewebsites.net
   SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION: 5.6.3
   SWASHBUCKLE_DOTNET_CORE_VERSION: 3.1.x
   API_IMPORT_SPECIFICATION_PATH: ./publish/swagger.json
@@ -40,6 +40,11 @@ jobs:
       run: dotnet test ${{ env.WORKING_DIRECTORY }} --no-build
     - name: Publish
       run: dotnet publish ${{ env.WORKING_DIRECTORY }} --configuration ${{ env.CONFIGURATION }} --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    - name: Install Swashbuckle CLI .NET Global Tool
+      run: dotnet tool install --global Swashbuckle.AspNetCore.Cli --version ${{ env.SWASHBUCLE_ASPNET_CORE_CLI_PACKAGE_VERSION }}
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+    - name: Generate Open API Specification Document
+      run: swagger tofile --output "${{ env.API_IMPORT_SPECIFICATION_PATH }}" "${{ env.API_IMPORT_DLL }}" "${{ env.API_IMPORT_VERSION }}"
     - name: Publish Artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -59,11 +64,13 @@ jobs:
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-        publish-profile: ${{ secrets.GAP20230904111714_48B0 }}
+        publish-profile: ${{ secrets.GAP20230924182506_13E4 }}
     - name: Azure Login
       uses: azure/login@v1
       with:
-        creds: ${{ secrets.GAP_tech_api_SPN }}
+        creds: ${{ secrets.GAP_yahyapfa_api_SPN }}
+    - name: Import API into Azure API Management
+      run: az apim api import --path "${{ env.AZURE_APIM_RESOURCE_PATH }}" --resource-group "${{ env.AZURE_APIM_RESOURCEGROUP }}" --service-name "${{ env.AZURE_APIM_SERVICENAME }}" --api-id "${{ env.AZURE_APIM_API_ID }}" --service-url "${{ env.AZURE_APIM_APPSERVICEURL }}" --specification-path "${{ env.API_IMPORT_SPECIFICATION_PATH }}" --specification-format OpenApi --subscription-required false
     - name: logout
       run: >
         az logout
