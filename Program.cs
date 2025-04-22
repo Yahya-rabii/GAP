@@ -60,7 +60,7 @@ builder.Services.AddSession();
 
 // Add the DbContext to the container.
 builder.Services.AddDbContext<GAPContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection") ??
         throw new InvalidOperationException("Connection string 'DefaultConnection' not found.")));
 
 

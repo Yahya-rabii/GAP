@@ -18,10 +18,11 @@ namespace GAP.Data
             if (!dbContext.Set<User>().Any())
             {
                 // Create the pre-registered admin user
+                string newPassword = "admin123";  // Replace with your new password
                 var adminUser = new User
                 {
                     Email = "admin@gmail.com",
-                    Password = "$2a$10$9OJ3LDj0MJ70gcyS3bZmjutk4Y5TFu8PSCCA5GtjLOBftMPlbZirK",
+                    Password = BCrypt.Net.BCrypt.HashPassword(newPassword),
                     FirstName = "admin",
                     LastName = "admin",
                     IsAdmin =true

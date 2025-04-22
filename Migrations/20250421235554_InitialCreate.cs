@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GAP.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,17 +15,17 @@ namespace GAP.Migrations
                 name: "Notification",
                 columns: table => new
                 {
-                    NotificationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NotificationTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    SupplierID = table.Column<int>(type: "int", nullable: true),
-                    UserID = table.Column<int>(type: "int", nullable: true),
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
-                    ServiceQuoteID = table.Column<int>(type: "int", nullable: true),
-                    NotificationSupplier_SupplierID = table.Column<int>(type: "int", nullable: true),
-                    SaleOfferID = table.Column<int>(type: "int", nullable: true),
-                    ServiceOfferID = table.Column<int>(type: "int", nullable: true)
+                    NotificationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NotificationTitle = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 34, nullable: false),
+                    SupplierID = table.Column<int>(type: "INTEGER", nullable: true),
+                    UserID = table.Column<int>(type: "INTEGER", nullable: true),
+                    PurchaseQuoteID = table.Column<int>(type: "INTEGER", nullable: true),
+                    ServiceQuoteID = table.Column<int>(type: "INTEGER", nullable: true),
+                    NotificationSupplier_SupplierID = table.Column<int>(type: "INTEGER", nullable: true),
+                    SaleOfferID = table.Column<int>(type: "INTEGER", nullable: true),
+                    ServiceOfferID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,13 +36,13 @@ namespace GAP.Migrations
                 name: "Reclamation",
                 columns: table => new
                 {
-                    ReclamationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReclamationTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserID = table.Column<int>(type: "int", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BugPicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ReclamationID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ReclamationTitle = table.Column<string>(type: "TEXT", nullable: false),
+                    UserID = table.Column<int>(type: "INTEGER", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    BugPicture = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,10 +53,10 @@ namespace GAP.Migrations
                 name: "ReclamationReply",
                 columns: table => new
                 {
-                    ReclamationReplyID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReclamationID = table.Column<int>(type: "int", nullable: true),
-                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ReclamationReplyID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ReclamationID = table.Column<int>(type: "INTEGER", nullable: true),
+                    Answer = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,9 +67,9 @@ namespace GAP.Migrations
                 name: "ReclamationsHistory",
                 columns: table => new
                 {
-                    ReclamationsHistoryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReclamationsID = table.Column<int>(type: "int", nullable: false)
+                    ReclamationsHistoryID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ReclamationsID = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,12 +80,12 @@ namespace GAP.Migrations
                 name: "Sanction",
                 columns: table => new
                 {
-                    SanctionID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    SanctionTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SanctionDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: true)
+                    SanctionID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SanctionTitle = table.Column<string>(type: "TEXT", nullable: false),
+                    SanctionDescription = table.Column<string>(type: "TEXT", nullable: false),
+                    PurchaseQuoteID = table.Column<int>(type: "INTEGER", nullable: false),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,13 +96,13 @@ namespace GAP.Migrations
                 name: "ServiceRequest",
                 columns: table => new
                 {
-                    ServiceRequestID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    ServiceRequestPicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                    ServiceRequestID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    IsValid = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ServiceRequestPicture = table.Column<byte[]>(type: "BLOB", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,8 +113,8 @@ namespace GAP.Migrations
                 name: "Stock",
                 columns: table => new
                 {
-                    StockID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                    StockID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true)
                 },
                 constraints: table =>
                 {
@@ -125,25 +125,25 @@ namespace GAP.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    UserID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    ProfilePicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    ProfilePictureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HasCustomProfilePicture = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    ProjectManagerID = table.Column<int>(type: "int", nullable: true),
-                    CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Adresse = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    PostalCode = table.Column<int>(type: "int", nullable: true),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: true),
-                    TransactionNumber = table.Column<int>(type: "int", nullable: true),
-                    IsValid = table.Column<bool>(type: "bit", nullable: true)
+                    UserID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Password = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    IsAdmin = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Role = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProfilePicture = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    ProfilePictureFileName = table.Column<string>(type: "TEXT", nullable: true),
+                    HasCustomProfilePicture = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 34, nullable: false),
+                    ProjectManagerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    CompanyName = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    Adresse = table.Column<string>(type: "TEXT", maxLength: 255, nullable: true),
+                    PostalCode = table.Column<int>(type: "INTEGER", nullable: true),
+                    PhoneNumber = table.Column<int>(type: "INTEGER", nullable: true),
+                    TransactionNumber = table.Column<int>(type: "INTEGER", nullable: true),
+                    IsValid = table.Column<bool>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,13 +154,13 @@ namespace GAP.Migrations
                 name: "Bill",
                 columns: table => new
                 {
-                    BillID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Validity = table.Column<bool>(type: "bit", nullable: false),
-                    FinanceDepartmentManagerId = table.Column<int>(type: "int", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
-                    ServiceQuoteID = table.Column<int>(type: "int", nullable: true)
+                    BillID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Validity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    FinanceDepartmentManagerId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 13, nullable: false),
+                    PurchaseQuoteID = table.Column<int>(type: "INTEGER", nullable: true),
+                    ServiceQuoteID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,14 +177,14 @@ namespace GAP.Migrations
                 name: "Project",
                 columns: table => new
                 {
-                    ProjectID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Budget = table.Column<double>(type: "float", nullable: false),
-                    ProjectManagerUserID = table.Column<int>(type: "int", nullable: true)
+                    ProjectID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Budget = table.Column<double>(type: "REAL", nullable: false),
+                    ProjectManagerUserID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,13 +200,13 @@ namespace GAP.Migrations
                 name: "PurchaseRequest",
                 columns: table => new
                 {
-                    PurchaseRequestID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Budget = table.Column<double>(type: "float", nullable: false),
-                    IsValid = table.Column<bool>(type: "bit", nullable: false),
-                    PurchasingDepartmentManagerUserID = table.Column<int>(type: "int", nullable: true)
+                    PurchaseRequestID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    Budget = table.Column<double>(type: "REAL", nullable: false),
+                    IsValid = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PurchasingDepartmentManagerUserID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,14 +222,14 @@ namespace GAP.Migrations
                 name: "QualityTestReport",
                 columns: table => new
                 {
-                    QualityTestReportID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StateValidity = table.Column<bool>(type: "bit", nullable: false),
-                    CntItemsValidity = table.Column<bool>(type: "bit", nullable: false),
-                    OperationValidity = table.Column<bool>(type: "bit", nullable: false),
-                    QualityTestingDepartmentManagerId = table.Column<int>(type: "int", nullable: true),
-                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false),
-                    ServiceQuoteId = table.Column<int>(type: "int", nullable: false)
+                    QualityTestReportID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StateValidity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CntItemsValidity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    OperationValidity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    QualityTestingDepartmentManagerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    PurchaseQuoteId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ServiceQuoteId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,12 +245,12 @@ namespace GAP.Migrations
                 name: "ReceptionReport",
                 columns: table => new
                 {
-                    ReceptionReportID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PurchasingReceptionistId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseQuoteId = table.Column<int>(type: "int", nullable: false),
-                    ServiceQuoteId = table.Column<int>(type: "int", nullable: false)
+                    ReceptionReportID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PurchasingReceptionistId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PurchaseQuoteId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ServiceQuoteId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -267,12 +267,12 @@ namespace GAP.Migrations
                 name: "ServiceOffer",
                 columns: table => new
                 {
-                    ServiceOfferID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Validity = table.Column<bool>(type: "bit", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    ServiceRequestId = table.Column<int>(type: "int", nullable: false)
+                    ServiceOfferID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Price = table.Column<double>(type: "REAL", nullable: false),
+                    Validity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ServiceRequestId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -295,13 +295,13 @@ namespace GAP.Migrations
                 name: "SaleOffer",
                 columns: table => new
                 {
-                    SaleOfferID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UnitProfit = table.Column<double>(type: "float", nullable: false),
-                    TotalProfit = table.Column<double>(type: "float", nullable: false),
-                    Validity = table.Column<bool>(type: "bit", nullable: false),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    PurchaseRequestId = table.Column<int>(type: "int", nullable: false)
+                    SaleOfferID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UnitProfit = table.Column<double>(type: "REAL", nullable: false),
+                    TotalProfit = table.Column<double>(type: "REAL", nullable: false),
+                    Validity = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
+                    PurchaseRequestId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -324,14 +324,14 @@ namespace GAP.Migrations
                 name: "ServiceQuote",
                 columns: table => new
                 {
-                    ServiceQuoteID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: true),
-                    SupplierID = table.Column<int>(type: "int", nullable: true),
-                    PurchasingDepartmentManagerId = table.Column<int>(type: "int", nullable: true),
-                    ServiceOfferID = table.Column<int>(type: "int", nullable: true)
+                    ServiceQuoteID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Price = table.Column<double>(type: "REAL", nullable: true),
+                    SupplierID = table.Column<int>(type: "INTEGER", nullable: true),
+                    PurchasingDepartmentManagerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ServiceOfferID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -352,15 +352,15 @@ namespace GAP.Migrations
                 name: "PurchaseQuote",
                 columns: table => new
                 {
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReceptionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalPrice = table.Column<double>(type: "float", nullable: true),
-                    typeCntProducts = table.Column<int>(type: "int", nullable: true),
-                    SupplierID = table.Column<int>(type: "int", nullable: true),
-                    PurchasingDepartmentManagerId = table.Column<int>(type: "int", nullable: true),
-                    SaleOfferID = table.Column<int>(type: "int", nullable: true)
+                    PurchaseQuoteID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ReceptionDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TotalPrice = table.Column<double>(type: "REAL", nullable: true),
+                    typeCntProducts = table.Column<int>(type: "INTEGER", nullable: true),
+                    SupplierID = table.Column<int>(type: "INTEGER", nullable: true),
+                    PurchasingDepartmentManagerId = table.Column<int>(type: "INTEGER", nullable: true),
+                    SaleOfferID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -386,19 +386,19 @@ namespace GAP.Migrations
                 name: "Product",
                 columns: table => new
                 {
-                    ProductID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Unitprice = table.Column<float>(type: "real", nullable: false),
-                    Totalprice = table.Column<float>(type: "real", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ItemsNumber = table.Column<int>(type: "int", nullable: true),
-                    Desc = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SupplierId = table.Column<int>(type: "int", nullable: false),
-                    ProductPicture = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    ProjectID = table.Column<int>(type: "int", nullable: true),
-                    PurchaseQuoteID = table.Column<int>(type: "int", nullable: true),
-                    SaleOfferID = table.Column<int>(type: "int", nullable: true),
-                    StockID = table.Column<int>(type: "int", nullable: true)
+                    ProductID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Unitprice = table.Column<float>(type: "REAL", nullable: false),
+                    Totalprice = table.Column<float>(type: "REAL", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    ItemsNumber = table.Column<int>(type: "INTEGER", nullable: true),
+                    Desc = table.Column<string>(type: "TEXT", nullable: true),
+                    SupplierId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ProductPicture = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    ProjectID = table.Column<int>(type: "INTEGER", nullable: true),
+                    PurchaseQuoteID = table.Column<int>(type: "INTEGER", nullable: true),
+                    SaleOfferID = table.Column<int>(type: "INTEGER", nullable: true),
+                    StockID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  app:
+    image: myapp:latest  # Replace with your actual image name
+    container_name: app-container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "5000:5000"  # Adjust the port as per your app's configuration
+    volumes:
+      - ./gap.db:/app/gap.db  # Map the SQLite database file
+    networks:
+      - gap-network
+    restart: always
+
+networks:
+  gap-network:
+    driver: bridge
