@@ -25,7 +25,7 @@ namespace GAP.Data
                     Password = BCrypt.Net.BCrypt.HashPassword(newPassword),
                     FirstName = "admin",
                     LastName = "admin",
-                    IsAdmin =true
+                    IsAdmin =true 
                     
                 };
 
