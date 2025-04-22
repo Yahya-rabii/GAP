@@ -18,7 +18,7 @@ namespace GAP.Data
             if (!dbContext.Set<User>().Any())
             {
                 // Create the pre-registered admin user
-                string newPassword = "admin123";  // Replace with your new password
+                string newPassword = "admin1234";  // Replace with your new password
                 var adminUser = new User
                 {
                     Email = "admin@gmail.com",
