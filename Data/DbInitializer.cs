@@ -26,7 +26,6 @@ namespace GAP.Data
                     FirstName = "admin",
                     LastName = "admin",
                     IsAdmin =true 
-                    
                 };
 
                 // Add the admin user to the User table
